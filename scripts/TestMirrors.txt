@@ -1,0 +1,22 @@
+rsync -e "ssh -i /home/shepherd/.ssh/id_rsa" -zrtlv --delete bioc-rsync@master.bioconductor.org:release/bioc release/bioc
+
+rsync -avn master.bioconductor.org::release
+
+
+
+rsync -e "ssh -i /home/shepherd/.ssh/id_rsa" -zrtlv --delete bioc-rsync@master.bioconductor.org:devel/bioc devel/bioc
+
+rsync -avn master.bioconductor.org::devel
+
+
+
+
+rsync -e "ssh -i /home/shepherd/.ssh/id_rsa" -zrtlv --delete bioc-rsync@master.bioconductor.org:3.15/bioc 3.15/bioc
+
+rsync -avn master.bioconductor.org::3.15
+
+
+
+rsync -e "ssh -i /home/shepherd/.ssh/id_rsa" -zrtlv --delete bioc-rsync@master.bioconductor.org:3.16/bioc 3.16/bioc
+
+rsync -avn master.bioconductor.org::3.16

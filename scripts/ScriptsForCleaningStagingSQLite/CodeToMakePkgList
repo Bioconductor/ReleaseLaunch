@@ -1,0 +1,202 @@
+Run manually at relese 
+
+#
+# copy sqlite file to local machine and edit there
+#
+
+
+#######################
+#
+# Run bash
+#
+#######################
+
+#
+# Using manifest will miss workflows, annotaiton, and declined
+#  eventually workflow manifest too
+
+cd /home/shepherd/BioconductorPackages/manifest
+git pull
+
+sed 1d /home/shepherd/BioconductorPackages/manifest/software.txt | sed 's/Package://g' | sed '/^\s*$/d' | awk '{$1=$1};1' > /home/shepherd/Projects/SinglePackageBuilder/spb_history/sqDel.txt
+
+sed 1d /home/shepherd/BioconductorPackages/manifest/data-experiment.txt | sed 's/Package://g'| sed '/^\s*$/d' | awk '{$1=$1};1' >> /home/shepherd/Projects/SinglePackageBuilder/spb_history/sqDel.txt
+
+sed 1d /home/shepherd/BioconductorPackages/manifest/workflows.txt | sed 's/Package://g'| sed '/^\s*$/d' | awk '{$1=$1};1' >> /home/shepherd/Projects/SinglePackageBuilder/spb_history/sqDel.txt
+
+sed 1d /home/shepherd/BioconductorPackages/manifest/data-annotation.txt | sed 's/Package://g'| sed '/^\s*$/d' | awk '{$1=$1};1' >> /home/shepherd/Projects/SinglePackageBuilder/spb_history/sqDel.txt
+
+
+
+cd /home/shepherd/Projects/SinglePackageBuilder/spb_history
+
+
+
+#######################
+# source ../env/bin/activate
+#
+# Run python
+#
+#######################
+
+#
+# get closed issues filter out open ex. (inactive) pkg 
+#   this will also catch incoming annotaiton, workflows
+#   but not additonal packages
+
+import os
+import json
+from urllib2 import Request, urlopen, URLError
+from bioconductor.config import ENVIR
+import logging
+import datetime
+import subprocess
+
+
+## In Python 3, urllib2 was replaced by two in-built modules named
+##   urllib.request and urllib.error
+
+
+cmd="https://api.github.com/repos/Bioconductor/Contributions/issues?state=closed&per_page=100"
+#&page=2
+#current number of pages is 11
+# run the following in bash to see what max page is 
+# curl -I cmd (look for rel=last)
+
+
+count=1
+issue_nums = set()
+cnt = 0
+while count <= 82:
+    print(count)
+    cmd="https://api.github.com/repos/Bioconductor/Contributions/issues?state=closed&per_page=100&page="+str(count)
+    request = Request(cmd)
+    response = urlopen(request)
+    res = response.read()
+    git_dir = json.loads(res)
+    for k in git_dir:
+        if k['body'] != '':
+            cnt += 1
+	    cnt
+            mylist1 = k['body'].replace("\n", "\r") 
+            mylist = mylist1.split("\r") 
+	    fixDel = [i for i, s in enumerate(mylist) if 'Repository:' in s]
+	    if len(fixDel) > 0:
+                indices = fixDel[0]
+	        dumb = mylist[indices].encode('utf-8').strip()
+                temp = dumb.strip("/")
+                temp2 = temp.rsplit('/', 1)[-1]
+                pkg = temp2.split()[0]
+                issue_nums.add(pkg)
+    count += 1 
+
+newList = set(issue_nums)
+
+for issue_name in list(newList):
+    print issue_name
+
+closedList = list(newList)
+
+thefile = open('/home/lori/a/singlePackageBuilder/spb_history/sqDel.txt', 'a')
+thefile.write("\n".join(closedList))
+thefile.close()
+
+
+#
+# get open issues 
+#
+
+cmd="https://api.github.com/repos/Bioconductor/Contributions/issues?state=open&per_page=100"
+#&page=2
+#current number of pages is 1
+# run the following in bash to see what max page is 
+# curl -I cmd (look for rel=last)
+
+count=1
+issue_nums2 = set()
+cnt = 0
+while count <= 1:
+    cmd = "https://api.github.com/repos/Bioconductor/Contributions/issues?state=open&per_page=100&page="+str(count)
+    request = Request(cmd)
+    response = urlopen(request)
+    res = response.read()
+    git_dir = json.loads(res)
+    for k in git_dir:
+        if k['body'] != '':
+            cnt += 1
+	    cnt
+            mylist1 = k['body'].replace("\n", "\r") 
+            mylist = mylist1.split("\r") 
+	    fixDel = [i for i, s in enumerate(mylist) if 'Repository:' in s]
+	    if len(fixDel) > 0:
+                indices = fixDel[0]
+	        dumb = mylist[indices].encode('utf-8').strip()
+                temp = dumb.strip("/")
+                temp2 = temp.rsplit('/', 1)[-1]
+                pkg = temp2.split()[0]
+                issue_nums2.add(pkg)
+    count += 1 
+
+
+newList2 = set(issue_nums2)
+
+for issue_name in list(newList2):
+    print issue_name
+
+openList = list(newList2)
+
+thefile = open('/home/lori/a/singlePackageBuilder/spb_history/sqDel2.txt', 'w')
+thefile.write("\n".join(openList))
+thefile.close()
+
+
+
+
+# now want to remove those that are newly closed ~30 days 
+count=1
+issue_nums3 = set()
+cnt = 0
+while count <= 11:
+    print(count)
+    cmd="https://api.github.com/repos/Bioconductor/Contributions/issues?state=closed&per_page=100&page="+str(count)
+    request = Request(cmd)
+    response = urlopen(request)
+    res = response.read()
+    git_dir = json.loads(res)
+    for k in git_dir:
+        closing_date = k['closed_at']
+        diff_date = datetime.datetime.today() - datetime.datetime.strptime(closing_date, '%Y-%m-%dT%H:%M:%SZ')
+        if diff_date.days <= 30:
+            if k['body'] != '':
+                cnt += 1
+	        cnt
+                mylist1 = k['body'].replace("\n", "\r") 
+                mylist = mylist1.split("\r") 
+	        fixDel = [i for i, s in enumerate(mylist) if 'Repository:' in s]
+	        if len(fixDel) > 0:
+                    indices = fixDel[0]
+	            dumb = mylist[indices].encode('utf-8').strip()
+                    temp = dumb.strip("/")
+                    temp2 = temp.rsplit('/', 1)[-1]
+                    pkg = temp2.split()[0]
+                    issue_nums3.add(pkg)
+    count += 1 
+
+newList3 = set(issue_nums3)
+
+for issue_name in list(newList3):
+    print issue_name
+
+openList2 = list(newList3)
+
+thefile = open('/home/lori/a/singlePackageBuilder/spb_history/sqDel2.txt', 'a')
+thefile.write("\n".join(openList2))
+thefile.close()
+
+
+#
+# IN BASH
+# Now remove files in sqDel2  from sqDel 
+#
+
+grep -Fvxf sqDel2.txt sqDel.txt > sqDel3.txt

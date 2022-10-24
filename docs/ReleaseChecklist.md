@@ -333,3 +333,5 @@ in _this_ order
   Push packages with "core-package tag from git.bioconductor.org to github.
   Check if any packages have commits to just github (not sure how to fix?). If
   all looks ok, sync from git.bioconductor.org to github.
+
+- Move legacy release build products off master and into AWS/OSN

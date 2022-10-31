@@ -143,8 +143,6 @@ in _this_ order
 ## One week before the release:
 
 - Packages and workflows clean of errors and warnings
-- Check master has enough room for release and create archieve on S3 if necessary
-   See  [S3_website](https://github.com/Bioconductor/AWS_management/blob/master/docs/S3_website.md)
 
 <a name="d-2"></a>
 ## Day before we branch (D-2):
@@ -307,11 +305,11 @@ in _this_ order
   archiving should happen. Example location to look
   `biocpush@nebbiolo1:~$ ls PACKAGES/3.15/bioc/src/contrib/Archive/`
 
-- Build AMIs for new release and devel
+- A few days after release, flush the new release package repo. This will remove odd
+  numbered y of x.y.z version left over from being devel and highlight packages
+  that are erroring in release.  
 
 - Build dockers for new release and devel
-
-- Update chef recipes
 
 - Update SPB and clean sqlite file
 
@@ -334,4 +332,6 @@ in _this_ order
   Check if any packages have commits to just github (not sure how to fix?). If
   all looks ok, sync from git.bioconductor.org to github.
 
-- Move legacy release build products off master and into AWS/OSN
+- Move legacy release build products off master and into AWS/OSN. Only active release and devel on
+  master
+

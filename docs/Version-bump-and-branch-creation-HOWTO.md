@@ -236,19 +236,35 @@ See **B. Preliminary steps** above for the details.
     git branch
     git status
 
-### C6. Set the `WORKING_DIR` and `MANIFEST_FILE` environment variables
+### C6. Set the `BBS_HOME`, `WORKING_DIR` and `MANIFEST_FILE` environment variables
 
-Point `WORKING_DIR` to the folder containing the software packages:
+- `BBS_HOME`:
+    ```
+    export BBS_HOME="$HOME/BBS"
+    ```
 
+IMPORTANT NOTE: The settings for `WORKING_DIR` and `MANIFEST_FILE` are
+specific to the type of packages. The following settings are for the
+_software_ packages. Make sure to adapt for data-experiment packages,
+workflows, and books.
+
+- `WORKING_DIR`: Point `WORKING_DIR` to the folder containing the software
+  packages:
+    ```
     export WORKING_DIR="$HOME/git.bioconductor.org/software"
+    ```
+  All the remaining steps in section **C.** must be performed from _within_
+  this folder:
+    ```
+    cd $WORKING_DIR
+    ```
 
-All the remaining steps in section **C.** must be performed from within
-this folder.
-
-Point `MANIFEST_FILE` to the manifest file for software packages. This must
-be the file from the `RELEASE_3_16` branch of the `manifest` repo:
-
+- `MANIFEST_FILE`: Point `MANIFEST_FILE` to the manifest file for software
+  packages. This must be the file from the `RELEASE_3_16` branch of
+  the `manifest` repo:
+    ```
     export MANIFEST_FILE="$HOME/git.bioconductor.org/manifest/software.txt"
+    ```
 
 ### C7. Run `bump_version_and_create_branch.py`
 

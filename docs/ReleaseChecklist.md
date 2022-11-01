@@ -88,7 +88,7 @@ in _this_ order
 <a name="twoweeks"></a>
 ## Two weeks before the release:
 
-- Disable commits to old release branch
+- Disable commits to old release branch. see scripts/sedCommandsForVariousTasks.txt
 
 - After the last build report for old relase is online, stop the old release builds.
 
@@ -179,7 +179,7 @@ in _this_ order
   3.6 and 3.7 builds.
 
 - Update gitolite authorization files to give maintainers R/W
-  access to their package in the new branch.
+  access to their package in the new branch. see scripts/sedCommandsForVariousTasks.txt
 
 - Confirm new branch can be checkout from a location other than
   the machine used to create the branch (i.e., your local system).

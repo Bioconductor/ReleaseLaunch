@@ -196,6 +196,8 @@ Using vim, it is possible with a one liner,
 
        :g/RW master/s/^/#
 
+Or Lori created sed commands see scripts/sedCommandsForVariousTasks.txt
+
 Once `packages.conf` is updated, push to `gitolite-admin` on the git server
 to make the changes effective.
 
@@ -211,6 +213,11 @@ Log on to git.bioconductor.org as the `git` user.
     ```
     rm -rf ~/repositories/packages/*.git/hooks/pre-receive.h00-pre-receive-hook-software
     ```
+
+Or (trying as of release 3.16) try using hooks exclusion file. See
+scripts/sedCommandsForVariousTasks.txt. This changes is made in the
+hook_maintainer repo. 
+
 
 ### C4. Login to the machine where you've performed the preliminary steps
 
@@ -348,11 +355,16 @@ repo (`git clone git@git.bioconductor.org:gitolite-admin`).
 
 - Uncomment all `RELEASE_3_16` and `master` lines.
 
+See scripts/sedCommandsForVariousTasks.txt for help on re-enabling access
+
+
+- If using hooks exclusion file for allowing version bump. Restore original
+  hooks file. 
+
 - Run `gitolite setup` from /home/git/repositories to re-enable the hooks.
 
-- Test that a non-super user can push access is enabled. (Lori
-  can do this currently with ni41435 account, and the dummy package
-  BiocGenerics_test).
+- Test that a non-super user can push access is enabled onthe dummy package
+  BiocGenerics_test.
 
 Check:
 

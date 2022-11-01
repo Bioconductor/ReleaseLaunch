@@ -33,9 +33,9 @@ sed -i '/ hook.pre-receive /s/^#//' packages.conf
 ##  Run these commands and push up new file
 ##  Once complete delete and reinstate original
 
-sed '/^Package:/ s/$/ \npre-receive-hook-version-numbers\:\ False/' manifest/software.txt > hooks.conf
-sed '/^Package:/ s/$/ \npre-receive-hook-version-numbers\:\ False/' manifest/data-experiment.txt >> hooks.conf
-sed '/^Package:/ s/$/ \npre-receive-hook-version-numbers\:\ False/' manifest/workflows.txt >> hooks.conf
-sed '/^Package:/ s/$/ \npre-receive-hook-version-numbers\:\ False/' manifest/books.txt >> hooks.conf
-sed '/^Package:/ s/$/ \npre-receive-hook-version-numbers\:\ False/' manifest/data-annotation.txt >> hooks.conf
+sed '/^Package:/ s/$/ \npre-receive-hook-version-numbers\:\ False\npre-receive-hook-duplicate-commit\:\ False/' manifest/software.txt > hooks.conf
+sed '/^Package:/ s/$/ \npre-receive-hook-version-numbers\:\ False\npre-receive-hook-duplicate-commit\:\ False/' manifest/data-experiment.txt >> hooks.conf
+sed '/^Package:/ s/$/ \npre-receive-hook-version-numbers\:\ False\npre-receive-hook-duplicate-commit\:\ False/' manifest/workflows.txt >> hooks.conf
+sed '/^Package:/ s/$/ \npre-receive-hook-version-numbers\:\ False\npre-receive-hook-duplicate-commit\:\ False/' manifest/books.txt >> hooks.conf
+sed '/^Package:/ s/$/ \npre-receive-hook-version-numbers\:\ False\npre-receive-hook-duplicate-commit\:\ False/' manifest/data-annotation.txt >> hooks.conf
 sed -i '/^[[:blank:]]*#/d;s/#.*//' hooks.conf

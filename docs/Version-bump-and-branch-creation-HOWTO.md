@@ -150,11 +150,12 @@ in sections **C.** and **D.**.
     cd $WORKING_DIR
     pkgs_in_manifest=`grep 'Package: ' $MANIFEST_FILE | sed 's/Package: //g'`
     
-    # Check last 10 commits in each package
+    # Check last 30 commits in each package (like the duplicate commits hook
+    # does):
     for pkg in $pkgs_in_manifest; do
         echo ""
         echo ">>> check $pkg package for duplicate commits"
-        python $BIOC_GIT_TRANSITION/misc/detect_duplicate_commits.py $pkg 10
+        python3 $BIOC_GIT_TRANSITION/misc/detect_duplicate_commits.py $pkg 30
     done > duplicatecommits.out 2>&1
     ```
 

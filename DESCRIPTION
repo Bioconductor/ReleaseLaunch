@@ -1,0 +1,17 @@
+Package: ReleaseLaunch
+Title: R utilities related to Bioconductor release tasks
+Version: 0.99.0
+Authors@R: c(
+    person("Marcel", "Ramos", , "marcel.ramosperez@roswellpark.org",
+    c("aut", "cre"), c(ORCID = "0000-0002-3242-0582")),
+    person("Nitesh", "Turaga", , , "ctb")
+  )
+Description: The package faciliates a Bioconductor release. It currently
+  updates existing Bioconductor repositories on GitHub after a release.
+  The script creates the RELEASE_XX_YY branch and pushes it to the Bioconductor
+  organization.
+License: Artistic-2.0
+Imports: httr
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.1

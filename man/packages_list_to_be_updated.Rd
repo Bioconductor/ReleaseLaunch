@@ -2,10 +2,20 @@
 % Please edit documentation in R/update_packages.R
 \name{packages_list_to_be_updated}
 \alias{packages_list_to_be_updated}
-\title{Generate list of packages to be updated}
+\title{Generate the list of packages to be updated}
 \usage{
 packages_list_to_be_updated(version = "3.16")
 }
+\arguments{
+\item{version}{character(1L) The numeric version of the Bioconductor release,
+e.g., "3.16"}
+}
+\value{
+A named scalar string of the default branch whose name corresponds to
+a Bioconductor GitHub repository
+}
 \description{
-Generate list of packages to be updated
+This function obtains all the repositories from the Bioconductor organization
+and filters them to only valid R packages and repositories that do not have a
+\code{RELEASE_XX_YY} branch.
 }

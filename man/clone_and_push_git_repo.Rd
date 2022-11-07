@@ -12,13 +12,28 @@ clone_and_push_git_repo(
 )
 }
 \arguments{
-\item{package_name}{character(1) The name of the package to be cloned and
-updated}
+\item{package_name}{named character(1) A scalar string of the default
+branch whose name corresponds to a Bioconductor GitHub repository, as
+given by \code{packages_list_to_be_updated()}.}
 
-\item{release}{character(1) The Bioconductor version tag, e.g.,
+\item{release}{character(1) The Bioconductor version branch tag, e.g.,
 "RELEASE_3_16"}
+
+\item{gh_branch}{character(1) The name of the default branch on GitHub. It
+may be 'main', 'master', or 'devel' depending on the repository}
+
+\item{bioc_branch}{character(1) The name of the default branch on the
+Bioconductor git server (default 'master')}
 }
 \description{
 This function assumes that you have admin push access to the
 bioconductor github organization.
+}
+\examples{
+if (interactive()) {
+  clone_and_push_git_repo(
+    package_name = "updateObject", gh_branch = "master"
+  )
+}
+
 }

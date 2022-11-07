@@ -6,6 +6,17 @@
     gh::gh(api, org = org, token = token, ...)
 }
 
+.get_gh_repos <- function(per_page, pages, ...) {
+    reslist <- vector("list", length = pages)
+    for (i in seq_len(pages)) {
+        reslist[[i]] <-
+            .gh_organization_repos_get(per_page = per_page, page = i, ...)
+        if (length(reslist[[i]]) < per_page) {
+            break
+        }
+    }
+    do.call(c, reslist)
+}
 
 #' Get list of packages for Bioconductor's github organization.
 #'
@@ -16,23 +27,41 @@
 #'
 #' @param pages numeric(1) The number of pages to 'flip' through (default 10)
 #'
+#' @return A vector of default branches whose names correspond to Bioconductor
+#'   GitHub repositories
+#'
 #' @export
 get_bioc_github_repos <-
     function(per_page = 100, pages = 10)
 {
-    reslist <- vector("list", length = pages)
-    for (i in seq_len(pages)) {
-        reslist[[i]] <-
-            .gh_organization_repos_get(per_page = per_page, page = i)
-        if (length(reslist[[i]]) < per_page) {
-            break
-        }
-    }
-    results <- do.call(c, reslist)
+    results <- .get_gh_repos(per_page = per_page, pages = pages)
     ## return all repo names
-    vapply(results, `[[`, character(1L), "name")
+    defaults <- vapply(results, `[[`, character(1L), "default_branch")
+    repos <- vapply(results, `[[`, character(1L), "name")
+    names(defaults) <- repos
+    defaults
 }
 
+.filter_gh_repos_branch <-
+    function(packages, release, per_page = 100, pages = 10)
+{
+    pkgs <- names(packages)
+    hasRELEASE <- structure(
+        vector("logical", length = length(packages)), .Names = pkgs
+    )
+    for (pkg in pkgs) {
+        result <- .get_gh_repos(
+            api = "/repos/{owner}/{repo}/branches",
+            owner = "Bioconductor",
+            repo = pkg,
+            per_page = per_page,
+            pages = pages
+        )
+        hasRELEASE[pkg] <-
+            release %in% vapply(result, `[[`, character(1L), "name")
+    }
+    packages[!hasRELEASE]
+}
 
 #' Get bioconductor software manifest
 #'
@@ -57,18 +86,31 @@ get_bioc_software_manifest <-
     software
 }
 
-#' Generate list of packages to be updated
+#' Generate the list of packages to be updated
+#'
+#' This function obtains all the repositories from the Bioconductor organization
+#' and filters them to only valid R packages and repositories that do not have a
+#' `RELEASE_XX_YY` branch.
+#'
+#' @param version character(1L) The numeric version of the Bioconductor release,
+#'   e.g., "3.16"
+#'
+#' @return A named scalar string of the default branch whose name corresponds to
+#'   a Bioconductor GitHub repository
 #'
 #' @export
 packages_list_to_be_updated <-
     function(version = "3.16")
 {
+    release_slug <- paste0("RELEASE_", gsub("\\.", "_", version))
     ## software <- get_bioc_software_manifest()
     repos <- BiocManager:::.repositories_bioc(version)["BioCsoft"]
     db <- utils::available.packages(repos = repos)
     software <- rownames(db)
     pre_existing_pkgs <- get_bioc_github_repos()
-    intersect(pre_existing_pkgs, software)
+    candidates <- intersect(names(pre_existing_pkgs), software)
+    candidates <- pre_existing_pkgs[candidates]
+    .filter_gh_repos_branch(candidates, release_slug)
 }
 
 
@@ -77,13 +119,27 @@ packages_list_to_be_updated <-
 #' This function assumes that you have admin push access to the
 #' bioconductor github organization.
 #'
-#' @param package_name character(1) The name of the package to be cloned and
-#'   updated
+#' @param package_name named character(1) A scalar string of the default
+#'   branch whose name corresponds to a Bioconductor GitHub repository, as
+#'   given by `packages_list_to_be_updated()`.
 #'
-#' @param release character(1) The Bioconductor version tag, e.g.,
+#' @param release character(1) The Bioconductor version branch tag, e.g.,
 #'   "RELEASE_3_16"
 #'
+#' @param gh_branch character(1) The name of the default branch on GitHub. It
+#'   may be 'main', 'master', or 'devel' depending on the repository
+#'
+#' @param bioc_branch character(1) The name of the default branch on the
+#'   Bioconductor git server (default 'master')
+#'
 #' @import gert
+#'
+#' @examples
+#' if (interactive()) {
+#'   clone_and_push_git_repo(
+#'     package_name = "updateObject", gh_branch = "master"
+#'   )
+#' }
 #'
 #' @export
 clone_and_push_git_repo <- function(
@@ -119,6 +175,15 @@ clone_and_push_git_repo <- function(
     git_branch_checkout(cbranch)
 }
 
+.clone_and_push_git_repos <- function(packages, release, bioc_branch) {
+    Map(
+        clone_and_push_git_repo,
+        package_name = names(packages),
+        release = release,
+        gh_branch = packages,
+        bioc_branch = bioc_branch
+    )
+}
 
 #' Function to update all the packages.
 #'
@@ -129,10 +194,10 @@ clone_and_push_git_repo <- function(
 #'
 #' @export
 update_all_packages <-
-    function(release)
+    function(release = "RELEASE_3_16", bioc_branch = "master")
 {
     packages <- packages_list_to_be_updated()
-    for (package in packages) {
-        clone_and_push_git_repo(package, release=release)
-    }
+    .clone_and_push_git_repos(
+        packages, release=release, bioc_branch = bioc_branch
+    )
 }

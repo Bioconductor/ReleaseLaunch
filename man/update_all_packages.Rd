@@ -4,11 +4,14 @@
 \alias{update_all_packages}
 \title{Function to update all the packages.}
 \usage{
-update_all_packages(release)
+update_all_packages(release = "RELEASE_3_16", bioc_branch = "master")
 }
 \arguments{
-\item{release}{character(1) The Bioconductor version tag, e.g.,
+\item{release}{character(1) The Bioconductor version branch tag, e.g.,
 "RELEASE_3_16"}
+
+\item{bioc_branch}{character(1) The name of the default branch on the
+Bioconductor git server (default 'master')}
 }
 \description{
 Updates all the packages in the GitHub organization maintained by

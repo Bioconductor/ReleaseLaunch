@@ -13,6 +13,10 @@ otherwise determined by the API (never greater than 100).}
 
 \item{pages}{numeric(1) The number of pages to 'flip' through (default 10)}
 }
+\value{
+A vector of default branches whose names correspond to Bioconductor
+GitHub repositories
+}
 \description{
 This uses the github API, to get the bioconductor packages hosted
 on github.  Return all packages in https:://github.com/Bioconductor

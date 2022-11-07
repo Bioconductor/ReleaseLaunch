@@ -146,6 +146,7 @@ clone_and_push_git_repo <- function(
     package_name, release="RELEASE_3_16",
     gh_branch = "master", bioc_branch = "master"
 ) {
+    message("Working on: ", package_name)
     ## git clone git@github.com:Bioconductor/ShortRead.git
     bioc_gh_slug <- paste0("git@github.com:Bioconductor/", package_name)
     if (!dir.exists(package_name))

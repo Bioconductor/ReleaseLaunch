@@ -10,8 +10,8 @@ packages_list_to_be_updated(version = "3.16", org = "Bioconductor")
 \item{version}{character(1L) The numeric version of the Bioconductor release,
 e.g., "3.16"}
 
-\item{org}{character(1L) The GitHub organization to search through for
-repositories (default "Bioconductor")}
+\item{org}{character(1L) The organization for which to extract the names of
+the repositories on GitHub (default "Bioconductor").}
 }
 \value{
 A named scalar string of the default branch whose name corresponds to

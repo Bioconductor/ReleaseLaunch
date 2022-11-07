@@ -96,11 +96,10 @@ get_bioc_software_manifest <-
 #' and filters them to only valid R packages and repositories that do not have a
 #' `RELEASE_XX_YY` branch.
 #'
+#' @inheritParams get_org_github_repos
+#'
 #' @param version character(1L) The numeric version of the Bioconductor release,
 #'   e.g., "3.16"
-#'
-#' @param org character(1L) The GitHub organization to search through for
-#'   repositories (default "Bioconductor")
 #'
 #' @return A named scalar string of the default branch whose name corresponds to
 #'   a Bioconductor GitHub repository
@@ -139,6 +138,8 @@ packages_list_to_be_updated <-
 #' @param bioc_branch character(1) The name of the default branch on the
 #'   Bioconductor git server (default 'master')
 #'
+#' @inheritParams get_org_github_repos
+#'
 #' @import gert
 #'
 #' @examples
@@ -150,7 +151,7 @@ packages_list_to_be_updated <-
 #'
 #' @export
 clone_and_push_git_repo <- function(
-    package_name, release="RELEASE_3_16",
+    package_name, release = "RELEASE_3_16",
     gh_branch = "master", bioc_branch = "master", org = "Bioconductor"
 ) {
     message("Working on: ", package_name)
@@ -183,13 +184,14 @@ clone_and_push_git_repo <- function(
     git_branch_checkout(cbranch)
 }
 
-.clone_and_push_git_repos <- function(packages, release, bioc_branch) {
+.clone_and_push_git_repos <- function(packages, release, bioc_branch, org) {
     Map(
         clone_and_push_git_repo,
         package_name = names(packages),
         release = release,
         gh_branch = packages,
-        bioc_branch = bioc_branch
+        bioc_branch = bioc_branch,
+        org = org
     )
 }
 

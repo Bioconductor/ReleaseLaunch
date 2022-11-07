@@ -1,16 +1,14 @@
-## This code is being developed to help with the core team transition
 #' @importFrom gh gh gh_token
-.gh_organization_repos_get <- function(
-    api="/orgs/{org}/repos", org = "Bioconductor", token = gh::gh_token(), ...
-) {
-    gh::gh(api, org = org, token = token, ...)
-}
-
-.get_gh_repos <- function(per_page, pages, ...) {
+.get_gh_repos <- function(api, per_page, pages, ...) {
     reslist <- vector("list", length = pages)
     for (i in seq_len(pages)) {
-        reslist[[i]] <-
-            .gh_organization_repos_get(per_page = per_page, page = i, ...)
+        reslist[[i]] <- gh::gh(
+            endpoint = api,
+            ...,
+            page = i,
+            per_page = per_page,
+            .token = gh::gh_token()
+        )
         if (length(reslist[[i]]) < per_page) {
             break
         }
@@ -18,23 +16,29 @@
     do.call(c, reslist)
 }
 
-#' Get list of packages for Bioconductor's github organization.
+#' Get all repositories for a given GitHub organization
 #'
-#' This uses the github API, to get the bioconductor packages hosted
-#' on github.  Return all packages in https:://github.com/Bioconductor
+#' This uses the GitHub API, to get the Bioconductor repositories hosted
+#' on GitHub. It returns all packages in https:://github.com/Bioconductor
+#' by default.
 #'
 #' @inheritParams gh::gh
 #'
 #' @param pages numeric(1) The number of pages to 'flip' through (default 10)
 #'
-#' @return A vector of default branches whose names correspond to Bioconductor
-#'   GitHub repositories
+#' @param org character(1L) The organization for which to extract the names of
+#'   the repositories on GitHub (default "Bioconductor").
+#'
+#' @return A vector of default branches whose names correspond to the
+#'   organization's GitHub repositories
 #'
 #' @export
-get_bioc_github_repos <-
-    function(per_page = 100, pages = 10)
+get_org_github_repos <-
+    function(per_page = 100, pages = 10, org = "Bioconductor")
 {
-    results <- .get_gh_repos(per_page = per_page, pages = pages)
+    results <- .get_gh_repos(
+        api = "/orgs/{org}/repos", per_page = per_page, pages = pages, org = org
+    )
     ## return all repo names
     defaults <- vapply(results, `[[`, character(1L), "default_branch")
     repos <- vapply(results, `[[`, character(1L), "name")
@@ -43,7 +47,7 @@ get_bioc_github_repos <-
 }
 
 .filter_gh_repos_branch <-
-    function(packages, release, per_page = 100, pages = 10)
+    function(packages, release, per_page = 100, pages = 10, owner)
 {
     pkgs <- names(packages)
     hasRELEASE <- structure(
@@ -52,7 +56,7 @@ get_bioc_github_repos <-
     for (pkg in pkgs) {
         result <- .get_gh_repos(
             api = "/repos/{owner}/{repo}/branches",
-            owner = "Bioconductor",
+            owner = owner,
             repo = pkg,
             per_page = per_page,
             pages = pages
@@ -95,22 +99,25 @@ get_bioc_software_manifest <-
 #' @param version character(1L) The numeric version of the Bioconductor release,
 #'   e.g., "3.16"
 #'
+#' @param org character(1L) The GitHub organization to search through for
+#'   repositories (default "Bioconductor")
+#'
 #' @return A named scalar string of the default branch whose name corresponds to
 #'   a Bioconductor GitHub repository
 #'
 #' @export
 packages_list_to_be_updated <-
-    function(version = "3.16")
+    function(version = "3.16", org = "Bioconductor")
 {
     release_slug <- paste0("RELEASE_", gsub("\\.", "_", version))
     ## software <- get_bioc_software_manifest()
     repos <- BiocManager:::.repositories_bioc(version)["BioCsoft"]
     db <- utils::available.packages(repos = repos)
     software <- rownames(db)
-    pre_existing_pkgs <- get_bioc_github_repos()
+    pre_existing_pkgs <- get_org_github_repos(org = org)
     candidates <- intersect(names(pre_existing_pkgs), software)
     candidates <- pre_existing_pkgs[candidates]
-    .filter_gh_repos_branch(candidates, release_slug)
+    .filter_gh_repos_branch(candidates, release_slug, owner = org)
 }
 
 
@@ -144,11 +151,11 @@ packages_list_to_be_updated <-
 #' @export
 clone_and_push_git_repo <- function(
     package_name, release="RELEASE_3_16",
-    gh_branch = "master", bioc_branch = "master"
+    gh_branch = "master", bioc_branch = "master", org = "Bioconductor"
 ) {
     message("Working on: ", package_name)
     ## git clone git@github.com:Bioconductor/ShortRead.git
-    bioc_gh_slug <- paste0("git@github.com:Bioconductor/", package_name)
+    bioc_gh_slug <- paste0("git@github.com:", org, "/", package_name)
     if (!dir.exists(package_name))
         git_clone(bioc_gh_slug)
     ## cd to package dir
@@ -194,11 +201,11 @@ clone_and_push_git_repo <- function(
 #' @inheritParams clone_and_push_git_repo
 #'
 #' @export
-update_all_packages <-
-    function(release = "RELEASE_3_16", bioc_branch = "master")
-{
-    packages <- packages_list_to_be_updated()
+update_all_packages <- function(
+    release = "RELEASE_3_16", bioc_branch = "master", org = "Bioconductor"
+) {
+    packages <- packages_list_to_be_updated(org = org)
     .clone_and_push_git_repos(
-        packages, release=release, bioc_branch = bioc_branch
+        packages, release=release, bioc_branch = bioc_branch, org = org
     )
 }

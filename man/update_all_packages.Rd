@@ -4,7 +4,11 @@
 \alias{update_all_packages}
 \title{Function to update all the packages.}
 \usage{
-update_all_packages(release = "RELEASE_3_16", bioc_branch = "master")
+update_all_packages(
+  release = "RELEASE_3_16",
+  bioc_branch = "master",
+  org = "Bioconductor"
+)
 }
 \arguments{
 \item{release}{character(1) The Bioconductor version branch tag, e.g.,

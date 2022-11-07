@@ -4,11 +4,14 @@
 \alias{packages_list_to_be_updated}
 \title{Generate the list of packages to be updated}
 \usage{
-packages_list_to_be_updated(version = "3.16")
+packages_list_to_be_updated(version = "3.16", org = "Bioconductor")
 }
 \arguments{
 \item{version}{character(1L) The numeric version of the Bioconductor release,
 e.g., "3.16"}
+
+\item{org}{character(1L) The GitHub organization to search through for
+repositories (default "Bioconductor")}
 }
 \value{
 A named scalar string of the default branch whose name corresponds to

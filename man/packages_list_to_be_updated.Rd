@@ -4,7 +4,7 @@
 \alias{packages_list_to_be_updated}
 \title{Generate list of packages to be updated}
 \usage{
-packages_list_to_be_updated()
+packages_list_to_be_updated(version = "3.16")
 }
 \description{
 Generate list of packages to be updated

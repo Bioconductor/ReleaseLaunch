@@ -1,33 +1,9 @@
-#' Get API keys from location
-#'
-#' Most important step of all of the code! Without getting access to
-#' the API keys, it is impossible to run this code.
-#'
-#'
-.github_userpwd <-
-    function()
- {
-     paste(
-         getOption("git_contributions_github_user"),
-         getOption("git_contributions_github_auth"),
-         sep=":"
-     )
- }
-
-
 ## This code is being developed to help with the core team transition
-#' @importFrom httr accept GET config stop_for_status content
-.github_organization_get <-
-    function(path, api="https://api.github.com",
-             path_root="/orgs/Bioconductor/repos")
-{
-    query <- sprintf("%s%s%s", api, path_root, path)
-    response <- GET(
-        query,
-        config(userpwd=.github_userpwd(), httpauth=1L),
-        accept("application/vnd.github.v3+json"))
-    stop_for_status(response)
-    content(response)
+#' @importFrom gh gh gh_token
+.gh_organization_repos_get <- function(
+    api="/orgs/{org}/repos", org = "Bioconductor", token = gh::gh_token(), ...
+) {
+    gh::gh(api, org = org, token = token, ...)
 }
 
 
@@ -36,21 +12,25 @@
 #' This uses the github API, to get the bioconductor packages hosted
 #' on github.  Return all packages in https:://github.com/Bioconductor
 #'
+#' @inheritParams gh::gh
+#'
+#' @param pages numeric(1) The number of pages to 'flip' through (default 10)
+#'
 #' @export
 get_bioc_github_repos <-
-    function()
+    function(per_page = 100, pages = 10)
 {
-    ## Page 1
-    results <- c()
-    for (i in 1:10) {
-    	result <- .github_organization_get(paste0("?page=",i,"&per_page=100"))
-    	results <- c(results, result)
+    reslist <- vector("list", length = pages)
+    for (i in seq_len(pages)) {
+        reslist[[i]] <-
+            .gh_organization_repos_get(per_page = per_page, page = i)
+        if (length(reslist[[i]]) < per_page) {
+            break
+        }
     }
-    ## Page 2
-    ## Combined list of results
-    pkgs <- sapply(results, `[[`, "name")
-    ## Return all packages
-    pkgs
+    results <- do.call(c, reslist)
+    ## return all repo names
+    vapply(results, `[[`, character(1L), "name")
 }
 
 
@@ -77,15 +57,17 @@ get_bioc_software_manifest <-
     software
 }
 
-
 #' Generate list of packages to be updated
 #'
 #' @export
 packages_list_to_be_updated <-
-    function()
+    function(version = "3.16")
 {
-    software = get_bioc_software_manifest()
-    pre_existing_pkgs = get_bioc_github_repos()
+    ## software <- get_bioc_software_manifest()
+    repos <- BiocManager:::.repositories_bioc(version)["BioCsoft"]
+    db <- utils::available.packages(repos = repos)
+    software <- rownames(db)
+    pre_existing_pkgs <- get_bioc_github_repos()
     intersect(pre_existing_pkgs, software)
 }
 
@@ -94,52 +76,47 @@ packages_list_to_be_updated <-
 #'
 #' This function assumes that you have admin push access to the
 #' bioconductor github organization.
-#' 
+#'
 #' @param package_name character(1) The name of the package to be cloned and
 #'   updated
 #'
 #' @param release character(1) The Bioconductor version tag, e.g.,
 #'   "RELEASE_3_16"
 #'
+#' @import gert
+#'
 #' @export
-clone_and_push_git_repo <-
-    function(package_name, release="RELEASE_3_12")
-{
+clone_and_push_git_repo <- function(
+    package_name, release="RELEASE_3_16",
+    gh_branch = "master", bioc_branch = "master"
+) {
     ## git clone git@github.com:Bioconductor/ShortRead.git
-    args <- paste("clone", sprintf("git@github.com:Bioconductor/%s", package_name))
-    system2("git", args, wait=TRUE)
-    ## cd ShortRead
+    bioc_gh_slug <- paste0("git@github.com:Bioconductor/", package_name)
+    if (!dir.exists(package_name))
+        git_clone(bioc_gh_slug)
+    ## cd to package dir
     owd <- setwd(package_name)
-    ## git remote add upstream git@git.bioconductor.org:packages/ShortRead.git
-    getwd()
-    args <- paste(
-        "remote", "add", "upstream",
-        sprintf("git@git.bioconductor.org:packages/%s", package_name)
-    )
-    system2("git", args, wait=TRUE)
-    ## git fetch upstream
-    args <- paste("fetch", "upstream")
-    system2("git", args, wait=TRUE)
-    ## git merge upstream/master
-    args <- paste("merge", "upstream/master")
-    system2("git", args, wait=TRUE)
+    on.exit({ setwd(owd) })
+    git_pull("origin")
+    cbranch <- git_branch()
+    if (!identical(cbranch, "devel"))
+        warning("Consider using 'devel' as the default GitHub branch")
+    if (!identical(cbranch, gh_branch))
+        git_branch_checkout(gh_branch)
+    bioc_git_slug <- paste0("git@git.bioconductor.org:packages/", package_name)
+    ## git remote add upstream git@git.bioconductor.org:packages/<pkg>.git
+    if (!"upstream" %in% git_remote_list()[["name"]])
+        git_remote_add(bioc_git_slug, name = "upstream")
+    git_fetch("upstream")
+    git_merge("upstream/master")
     ## git push origin master
-    args <- paste("push", "origin", "master")
-    system2("git", args, wait=TRUE)
-    ## For release_branches, check if branch exists
-    remote_release <- paste0("upstream/", release)
-    args <- paste("branch", "-a", "--list", remote_release)
-    check_release <- system2("git", args, stdout=TRUE)
-    if (any(grepl(release, check_release))) {
+    git_push("origin")
+    ##
+    if (!git_branch_exists(branch = release))
+        git_branch_create(release, ref = paste0("upstream/", release))
 
-        ## git checkout -b RELEASE_3_5 upstream/RELEASE_3_5
-        args <- paste("checkout", "-b", release, remote_release)
-        system2("git", args, wait=TRUE)
-        ## git push -u origin RELEASE_3_5
-        args <- paste("push", "-u", "origin", release)
-        system2("git", args, wait=TRUE)
-    }
-    setwd(owd)
+    git_push("origin", set_upstream = TRUE)
+    git_branch_checkout(cbranch)
 }
 
 
@@ -147,7 +124,7 @@ clone_and_push_git_repo <-
 #'
 #' Updates all the packages in the GitHub organization maintained by
 #' the core team.
-#' 
+#'
 #' @inheritParams clone_and_push_git_repo
 #'
 #' @export

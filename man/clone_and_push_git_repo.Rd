@@ -4,7 +4,12 @@
 \alias{clone_and_push_git_repo}
 \title{Clone and update a GitHub repository.}
 \usage{
-clone_and_push_git_repo(package_name, release = "RELEASE_3_12")
+clone_and_push_git_repo(
+  package_name,
+  release = "RELEASE_3_16",
+  gh_branch = "master",
+  bioc_branch = "master"
+)
 }
 \arguments{
 \item{package_name}{character(1) The name of the package to be cloned and

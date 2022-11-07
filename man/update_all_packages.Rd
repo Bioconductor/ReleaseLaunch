@@ -11,6 +11,6 @@ update_all_packages(release)
 "RELEASE_3_16"}
 }
 \description{
-Updates all the packages in the github organization maintained by
+Updates all the packages in the GitHub organization maintained by
 the core team.
 }

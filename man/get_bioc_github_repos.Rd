@@ -4,7 +4,14 @@
 \alias{get_bioc_github_repos}
 \title{Get list of packages for Bioconductor's github organization.}
 \usage{
-get_bioc_github_repos()
+get_bioc_github_repos(per_page = 100, pages = 10)
+}
+\arguments{
+\item{per_page}{Number of items to return per page. If omitted,
+will be substituted by \code{max(.limit, 100)} if \code{.limit} is set,
+otherwise determined by the API (never greater than 100).}
+
+\item{pages}{numeric(1) The number of pages to 'flip' through (default 10)}
 }
 \description{
 This uses the github API, to get the bioconductor packages hosted

@@ -425,36 +425,37 @@ Then remove the `manifest` and `MEAT0` folders from `~/bbs-3.16-bioc/`,
 `~/bbs-3.16-workflows/`, and `~/bbs-3.16-books/`. They'll get automatically
 re-created and re-populated when the builds start.
 
-### F4. Update all core bioconductor packages hosted on github/Bioconductor organization
+### F4. Update all core Bioconductor packages hosted on GitHub
 
-The code to update all packages is in,
-https://github.com/Bioconductor/GitContribution.git, in the branch
-`core_team_package_to_github`, in the script
-`update_packages.R`.
+The Bioconductor organization on GitHub hosts repositories that may also be
+packages in Bioconductor. To identify and update these packages with the latest
+version bump from a Bioconductor release, use the `ReleaseLaunch` R package at
+<https://github.com/Bioconductor/ReleaseLaunch>.
 
-You need to set up your github account credentials(API key) for this
-script to run (Lori has this setup on their machine already).
+First, create a fine-grained Personal Access Token (PAT) under User >
+Settings > Developer Settings > PATs > Fine-grained tokens.
 
-The API keys need to be setup as options in the ~/.Rprofile,
-
-	options(
-		git_contributions_github_user="ntu***",
-		git_contributions_github_auth=readLines("~/git0Auth.txt")
-	)
+When generating a new token, be sure to select `Bioconductor` as the resource
+owner and to select 'All repositories' and then under 'Repository permissions' >
+Content > 'Read and Write'.
+Add this as the `GITHUB_PAT` variable in the `~/.Renviron` file.
 	
-The `git0Auth.txt` file can be obtained from the github
-https://github.com/settings/tokens. This will work only if the user
-has admin access to the Bioconductor organization on github.
+This will work only if the user has admin access to the Bioconductor
+organization on GitHub.
 
-The specific function which needs to be run is
+To update all packages, run the following command:
 
-	update_all_packages()
+    update_all_packages(release = "RELEASE_3_16", org = "Bioconductor")
 	
-which runs, the function (this essentially does all the work).Be sure
-to edit the release version in the function.
+Be sure to edit the `release` argument in the function.
 	
-	clone_and_push_git_repo(package, release="RELEASE_3_16")
+To update an individual package, run the following function:
 
-	
-This function will push the `RELEASE_3_16` branch to github and sync
-the packages on github.
+    clone_and_push_git_repo(
+       package_name = "updateObject", release = "RELEASE_3_16", gh_branch = "master"
+    )
+
+Note that the `gh_branch` corresponds to the default branch on GitHub. On some
+repositories, the `gh_branch` can be `devel`.
+
+Packages will be cloned into the current working directory.

@@ -425,30 +425,31 @@ Then remove the `manifest` and `MEAT0` folders from `~/bbs-3.16-bioc/`,
 `~/bbs-3.16-workflows/`, and `~/bbs-3.16-books/`. They'll get automatically
 re-created and re-populated when the builds start.
 
-### F4. Update all core Bioconductor packages hosted on GitHub
+### F4. Sync all core Bioconductor packages hosted on GitHub
 
 The Bioconductor organization on GitHub hosts repositories that may also be
 packages in Bioconductor. To identify and update these packages with the latest
 version bump from a Bioconductor release, use the `ReleaseLaunch` R package at
 <https://github.com/Bioconductor/ReleaseLaunch>.
 
-First, create a fine-grained Personal Access Token (PAT) under User >
-Settings > Developer Settings > PATs > Fine-grained tokens.
+First, create a fine-grained Personal Access Token (PAT) under User \> Settings
+\> Developer Settings \> PATs \> Fine-grained tokens.
 
-When generating a new token, be sure to select `Bioconductor` as the resource
-owner and to select 'All repositories' and then under 'Repository permissions' >
-Content > 'Read and Write'.
-Add this as the `GITHUB_PAT` variable in the `~/.Renviron` file.
-	
-This will work only if the user has admin access to the Bioconductor
-organization on GitHub.
+When generating a new token, select `Bioconductor` as the resource owner, 
+then 'All repositories' and under 'Repository permissions' select 'Content' \>
+'Read and Write'. Add this as the `GITHUB_PAT` variable in the `~/.Renviron`
+file.
+
+**Note**. Depending on the organization's settings, R / Bioconductor packages
+hosted on GitHub may also be updated with a classic PAT. These commands only
+work if the user has admin access to the organization's GitHub account.
 
 To update all packages, run the following command:
 
     update_all_packages(release = "RELEASE_3_16", org = "Bioconductor")
-	
+
 Be sure to edit the `release` argument in the function.
-	
+
 To update an individual package, run the following function:
 
     clone_and_push_git_repo(

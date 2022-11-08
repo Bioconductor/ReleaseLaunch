@@ -110,7 +110,7 @@ packages_list_to_be_updated <-
     release_slug <- paste0("RELEASE_", gsub("\\.", "_", version))
     ## software <- get_bioc_software_manifest()
     repos <- BiocManager:::.repositories_bioc(version)["BioCsoft"]
-    db <- utils::available.packages(repos = repos)
+    db <- utils::available.packages(repos = repos, type = "source")
     software <- rownames(db)
     pre_existing_pkgs <- get_org_github_repos(org = org)
     candidates <- intersect(names(pre_existing_pkgs), software)

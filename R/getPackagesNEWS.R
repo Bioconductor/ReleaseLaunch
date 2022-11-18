@@ -11,7 +11,7 @@ emptyNewsDB <- function() {
         Date = character(0L),
         Category = character(0L),
         Text = character(0L),
-        row.names = integer(0L)
+        row.names = character(0L)
     )
     class(newsdb) <- c("news_db", "data.frame")
     newsdb

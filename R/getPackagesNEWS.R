@@ -1,15 +1,20 @@
 .NEWS_LOCS <- c("inst/NEWS.Rd", "inst/NEWS", "inst/NEWS.md", "NEWS.md", "NEWS")
 
-## Use this helper to format all error / warning / message text
-.msg <-
-    function(fmt, ..., width=getOption("width"))
-{
-    strwrap(sprintf(fmt, ...), width=width, exdent=4)
-}
-
 findNEWS <- function(pkg, srcdir) {
     newsloc <- file.path(srcdir, pkg, .NEWS_LOCS)
     head(newsloc[file.exists(newsloc)], 1)
+}
+
+emptyNewsDB <- function() {
+    newsdb <- data.frame(
+        Version = character(0L),
+        Date = character(0L),
+        Category = character(0L),
+        Text = character(0L),
+        row.names = integer(0L)
+    )
+    class(newsdb) <- c("news_db", "data.frame")
+    newsdb
 }
 
 getLatestNews <- function(news, ver) {
@@ -19,8 +24,8 @@ getLatestNews <- function(news, ver) {
         md = tools:::.build_news_db_from_package_NEWS_md,
         tools:::.news_reader_default
     )
-    db <- tryCatch({ build_news_db(news) }, error = function(e) character(0L))
-    if (length(db)) utils::news(Version > ver, db=db) else news
+    db <- tryCatch({ build_news_db(news) }, error = function(e) emptyNewsDB())
+    utils::news(Version > ver, db=db)
 }
 
 getNEWS <- function(pkg, ver, srcdir) {
@@ -36,6 +41,8 @@ getNEWS <- function(pkg, ver, srcdir) {
 ## source tree rooted at srcDir, possibiblly as tarred files
 
 # repo:  bioc data/experiment workflows
+#' @return A list of NEWS
+#' @export
 getPackagesNEWS <- function(
         prevRepos="3.6", currRepos="3.7",
         repo=c("bioc", "data/experiment", "workflows"), srcdir=NULL
@@ -64,7 +71,7 @@ getPackagesNEWS <- function(
         srcdir <- scpNEWS(version = currRepos, repo = repo)
 
     anews <- Map(getNEWS, names(vers), vers, srcdir)
-    ret <- Filter(length, anews)
+    ret <- Filter(nrow, anews)
     nms <- names(ret)
     s <- sort(nms)
     newRet <- ret[s]

@@ -1,3 +1,5 @@
+.NEWS_LOCS <- c("inst/NEWS.Rd", "inst/NEWS", "inst/NEWS.md", "NEWS.md", "NEWS")
+
 ## Use this helper to format all error / warning / message text
 .msg <-
     function(fmt, ..., width=getOption("width"))
@@ -5,27 +7,28 @@
     strwrap(sprintf(fmt, ...), width=width, exdent=4)
 }
 
-getNews <- function(pkg, ver, srcdir) {
-    newsloc <- file.path(
-        srcdir, pkg, c("inst", "inst", "inst", ".","."),
-        c("NEWS.Rd", "NEWS", "NEWS.md", "NEWS.md", "NEWS")
+findNEWS <- function(pkg, srcdir) {
+    newsloc <- file.path(srcdir, pkg, .NEWS_LOCS)
+    head(newsloc[file.exists(newsloc)], 1)
+}
+
+getLatestNews <- function(news, ver) {
+    fext <- tools::file_ext(news)
+    build_news_db <- switch(fext,
+        Rd = tools:::.build_news_db_from_package_NEWS_Rd,
+        md = tools:::.build_news_db_from_package_NEWS_md,
+        tools:::.news_reader_default
     )
-    news <- head(newsloc[file.exists(newsloc)], 1)
-    if (0L == length(news))
-        return(NULL)
-    tryCatch({
-        db <-
-            if (grepl("Rd$", news)){
-                tools:::.build_news_db_from_package_NEWS_Rd(news)
-            } else if (grepl("md$", news)){
-                tools:::.build_news_db_from_package_NEWS_md(news)
-            } else {
-                tools:::.news_reader_default(news)
-            }
-        if (!is.null(db))
-            utils::news(Version > ver, db=db)
-        else NULL
-    }, error=function(...) NULL)
+    db <- tryCatch({ build_news_db(news) }, error = function(e) character(0L))
+    if (length(db)) utils::news(Version > ver, db=db) else news
+}
+
+getNEWS <- function(pkg, ver, srcdir) {
+    news <- findNEWS(pkg, srcdir)
+    if (length(news))
+        getLatestNews(news, ver)
+    else
+        news
 }
 
 ## collate package NEWS files using starting version number in
@@ -33,7 +36,7 @@ getNews <- function(pkg, ver, srcdir) {
 ## source tree rooted at srcDir, possibiblly as tarred files
 
 # repo:  bioc data/experiment workflows
-getPackageNEWS <- function(
+getPackagesNEWS <- function(
         prevRepos="3.6", currRepos="3.7",
         repo=c("bioc", "data/experiment", "workflows"), srcdir=NULL
 ) {
@@ -57,21 +60,26 @@ getPackageNEWS <- function(
     newpkgs <- newpkgs[idx]
     vers <- c(sub("\\.[[:digit:]]?$", ".0", prev[,"Version"]),
               setNames(rep("0.0", length(newpkgs)), newpkgs))
+    if (is.null(srcdir))
+        srcdir <- scpNEWS(version = currRepos, repo = repo)
 
-    if (is.null(srcdir)){
-        temp = tempdir()
-        system(paste0(
-            "scp -r webadmin@master.bioconductor.org:/extra/www/bioc/packages/",
-            currRepos, "/", repo, "/news ", temp
-        ))
-        srcdir <- paste0(temp, "/news")
-    }
-
-    ret <- Filter(function(x) !is.null(x) && 0L != nrow(x),
-                  Map(getNews, names(vers), vers, srcdir))
+    anews <- Map(getNEWS, names(vers), vers, srcdir)
+    ret <- Filter(length, anews)
     nms <- names(ret)
     s <- sort(nms)
     newRet <- ret[s]
+}
+
+scpNEWS <- function(
+    srcdir = tempdir(), version,
+    repo = c("bioc", "data/experiment" , "workflows")
+) {
+    remote_loc <- paste0(
+        "webadmin@master.bioconductor.org:/extra/www/bioc/packages/",
+        version, "/", repo, "/news"
+    )
+    system2("scp", c("-r", remote_loc, srcdir))
+    paste0(srcdir, "/news")
 }
 
 mdIfy <- function(txt) {
@@ -90,17 +98,13 @@ getNEWSFromFile <- function(
     newsRdFile2 <- file.path(dir, "inst", "NEWS.Rd")
 
     if (!file_test("-f", newsRdFile) && !file_test("-f", newsRdFile2)) {
-
-
         newsMdFile <- file.path(dir, "NEWS.md")
         newsMdFile2 <- file.path(dir, "inst", "NEWS.md")
 
         if (!file_test("-f", newsMdFile) && !file_test("-f", newsMdFile2)) {
 
-
             nfile <- file.path(dir, "NEWS")
             nfile2 <- file.path(dir, "inst", "NEWS")
-
 
             if (!file_test("-f", nfile) && !file_test("-f", nfile2))
                 return(invisible())
@@ -121,8 +125,8 @@ getNEWSFromFile <- function(
             return(invisible())
         }
 
-        newsMdFile <- ifelse(file_test("-f", newsMdFile), newsMdFile,
-                             newsMdFile2)
+        newsMdFile <-
+            ifelse(file_test("-f", newsMdFile), newsMdFile, newsMdFile2)
         file <- file(destfile, "w+")
         on.exit(close(file))
         db <- tools:::.build_news_db_from_package_NEWS_md(newsMdFile)
@@ -274,10 +278,16 @@ getPackageDescriptions <-
     invisible(NULL)
 }
 
-extractNewsFromTarball <- function(tarball, unpackDir=".") {
-    pkg <- pkgName(tarball)
-    cleanUnpackDir(tarball, unpackDir, pattern="NEWS")
-    unpack(tarball, unpackDir, "'*NEWS*'")
+extractNewsFromTarball <- function(tarball, unpackDir) {
+    files <- untar(tarball, list = TRUE)
+    newsfiles <- grep("NEWS", files, value = TRUE)
+    newsfile <- head(newsfiles, 1L)
+    untar(tarball, files = newsfile, exdir = unpackDir)
+}
+
+pkgName <- function(tarball) {
+    tarball <- basename(tarball)
+    strsplit(tarball, "_", fixed = TRUE)[[1L]][[1L]]
 }
 
 convertNEWSToText <- function(tarball, srcDir, destDir) {
@@ -290,19 +300,21 @@ convertNEWSToText <- function(tarball, srcDir, destDir) {
     getNEWSFromFile(srcDir, destFile, output="text")
 }
 
-extractNEWS <- function(reposRoot, srcContrib, destDir) {
-    if (missing(destDir))
-      destDir <- file.path(reposRoot, "news")
+extractNEWS <- function(
+    reposRoot, srcContrib,
+    destDir = file.path(reposRoot, "news"),
+    unpackDir = tempdir()
+) {
+    if (!dir.exists(destDir))
+        dir.create(destDir, recursive=TRUE)
 
-    tarballs <- list.files(file.path(reposRoot, srcContrib),
-                           pattern="\\.tar\\.gz$", full.names=TRUE)
-    if (!file.exists(destDir))
-      dir.create(destDir, recursive=TRUE)
-    if (!file.info(destDir)$isdir)
-      stop("destDir must specify a directory")
-    unpackDir <- tempdir()
+    tarballs <- list.files(
+        path = file.path(reposRoot, srcContrib),
+        pattern = "\\.tar\\.gz$", full.names = TRUE
+    )
+
     lapply(tarballs, function(tarball) {
-        cat("Attempting to extract NEWS from", tarball, "\n")
+        message("Attempting to extract NEWS from ", tarball)
         extractNewsFromTarball(tarball, unpackDir=unpackDir)
         res <- try(
             convertNEWSToText(tarball, srcDir=unpackDir, destDir=destDir)

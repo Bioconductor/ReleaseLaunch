@@ -36,6 +36,18 @@ getNEWS <- function(pkg, ver, srcdir) {
         news
 }
 
+BIOC_BASE_URL <- "http://master.bioconductor.org/packages/"
+
+getDCFPackageVer <- function(version, repo) {
+    views_url <- sprintf("%s%s/%s/VIEWS", BIOC_BASE_URL, version, repo)
+    url <- url(views_url)
+    pkgs <- read.dcf(url, fields=c("Package", "Version"))
+    on.exit(close(url))
+    views <- pkgs[, "Version"]
+    names(views) <- pkgs[, "Package"]
+    views
+}
+
 ## collate package NEWS files using starting version number in
 ## prevRepos, and membership in currRepos as references. Package
 ## source tree rooted at srcDir, possibiblly as tarred files
@@ -44,37 +56,28 @@ getNEWS <- function(pkg, ver, srcdir) {
 #' @return A list of NEWS
 #' @export
 getPackagesNEWS <- function(
-        prevRepos="3.6", currRepos="3.7",
+        prevRepos="3.15", currRepos="3.16",
         repo=c("bioc", "data/experiment", "workflows"), srcdir=NULL
 ) {
     repo <- match.arg(repo)
-    URL_BASE <- "http://master.bioconductor.org/packages/"
-    VIEWS <- "%s%s/%s/VIEWS"
+    prev <- getDCFPackageVer(prevRepos, repo)
+    curr <- getDCFPackageVer(currRepos, repo)
 
-    prevUrl <- url(sprintf(VIEWS, URL_BASE, prevRepos, repo))
-    prev <- read.dcf(prevUrl, fields=c("Package", "Version"))
-    rownames(prev) <- prev[,1]
-    close(prevUrl)
-    currUrl <- url(sprintf(VIEWS, URL_BASE, currRepos, repo))
-    curr <- read.dcf(currUrl, fields=c("Package", "Version"))
-    rownames(curr) <- curr[,1]
-    close(currUrl)
+    prev <- prev[names(prev) %in% names(curr)]
+    newpkgs <- setdiff(names(curr), names(prev))
 
-    prev <- prev[rownames(prev) %in% rownames(curr),]
-    newpkgs <- setdiff(rownames(curr), rownames(prev))
-
-    idx <- package_version(curr[newpkgs, "Version"], strict=FALSE) >= "0.99.0"
+    idx <- package_version(curr[newpkgs], strict=FALSE) >= "0.99.0"
     newpkgs <- newpkgs[idx]
-    vers <- c(sub("\\.[[:digit:]]?$", ".0", prev[,"Version"]),
+    vers <- c(sub("\\.[[:digit:]]?$", ".0", prev),
               setNames(rep("0.0", length(newpkgs)), newpkgs))
     if (is.null(srcdir))
         srcdir <- scpNEWS(version = currRepos, repo = repo)
 
     anews <- Map(getNEWS, names(vers), vers, srcdir)
-    ret <- Filter(nrow, anews)
+    ret <- Filter(length, anews)
     nms <- names(ret)
     s <- sort(nms)
-    newRet <- ret[s]
+    ret[s]
 }
 
 scpNEWS <- function(

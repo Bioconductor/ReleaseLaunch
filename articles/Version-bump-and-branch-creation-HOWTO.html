@@ -163,32 +163,32 @@ one of them, use your personal account or the <code>biocpush</code>
 account. Do NOT use the <code>biocbuild</code> account to not interfere
 with the builds. Using a Mac server might work but was not
 tested.</p></li>
-<li><p>Make sure to use the <code>-A</code> flag to enable forwarding of
+<li>
+<p>Make sure to use the <code>-A</code> flag to enable forwarding of
 the authentication agent connection when you <code>ssh</code> to the
-machine e.g.:</p></li>
-</ul>
+machine e.g.:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> <span class="at">-A</span> hpages@malbec1.bioconductor.org</span></code></pre></div>
-<ul>
-<li>Clone (or update) the <code>BBS</code> git repo:</li>
-</ul>
+</li>
+<li>
+<p>Clone (or update) the <code>BBS</code> git repo:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># clone</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/Bioconductor/BBS</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># update</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/BBS</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> pull</span></code></pre></div>
-<ul>
-<li>Create the <code>git.bioconductor.org</code> folder:</li>
-</ul>
+</li>
+<li>
+<p>Create the <code>git.bioconductor.org</code> folder:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> git.bioconductor.org</span></code></pre></div>
-<ul>
-<li>Populate <code>git.bioconductor.org</code> with git clones of the
+</li>
+<li>
+<p>Populate <code>git.bioconductor.org</code> with git clones of the
 <code>manifest</code> repo and all the package repos (software,
 data-annotation, data-experiment, workflows, and books). This takes more
 than 3h so is worth doing in advance e.g. a couple of days before the
 release. It will save time when performing the steps described in
 sections <strong>C.</strong>, <strong>D.</strong>, and
-<strong>E.</strong> below on the day prior to the release.</li>
-</ul>
+<strong>E.</strong> below on the day prior to the release.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">BBS_HOME</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/BBS"</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># clone `manifest` repo</span></span>
@@ -208,10 +208,10 @@ sections <strong>C.</strong>, <strong>D.</strong>, and
 <span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co"># clone book repos (takes &lt; 1 min)</span></span>
 <span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="bu">time</span> <span class="va">$BBS_HOME</span>/utils/update_bioc_git_repos.py books master RELEASE_3_16</span></code></pre></div>
-<ul>
-<li>Make sure you can push changes to the BioC git server (at
-git.bioconductor.org):</li>
-</ul>
+</li>
+<li>
+<p>Make sure you can push changes to the BioC git server (at
+git.bioconductor.org):</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># check config file</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> ~/.gitconfig</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -228,16 +228,16 @@ git.bioconductor.org):</li>
 <span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co"># try to push</span></span>
 <span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/git.bioconductor.org/software/affy</span>
 <span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push  <span class="co"># should display 'Everything up-to-date'</span></span></code></pre></div>
-<ul>
-<li>Clone (or update) the <code>bioc_git_transition</code> git
-repo:</li>
-</ul>
+</li>
+<li>
+<p>Clone (or update) the <code>bioc_git_transition</code> git
+repo:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># clone</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/Bioconductor/bioc_git_transition</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># update</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/bioc_git_transition</span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> pull</span></code></pre></div>
-<ul>
+</li>
 <li>
 <p>Find packages with duplicate commits</p>
 <p>Historically the GIT-SVN mirror was the primary source of duplicate
@@ -246,8 +246,6 @@ duplicates. Additionally, we’ve implemented a gitolite hook to prevent
 any new duplicate commits from getting through. For these reasons, this
 check for duplicates is becoming obsolete and can probably be removed at
 the next release in Spring 2019.</p>
-</li>
-</ul>
 <div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Local copy of bioc_git_transition</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">BIOC_GIT_TRANSITION</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/bioc_git_transition"</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -264,13 +262,13 @@ the next release in Spring 2019.</p>
 <span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"&gt;&gt;&gt; check </span><span class="va">$pkg</span><span class="st"> package for duplicate commits"</span></span>
 <span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="ex">python3</span> <span class="va">$BIOC_GIT_TRANSITION</span>/misc/detect_duplicate_commits.py <span class="va">$pkg</span> 30</span>
 <span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span> <span class="op">&gt;</span> duplicatecommits.out <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span></span></code></pre></div>
-<ul>
-<li>Anyone involved in the “bump and branch” procedure should
+</li>
+<li><p>Anyone involved in the “bump and branch” procedure should
 temporarily be added to the <code>admin</code> group in
 <code>gitolite-admin/conf/gitolite.conf</code>. Membership in this group
 enables the creation of a new branch and <em>pushing</em> to any branch
 regardless of inactivated (commented out) lines in
-<code>gitolite-admin/conf/packages.conf</code>.</li>
+<code>gitolite-admin/conf/packages.conf</code>.</p></li>
 </ul>
 </div>
 <div class="section level3">
@@ -316,11 +314,13 @@ effective.</p>
 <ul>
 <li><p>Comment out the hook lines in
 <code>packages.conf</code>.</p></li>
-<li><p>Remove the <code>pre-receive.h00-pre-receive-hook-software</code>
+<li>
+<p>Remove the <code>pre-receive.h00-pre-receive-hook-software</code>
 file from the <code>hook/</code> directory in each package, e.g.,
-<code>/home/git/repositories/packages/&lt;PACKAGE&gt;.git/hooks</code></p></li>
-</ul>
+<code>/home/git/repositories/packages/&lt;PACKAGE&gt;.git/hooks</code></p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-rf</span> ~/repositories/packages/<span class="pp">*</span>.git/hooks/pre-receive.h00-pre-receive-hook-software</span></code></pre></div>
+</li>
+</ul>
 <p>Or (trying as of release 3.16) try using hooks exclusion file. See
 scripts/sedCommandsForVariousTasks.txt. This changes is made in the
 hook_maintainer repo.</p>
@@ -350,29 +350,30 @@ authentication agent connection e.g.:</p>
 </h4>
 <ul>
 <li>
-<code>BBS_HOME</code>:</li>
-</ul>
+<p><code>BBS_HOME</code>:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">BBS_HOME</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/BBS"</span></span></code></pre></div>
+</li>
+</ul>
 <p>IMPORTANT NOTE: The settings for <code>WORKING_DIR</code> and
 <code>MANIFEST_FILE</code> are specific to the type of packages. The
 following settings are for the <em>software</em> packages. Make sure to
 adapt for data-experiment packages, workflows, and books.</p>
 <ul>
 <li>
-<code>WORKING_DIR</code>: Point <code>WORKING_DIR</code> to the
-folder containing the software packages:</li>
-</ul>
+<p><code>WORKING_DIR</code>: Point <code>WORKING_DIR</code> to the
+folder containing the software packages:</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">WORKING_DIR</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/git.bioconductor.org/software"</span></span></code></pre></div>
 <p>All the remaining steps in section <strong>C.</strong> must be
 performed from <em>within</em> this folder:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$WORKING_DIR</span></span></code></pre></div>
-<ul>
+</li>
 <li>
-<code>MANIFEST_FILE</code>: Point <code>MANIFEST_FILE</code> to the
-manifest file for software packages. This must be the file from the
-<code>RELEASE_3_16</code> branch of the <code>manifest</code> repo:</li>
-</ul>
+<p><code>MANIFEST_FILE</code>: Point <code>MANIFEST_FILE</code> to
+the manifest file for software packages. This must be the file from the
+<code>RELEASE_3_16</code> branch of the <code>manifest</code> repo:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">MANIFEST_FILE</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/git.bioconductor.org/manifest/software.txt"</span></span></code></pre></div>
+</li>
+</ul>
 </div>
 <div class="section level4">
 <h4 id="c7--run-bump_version_and_create_branch-py">C7. Run <code>bump_version_and_create_branch.py</code><a class="anchor" aria-label="anchor" href="#c7--run-bump_version_and_create_branch-py"></a>
@@ -490,13 +491,15 @@ access</p>
 original hooks file.</p></li>
 <li><p>Run <code>gitolite setup</code> from /home/git/repositories to
 re-enable the hooks.</p></li>
-<li><p>Test that a non-super user can push access is enabled onthe dummy
-package BiocGenerics_test.</p></li>
-</ul>
+<li>
+<p>Test that a non-super user can push access is enabled on the
+dummy package BiocGenerics_test.</p>
 <p>Check:</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> checkout RELEASE_3_16</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> pull</span></code></pre></div>
+</li>
+</ul>
 </div>
 <div class="section level4">
 <h4 id="f2--tell-people-that-committingpushing-to-the-bioc-git-server-can-resume">F2. Tell people that committing/pushing to the BioC git server can

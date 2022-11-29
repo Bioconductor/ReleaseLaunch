@@ -1,18 +1,27 @@
-# Pre-release Activities
+---
+title: "The Release Checklist"
+author: "Bioconductor Maintainer"
+date: "November 29, 2022"
+output: BiocStyle::html_document
+---
 
-## Table of Contents
-- [Testing R versions](#rversions)
-- [Six weeks before the release](#sixweeks)
-- [Four weeks before the release](#fourweeks)
-- [Three weeks before the release](#threeweeks)
-- [Two weeks before the release](#twoweeks)
-- [One week before the release](#oneweek)
-- [Day before we branch](#d-2)
-- [Day we branch](#d-1)
-- [Release day](#d)
-- [Week after the Release](#d+)
+```{css, echo=FALSE}
+.infobox {
+  padding: 1em 1em 1em 1em;
+  margin-bottom: 10px;
+  border: 2px solid #008000;
+  border-radius: 10px;
+  background: #c7dbe4 5px center/3em no-repeat;
+  color: #8B0000;
+}
 
-<a name="rversions"></a>
+.center {
+  text-align: center;
+}
+```
+
+# Pre-release
+
 ## R versions
 
 Prior to the release we should be testing the latest binary packages with
@@ -21,11 +30,11 @@ It's important to use these binary R installations:
 
 R Windows binary:
 
-  http://cran.r-project.org/bin/windows/base/
+  <http://cran.r-project.org/bin/windows/base/>
 
 R Mac binary:
 
-  http://cran.r-project.org/bin/macosx/
+  <http://cran.r-project.org/bin/macosx/>
 
 A "clean" machine means, on Windows, no Rtools, LaTeX, etc.
 On Mac it means no Xcode and do not use Simon U's builds, use the one above.
@@ -42,8 +51,7 @@ During this process, we want to watch every day for new R versions
 Some important operations that need to happen before a BioC release,
 in _this_ order
 
-<a name="sixweeks"></a>
-## Six weeks before the release:
+## Six weeks before
 
 - Start building annotations (update R on the annotation EC2 instance)
 
@@ -68,8 +76,7 @@ in _this_ order
 
 - After OrgDb and TxDb are in devel repo, add to annotationhub
 
-<a name="fourweeks"></a>
-## Four weeks before the release:
+## Four weeks before
 
 - Announce deprecated / defunct packages
 
@@ -77,29 +84,33 @@ in _this_ order
 
 - Update GenmeInfoDb mapping table between UCSC and ensembl
 
-<a name="threeweeks"></a>
-## Three weeks before the release:
+## Three weeks before
 
 - The day before we stop the release builds, update remove-packages.md in the
   current release, e.g., 3.5.
 
 - Deadline for new package submissions
 
-<a name="twoweeks"></a>
-## Two weeks before the release:
+## Two weeks before
 
 - Disable commits to old release branch. see scripts/sedCommandsForVariousTasks.txt
 
 - After the last build report for old relase is online, stop the old release builds.
 
-  HISTORICAL NOTE: After stopping release builds, on all Mac build machines, point
-  the "Current" symlink in /Library/Frameworks/R.framework/Versions to the
-  new DEVEL version of R. Otherwise we will be producing broken binaries!
-  (Not applicable if only one build is running on each Mac machine, as should
-  be the case from BioC 2.9 onward; but we do want to make sure that there is
-  only ever one version of R installed on these Mac build machines.)
+::: {.infobox data-latex=""}
 
-- Update https://bioconductor.org/checkResults/ by moving the old release to
+**HISTORICAL NOTE**
+
+After stopping release builds, on all Mac build machines, point the "Current"
+symlink in /Library/Frameworks/R.framework/Versions to the new DEVEL version of
+R. Otherwise we will be producing broken binaries! (Not applicable if only one
+build is running on each Mac machine, as should be the case from BioC 2.9
+onward; but we do want to make sure that there is only ever one version of R
+installed on these Mac build machines.)
+  
+:::
+
+- Update <https://bioconductor.org/checkResults/> by moving the old release to
   the top of the "Archived results for past release" section.
 
 - Feature freeze for the to-be-release version. No API changes, no new
@@ -139,12 +150,10 @@ in _this_ order
 
 - Update NEWS files
 
-<a name="oneweek"></a>
-## One week before the release:
+## One week before
 
 - Packages and workflows clean of errors and warnings
 
-<a name="d-2"></a>
 ## Day before we branch (D-2):
 
 - Manifest file for the release branch
@@ -153,19 +162,25 @@ in _this_ order
   Up to this point and until we branch tomorrow, both 3.6 and the new devel
   should be using the "master" manifest.
 
-  NOTE: Branch creation must be done after all packages for 3.6 have been
-  added to the manifest.
 
-  NOTE: As part of the bump and branch process tomorrow, the
-  BBS_BIOC_MANIFEST_GIT_BRANCH variable on the release builder will be
-  modified to point to the correct manifest.
-  This variable is defined in the config.sh and config.bat files located in the
-  ~biocbuild/BBS/3.6/bioc/ and ~biocbuild/BBS/3.6/data-experiment/ folders.
-  For now, packages must still be built off their master branch so do NOT
-  touch the BBS_BIOC_GIT_BRANCH variable!
+::: {.infobox data-latex=""}
+
+**Notes**
+
+* Branch creation must be done after all packages for 3.6 have been added to the
+manifest.
+
+* As part of the bump and branch process tomorrow, the
+`BBS_BIOC_MANIFEST_GIT_BRANCH` variable on the release builder will be modified
+to point to the correct manifest. This variable is defined in the `config.sh`
+and `config.bat` files located in the `~biocbuild/BBS/3.6/bioc/` and
+`~biocbuild/BBS/3.6/data-experiment/` folders. For now, packages must still be
+built off their master branch so do **NOT** touch the `BBS_BIOC_GIT_BRANCH`
+variable!
 
 
-<a name="d-1"></a>
+:::
+
 ## Day we branch (D-1):
 
 - Send mail to bioc-devel to ask people to stop commits until
@@ -173,7 +188,7 @@ in _this_ order
   experiment). The bump and branch took about 2 hours.
 
 - Bump versions and create BioC 3.6 release branch
-  https://github.com/Bioconductor/BBS/blob/master/Doc/Version-bump-and-branch-creation-HOWTO.md
+  <https://github.com/Bioconductor/ReleaseLaunch/blob/master/vignettes/Version-bump-and-branch-creation-HOWTO.Rmd>
 
 - Confirm MEAT0 is pointed at the correct manifest for the
   3.6 and 3.7 builds.
@@ -198,19 +213,27 @@ in _this_ order
   Verify that there are no <NA>s in output. Collate package descriptions
   with biocViews:::getPackageDescriptions().
 
-<a name="d"></a>
-## Release day (D):
+# Release day
 
 - bioconductor.org/config.yaml
 
   Update config.yaml in the root of the bioconductor.org working copy and
   change values as indicated in the comments. This will (among other things),
   automatically update the website symlinks ("release" and "devel") under
-  /packages. NOTE: If there is no annotation branch, that line under
-  'devel_repos' must be commented out; if any of annotation, experiment data or
-  software are not available (and a simlink makes them unavailable) the script
-  will break and landing pages will not be generated. If using symlinks, mark as
-  unavailable or else will destroy symlinked directory!
+  /packages.
+  
+  
+::: {.infobox data-latex=""}
+
+**NOTE**
+
+If there is no annotation branch, that line under 'devel_repos' must be
+commented out; if any of annotation, experiment data or software are not
+available (and a simlink makes them unavailable) the script will break and
+landing pages will not be generated. If using symlinks, mark as unavailable or
+else will destroy symlinked directory!
+
+:::
 
   After a release you should let the no-longer-release version build one last
   time so package landing pages won't say "release version".
@@ -220,10 +243,12 @@ in _this_ order
   UPDATE the /etc/rsyncd.conf on master.bioconductor.org and
   restart rsync.
 
-      sudo systemctl restart rsync
+```sh
+    sudo systemctl restart rsync
+```
 
   Test rsync is still working as expected with commands from:
-  http://www.bioconductor.org/about/mirrors/mirror-how-to/.
+  <http://www.bioconductor.org/about/mirrors/mirror-how-to/>.
 
 - mirrors/enable archiving for bioc in apache config
 
@@ -234,18 +259,32 @@ in _this_ order
   (copy-paste) section at the top for the new release number in
   these 2 files:
 
+```sh
     /etc/apache2/sites-available/000-default.conf
     /etc/apache2/sites-available/default-ssl.conf
+```
 
-  Note: couldn't hurt to restart apache server
+::: {.infobox data-latex=""}
+
+**Note** 
+
+It couldn't hurt to restart the Apache server:
   
-      sudo service apache2 restart 
+```sh
+    sudo service apache2 restart
+```
+
+:::
 
   Test the mirrors with commands from:
-  http://www.bioconductor.org/about/mirrors/mirror-how-to/.
+  <http://www.bioconductor.org/about/mirrors/mirror-how-to/>.
   In a test directory the following should produce correct results
-    `rsync -zrtlv --delete master.bioconductor.org::devel/bioc .` 
-    `rsync -zrtlv --delete master.bioconductor.org::release/bioc .` 
+  
+```sh
+    rsync -zrtlv --delete master.bioconductor.org::devel/bioc . 
+    rsync -zrtlv --delete master.bioconductor.org::release/bioc . 
+```
+
 
 
 - Update checkResults page and symlinks ("release" and "devel") under
@@ -272,14 +311,16 @@ in _this_ order
      where XX is the new devel version (one higher than the version)
      that was just released.  (on master)
 
-  -- Update http://bioconductor.org/install/ for BiocManager
+  -- Update <http://bioconductor.org/install/> for BiocManager
 
-- BiocManager::install() sanity check
+- `BiocManager::install()` sanity check
 
   Was BiocManager installed / updated properly? With a fresh R devel and
   release
 
-      install.packages("BiocManager")
+```r
+    install.packages("BiocManager")
+```
 
 - Finalize release announcement
 
@@ -296,14 +337,18 @@ in _this_ order
 
 - Go for a beer.
 
-<a name="d+"></a>
+# Post-release
+
 ## Week after the Release (D+):
 
 - Confirm Archive/ folder is working for new release.
   The relevant script is BBS/utils/list.old.packages.R
   which depends on BiocManager to determine if
-  archiving should happen. Example location to look
-  `biocpush@nebbiolo1:~$ ls PACKAGES/3.15/bioc/src/contrib/Archive/`
+  archiving should happen. Example location to look:
+
+```sh
+    biocpush@nebbiolo1:~$ ls PACKAGES/3.15/bioc/src/contrib/Archive/
+```
 
 - A few days after release, flush the new release package repo. This will remove odd
   numbered y of x.y.z version left over from being devel and highlight packages
@@ -318,8 +363,8 @@ in _this_ order
 - Update static data in Bioconductor packages GenomeInfoDB and UniProt.ws
   Update GenomeInfoDB/inst/extdata/dataFiles/genomeMappingTbl.csv mapping table
   for any new ensembl or UCSC entries.
-  https://genome.ucsc.edu/FAQ/FAQreleases.html
-  http://useast.ensembl.org/info/website/archives/assembly.html
+  <https://genome.ucsc.edu/FAQ/FAQreleases.html>
+  <http://useast.ensembl.org/info/website/archives/assembly.html>
   Update UniProt.ws/inst/extdata/  keytypes.txt and speclist.txt
   Will need to checkout github branch remove_static_files branch for code to
   generate these files (in  R/ code).
@@ -334,4 +379,3 @@ in _this_ order
 
 - Move legacy release build products off master and into AWS/OSN. Only active release and devel on
   master
-

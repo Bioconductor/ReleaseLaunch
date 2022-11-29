@@ -1,0 +1,22 @@
+url: https://github.com/Bioconductor/ReleaseLaunch
+template:
+  bootswatch: flatly
+
+
+navbar:
+  title: ~
+  type: default
+  left:
+    - text: The Release Checklist
+      href: articles/ReleaseChecklist.html
+    - text: How-Tos
+      menu:
+      - text: Branch annotation package repository
+        href: articles/Branch-annotation-repo-HOWTO.html
+      - text: Flush packages
+        href: articles/Flush-Packages-HOWTO.html
+      - text: Version bump and branch
+        href: articles/Version-bump-and-branch-creation-HOWTO.html
+  right:
+  - icon: fa-github fa-lg
+    href: https://github.com/Bioconductor/ReleaseLaunch

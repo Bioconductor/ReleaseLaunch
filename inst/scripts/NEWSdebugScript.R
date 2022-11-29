@@ -21,7 +21,7 @@ VIEWS <- "%s%s/%s/VIEWS"
     idx <- package_version(curr[newpkgs, "Version"]) >= "0.99.0"
     newpkgs <- newpkgs[idx]
     vers <- c(sub("\\.[[:digit:]]?$", ".0", prev[,"Version"]),
-              setNames(rep("0.0", length(newpkgs)), newpkgs))
+              sturcture(rep("0.0", length(newpkgs)), .Names = newpkgs))
 
 pkg = "ggtreeExtra"
 srcdir = "/home/shepherd/BioconductorPackages/Software"

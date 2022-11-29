@@ -1,5 +1,6 @@
 .NEWS_LOCS <- c("inst/NEWS.Rd", "inst/NEWS", "inst/NEWS.md", "NEWS.md", "NEWS")
 
+#' @importFrom utils head
 findNEWS <- function(pkg) {
     newsloc <- file.path(pkg, .NEWS_LOCS)
     head(newsloc[file.exists(newsloc)], 1)
@@ -125,6 +126,8 @@ mdIfy <- function(txt) {
 }
 
 ## based on tools:::.build_news_db()
+
+#' @importFrom utils capture.output
 getNEWSFromFile <- function(
     dir, destfile, format = NULL, reader = NULL, output=c("md", "text")
 ) {
@@ -163,7 +166,7 @@ getNEWSFromFile <- function(
     return(invisible())
 }
 
-
+#' @importFrom methods is
 printNEWS <- function(
     dbs, destfile, overwrite=FALSE, width=68, output=c("md", "text"),
     relativeLink=FALSE, ...
@@ -276,6 +279,7 @@ getPackageDescriptions <-
     invisible(NULL)
 }
 
+#' @importFrom utils untar
 extractNewsFromTarball <- function(tarball, unpackDir) {
     files <- untar(tarball, list = TRUE)
     newsfiles <- grep("NEWS", files, value = TRUE)

@@ -7,7 +7,7 @@ output: BiocStyle::html_document
 
 # Version-bump-and-branch-creation-HOWTO
 
-## Introduction
+## A. Introduction
 
 On the day prior to the release, we will need to apply and push the following
 changes to all the Bioconductor packages that go in the release, **in this
@@ -45,7 +45,7 @@ machines.  Also be sure to translate to your local time if you are not on the
 East Coast.
 
 
-## Preliminary steps
+## B. Preliminary steps
 
 These steps should be performed typically a couple of days before the steps
 in sections **C.** and **D.**.
@@ -349,7 +349,7 @@ looks ok.
 
 ## D. Version bumps and branch creation for data-experiment packages, workflows, and books
 
-### Data-experiment packages
+### D1. Data-experiment packages
 
 Repeat steps C5 to C8 above **but for C6 define the environment variables
 as follows**:
@@ -359,7 +359,7 @@ export WORKING_DIR="$HOME/git.bioconductor.org/data-experiment"
 export MANIFEST_FILE="$HOME/git.bioconductor.org/manifest/data-experiment.txt"
 ```
 
-### Workflows
+### D2. Workflows
 
 Repeat steps C5 to C8 above **but for C6 define the environment variables
 as follows**:
@@ -369,7 +369,7 @@ export WORKING_DIR="$HOME/git.bioconductor.org/workflows"
 export MANIFEST_FILE="$HOME/git.bioconductor.org/manifest/workflows.txt"
 ```
 
-### Books
+### D3. Books
 
 Repeat steps C5 to C8 above **but for C6 define the environment variables
 as follows**:

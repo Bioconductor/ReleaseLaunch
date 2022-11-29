@@ -61,16 +61,17 @@ get_org_github_repos <-
             per_page = per_page,
             pages = pages
         )
-        hasRELEASE[pkg] <-
-            release %in% vapply(result, `[[`, character(1L), "name")
+        branches <- vapply(result, `[[`, character(1L), "name")
+        hasRELEASE[pkg] <- release %in% branches
     }
     packages[!hasRELEASE]
 }
 
-#' Get bioconductor software manifest
+#' Get the Bioconductor packages in the software manifest
 #'
-#' The software packages are the only packages hosted on github, by
-#' the organization.
+#' To ensure that a GitHub repository is a software package, its name is
+#' checked against a list of Bioconductor packages. This list is called
+#' the manifest. This function obtains the manifest using `git`.
 #'
 #' @export
 get_bioc_software_manifest <-
@@ -79,15 +80,13 @@ get_bioc_software_manifest <-
     ## Git command to get the software.txt file from the manifest
     args <- c("archive",
               "--remote=git@git.bioconductor.org:admin/manifest", "HEAD",
-              "software.txt","|" , "tar", "-x")
-    system2("git", args, wait=TRUE)
-    software <- readLines("software.txt")
-    software <- sub(
-        "Package: *", "",
-        regmatches(software, regexpr("Package:.*", software))
+              "software.txt")
+    software <- system2("git", args, wait=TRUE, stdout = TRUE)
+    software <- Filter(
+        function(x) !identical(x, "pax_global_header") && nchar(x),
+        software
     )
-    ## Return all software packages
-    software
+    gsub("Package:\\s+", "", software)
 }
 
 #' Generate the list of packages to be updated
@@ -111,7 +110,7 @@ packages_list_to_be_updated <-
     release_slug <- paste0("RELEASE_", gsub("\\.", "_", version))
     ## software <- get_bioc_software_manifest()
     repos <- BiocManager:::.repositories_bioc(version)["BioCsoft"]
-    db <- utils::available.packages(repos = repos)
+    db <- utils::available.packages(repos = repos, type = "source")
     software <- rownames(db)
     pre_existing_pkgs <- get_org_github_repos(org = org)
     candidates <- intersect(names(pre_existing_pkgs), software)

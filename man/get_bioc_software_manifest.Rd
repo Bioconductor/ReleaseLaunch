@@ -2,11 +2,12 @@
 % Please edit documentation in R/update_packages.R
 \name{get_bioc_software_manifest}
 \alias{get_bioc_software_manifest}
-\title{Get bioconductor software manifest}
+\title{Get the Bioconductor packages in the software manifest}
 \usage{
 get_bioc_software_manifest()
 }
 \description{
-The software packages are the only packages hosted on github, by
-the organization.
+To ensure that a GitHub repository is a software package, its name is
+checked against a list of Bioconductor packages. This list is called
+the manifest. This function obtains the manifest using \code{git}.
 }

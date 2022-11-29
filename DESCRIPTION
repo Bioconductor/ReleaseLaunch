@@ -11,7 +11,11 @@ Description: The package faciliates a Bioconductor release. It currently
   The script creates the RELEASE_XX_YY branch and pushes it to the Bioconductor
   organization.
 License: Artistic-2.0
-Imports: gert, gh
+Imports:
+  gert,
+  gh,
+  methods,
+  utils
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.2

@@ -1,7 +1,8 @@
 .NEWS_LOCS <- c("inst/NEWS.Rd", "inst/NEWS", "inst/NEWS.md", "NEWS.md", "NEWS")
 
-findNEWS <- function(pkg, srcdir) {
-    newsloc <- file.path(srcdir, pkg, .NEWS_LOCS)
+#' @importFrom utils head
+findNEWS <- function(pkg) {
+    newsloc <- file.path(pkg, .NEWS_LOCS)
     head(newsloc[file.exists(newsloc)], 1)
 }
 
@@ -11,29 +12,45 @@ emptyNewsDB <- function() {
         Date = character(0L),
         Category = character(0L),
         Text = character(0L),
-        row.names = integer(0L)
+        row.names = character(0L)
     )
     class(newsdb) <- c("news_db", "data.frame")
     newsdb
 }
 
-getLatestNews <- function(news, ver) {
+getNEWSdb <- function(news, def_FUN = tools:::.news_reader_default) {
     fext <- tools::file_ext(news)
     build_news_db <- switch(fext,
         Rd = tools:::.build_news_db_from_package_NEWS_Rd,
         md = tools:::.build_news_db_from_package_NEWS_md,
-        tools:::.news_reader_default
+        def_FUN
     )
-    db <- tryCatch({ build_news_db(news) }, error = function(e) emptyNewsDB())
-    utils::news(Version > ver, db=db)
+    tryCatch({ build_news_db(news) }, error = function(e) emptyNewsDB())
+}
+
+getLatestNews <- function(news, ver) {
+    db <- getNEWSdb(news)
+    if (nrow(db))
+        utils::news(Version > ver, db=db)
+    else
+        character(0L)
 }
 
 getNEWS <- function(pkg, ver, srcdir) {
-    news <- findNEWS(pkg, srcdir)
-    if (length(news))
-        getLatestNews(news, ver)
-    else
-        news
+    news <- findNEWS(file.path(srcdir, pkg))
+    getLatestNews(news, ver)
+}
+
+.BIOC_BASE_URL <- "http://master.bioconductor.org/packages/"
+
+getDCFPackageVer <- function(version, repo) {
+    views_url <- sprintf("%s%s/%s/VIEWS", .BIOC_BASE_URL, version, repo)
+    url <- url(views_url)
+    pkgs <- read.dcf(url, fields=c("Package", "Version"))
+    on.exit(close(url))
+    views <- pkgs[, "Version"]
+    names(views) <- pkgs[, "Package"]
+    views
 }
 
 ## collate package NEWS files using starting version number in
@@ -41,40 +58,51 @@ getNEWS <- function(pkg, ver, srcdir) {
 ## source tree rooted at srcDir, possibiblly as tarred files
 
 # repo:  bioc data/experiment workflows
+
+#' Compare the old and current releases to generate the release announcements
+#' NEWS compilation
+#'
+#' The function uses previous and current versions of Bioconductor to generate
+#' a single package's `NEWS` file.
+#'
+#' @param prevRepos character(1) The version string indicating the old release
+#'   version of Bioconductor
+#'
+#' @param currRepos character(1) The version string indicating the newest and
+#'   current release version of Bioconductor
+#'
+#' @param repo character(1) The repository nickname indicating which repository
+#'   to compare news
+#'
+#' @param srcdir (Optional) character(1) The source directory in which all the
+#'   Bioconductor packages, whose `NEWS` files are to be interrogated, reside
+#'
 #' @return A list of NEWS
+#'
 #' @export
 getPackagesNEWS <- function(
-        prevRepos="3.6", currRepos="3.7",
+        prevRepos="3.15", currRepos="3.16",
         repo=c("bioc", "data/experiment", "workflows"), srcdir=NULL
 ) {
     repo <- match.arg(repo)
-    URL_BASE <- "http://master.bioconductor.org/packages/"
-    VIEWS <- "%s%s/%s/VIEWS"
+    prev <- getDCFPackageVer(prevRepos, repo)
+    curr <- getDCFPackageVer(currRepos, repo)
 
-    prevUrl <- url(sprintf(VIEWS, URL_BASE, prevRepos, repo))
-    prev <- read.dcf(prevUrl, fields=c("Package", "Version"))
-    rownames(prev) <- prev[,1]
-    close(prevUrl)
-    currUrl <- url(sprintf(VIEWS, URL_BASE, currRepos, repo))
-    curr <- read.dcf(currUrl, fields=c("Package", "Version"))
-    rownames(curr) <- curr[,1]
-    close(currUrl)
+    prev <- prev[names(prev) %in% names(curr)]
+    newpkgs <- setdiff(names(curr), names(prev))
 
-    prev <- prev[rownames(prev) %in% rownames(curr),]
-    newpkgs <- setdiff(rownames(curr), rownames(prev))
-
-    idx <- package_version(curr[newpkgs, "Version"], strict=FALSE) >= "0.99.0"
+    idx <- package_version(curr[newpkgs], strict=FALSE) >= "0.99.0"
     newpkgs <- newpkgs[idx]
-    vers <- c(sub("\\.[[:digit:]]?$", ".0", prev[,"Version"]),
-              setNames(rep("0.0", length(newpkgs)), newpkgs))
+    vers <- c(sub("\\.[[:digit:]]?$", ".0", prev),
+              structure(rep("0.0", length(newpkgs)), .Names = newpkgs))
     if (is.null(srcdir))
         srcdir <- scpNEWS(version = currRepos, repo = repo)
 
     anews <- Map(getNEWS, names(vers), vers, srcdir)
-    ret <- Filter(nrow, anews)
+    ret <- Filter(length, anews)
     nms <- names(ret)
     s <- sort(nms)
-    newRet <- ret[s]
+    ret[s]
 }
 
 scpNEWS <- function(
@@ -98,81 +126,47 @@ mdIfy <- function(txt) {
 }
 
 ## based on tools:::.build_news_db()
+
+#' @importFrom utils capture.output
 getNEWSFromFile <- function(
     dir, destfile, format = NULL, reader = NULL, output=c("md", "text")
 ) {
-    newsRdFile <- file.path(dir, "NEWS.Rd") ## should never be found
-    newsRdFile2 <- file.path(dir, "inst", "NEWS.Rd")
-
-    if (!file_test("-f", newsRdFile) && !file_test("-f", newsRdFile2)) {
-        newsMdFile <- file.path(dir, "NEWS.md")
-        newsMdFile2 <- file.path(dir, "inst", "NEWS.md")
-
-        if (!file_test("-f", newsMdFile) && !file_test("-f", newsMdFile2)) {
-
-            nfile <- file.path(dir, "NEWS")
-            nfile2 <- file.path(dir, "inst", "NEWS")
-
-            if (!file_test("-f", nfile) && !file_test("-f", nfile2))
-                return(invisible())
-
-            nfile <- ifelse(file_test("-f", nfile), nfile, nfile2)
-
-            if (!is.null(format))
-                .NotYetUsed("format", FALSE)
-            if (!is.null(reader))
-                .NotYetUsed("reader", FALSE)
-
-            file <- file(destfile, "w+")
-            on.exit(close(file))
-            news <- paste(readLines(nfile), collapse="\n")
-            if ("md" == output)
-                news = mdIfy(news)
-            cat(news, file=file)
-            return(invisible())
-        }
-
-        newsMdFile <-
-            ifelse(file_test("-f", newsMdFile), newsMdFile, newsMdFile2)
-        file <- file(destfile, "w+")
-        on.exit(close(file))
-        db <- tools:::.build_news_db_from_package_NEWS_md(newsMdFile)
-        news <- NULL
-        try(news <- capture.output(print(db)))
-        if (is.null(news))
-            {
-                message(sprintf("Error building news database for %s/%s",
-                                dir, destfile))
-                return(invisible())
-            }
-        news <- paste(news, collapse="\n")
-        if ("md" == output)
-            news <- mdIfy(news)
-        cat(news, file=file)
-        return(invisible())
-    }
-
-    newsRdFile <- ifelse(file_test("-f", newsRdFile), newsRdFile, newsRdFile2)
+    if (!is.null(format))
+        .NotYetUsed("format", FALSE)
+    if (!is.null(reader))
+        .NotYetUsed("reader", FALSE)
 
     file <- file(destfile, "w+")
     on.exit(close(file))
-    db <- tools:::.build_news_db_from_package_NEWS_Rd(newsRdFile)
-    news <- NULL
-    try(news <- capture.output(print(db)))
-    if (is.null(news))
-    {
-        message(sprintf("Error building news database for %s/%s",
-            dir, destfile))
+
+    output <- match.arg(output)
+
+    news <- findNEWS(dir)
+    file_ext <- tools::file_ext(news)
+    if (!length(news))
+        return(invisible())
+    db <- getNEWSdb(news, def_FUN = function(nfile) {
+        paste(readLines(nfile), collapse="\n")
+    })
+    if (is.character(db)) {
+        news <- db
+    } else if (nrow(db)) {
+        news <- capture.output(print(db))
+        news <- paste(news, collapse="\n")
+    } else {
+        message(
+            sprintf("Error building news database for %s/%s", dir, destfile)
+        )
         return(invisible())
     }
-    news <- paste(news, collapse="\n")
-    if ("md" == output)
+
+    if (identical("md", output) && !identical(file_ext, "md"))
         news <- mdIfy(news)
     cat(news, file=file)
     return(invisible())
 }
 
-
+#' @importFrom methods is
 printNEWS <- function(
     dbs, destfile, overwrite=FALSE, width=68, output=c("md", "text"),
     relativeLink=FALSE, ...
@@ -285,6 +279,7 @@ getPackageDescriptions <-
     invisible(NULL)
 }
 
+#' @importFrom utils untar
 extractNewsFromTarball <- function(tarball, unpackDir) {
     files <- untar(tarball, list = TRUE)
     newsfiles <- grep("NEWS", files, value = TRUE)

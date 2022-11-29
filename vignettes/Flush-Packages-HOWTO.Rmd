@@ -1,3 +1,25 @@
+---
+title: "How to flush the Software repository"
+author: "Bioconductor Maintainer"
+date: "November 29, 2022"
+output: BiocStyle::html_document
+---
+
+```{css, echo=FALSE}
+.infobox {
+  padding: 1em 1em 1em 1em;
+  margin-bottom: 10px;
+  border: 2px solid #008000;
+  border-radius: 10px;
+  background: #c7dbe4 5px center/3em no-repeat;
+  color: #8B0000;
+}
+
+.center {
+  text-align: center;
+}
+```
+
 # Flushing the Software Repository
 
 To remove stale software packages, we flush the software repository. This might
@@ -29,10 +51,17 @@ Create a backup of the software packages in case a package that is a dependency
 for several packages, such as `GenomicFeatures`, that was passing later fails
 in the new build report after removing all packages.
 
+
+::: {.infobox data-latex=""}
+
 As `biocpush`
 
-    cd ~biocpush/PACKAGES/3.14/
-    cp -r bioc bioc.backup
+:::
+
+```sh
+cd ~biocpush/PACKAGES/3.14/
+cp -r bioc bioc.backup
+```
 
 ## Remove All Packages
 
@@ -40,17 +69,23 @@ Remove all packages from `~biocpush/PACKAGES/3.14/bioc` for source, windows,
 and mac binaries. Everything except for the `Archives` directories should be
 gone and the `PACKAGES` files should be replaced with blank files.
 
+::: {.infobox data-latex=""}
+
 As `biocpush`
 
-    cd ~biocpush/PACKAGES/3.14/src/contrib
-    rm -r PACKAGES* *.gz
-    touch PACKAGES
-    cd ~biocpush/PACKAGES/3.14/macosx/contrib/4.1
-    rm -r PACKAGES* *.tgz
-    touch PACKAGES
-    cd ~biocpush/PACKAGES/3.14/windows/contrib/4.1
-    rm -r PACKAGES* *.zip
-    touch PACKAGES
+:::
+
+```sh
+cd ~biocpush/PACKAGES/3.14/src/contrib
+rm -r PACKAGES* *.gz
+touch PACKAGES
+cd ~biocpush/PACKAGES/3.14/macosx/contrib/4.1
+rm -r PACKAGES* *.tgz
+touch PACKAGES
+cd ~biocpush/PACKAGES/3.14/windows/contrib/4.1
+rm -r PACKAGES* *.zip
+touch PACKAGES
+```
 
 ## Rerun the `postrun.sh`
 

@@ -57,7 +57,27 @@ getDCFPackageVer <- function(version, repo) {
 ## source tree rooted at srcDir, possibiblly as tarred files
 
 # repo:  bioc data/experiment workflows
+
+#' Compare the old and current releases to generate the release announcements
+#' NEWS compilation
+#'
+#' The function uses previous and current versions of Bioconductor to generate
+#' a single package's `NEWS` file.
+#'
+#' @param prevRepos character(1) The version string indicating the old release
+#'   version of Bioconductor
+#'
+#' @param currRepos character(1) The version string indicating the newest and
+#'   current release version of Bioconductor
+#'
+#' @param repo character(1) The repository nickname indicating which repository
+#'   to compare news
+#'
+#' @param srcdir (Optional) character(1) The source directory in which all the
+#'   Bioconductor packages, whose `NEWS` files are to be interrogated, reside
+#'
 #' @return A list of NEWS
+#'
 #' @export
 getPackagesNEWS <- function(
         prevRepos="3.15", currRepos="3.16",

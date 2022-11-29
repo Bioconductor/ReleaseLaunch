@@ -40,10 +40,10 @@ getNEWS <- function(pkg, ver, srcdir) {
     getLatestNews(news, ver)
 }
 
-BIOC_BASE_URL <- "http://master.bioconductor.org/packages/"
+.BIOC_BASE_URL <- "http://master.bioconductor.org/packages/"
 
 getDCFPackageVer <- function(version, repo) {
-    views_url <- sprintf("%s%s/%s/VIEWS", BIOC_BASE_URL, version, repo)
+    views_url <- sprintf("%s%s/%s/VIEWS", .BIOC_BASE_URL, version, repo)
     url <- url(views_url)
     pkgs <- read.dcf(url, fields=c("Package", "Version"))
     on.exit(close(url))

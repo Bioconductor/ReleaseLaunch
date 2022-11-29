@@ -93,7 +93,7 @@ getPackagesNEWS <- function(
     idx <- package_version(curr[newpkgs], strict=FALSE) >= "0.99.0"
     newpkgs <- newpkgs[idx]
     vers <- c(sub("\\.[[:digit:]]?$", ".0", prev),
-              setNames(rep("0.0", length(newpkgs)), newpkgs))
+              structure(rep("0.0", length(newpkgs)), .Names = newpkgs))
     if (is.null(srcdir))
         srcdir <- scpNEWS(version = currRepos, repo = repo)
 

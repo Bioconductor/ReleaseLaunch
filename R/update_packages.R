@@ -120,6 +120,12 @@ packages_list_to_be_updated <-
     .filter_gh_repos_branch(candidates, release_slug, owner = org)
 }
 
+.BIOC_GIT_ADDRESS <- "git@git.bioconductor.org"
+
+.get_bioc_slug <- function(package_name) {
+    paste0(.BIOC_GIT_ADDRESS, ":packages/", package_name)
+}
+
 #' Clone and update a GitHub repository.
 #'
 #' This function assumes that you have admin push access to the

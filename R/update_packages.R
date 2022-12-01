@@ -175,9 +175,10 @@ clone_and_push_git_repo <- function(
         warning("Consider using 'devel' as the default GitHub branch")
     if (!identical(cbranch, gh_branch))
         git_branch_checkout(gh_branch)
-    bioc_git_slug <- paste0("git@git.bioconductor.org:packages/", package_name)
+    bioc_git_slug <- .get_bioc_slug(package_name)
     ## git remote add upstream git@git.bioconductor.org:packages/<pkg>.git
-    if (!"upstream" %in% git_remote_list()[["name"]])
+    remotes <- git_remote_list()
+    if (.check_remote_exists(remotes, "upstream"))
         git_remote_add(bioc_git_slug, name = "upstream")
     git_fetch("upstream")
     up_remote <- paste0("upstream/", bioc_branch)
@@ -222,15 +223,26 @@ update_all_packages <- function(
     )
 }
 
-validate_remotes <- function() {
-    remotes <- git_remote_list()
-    all_remotes <- all(c("origin", "upstream") %in% names(remotes))
-    if (!all_remotes)
-        stop("'origin' and 'upstream' remotes are not set")
-    remote_url <- remotes[remotes[["name"]] == "upstream", "url"]
+.validate_bioc_remote <- function(remotes, remote = "upstream") {
+    remote_url <- remotes[remotes[["name"]] == remote, "url"]
     bioc_remote <- grepl("git.bioconductor.org", unlist(remote_url))
     if (!bioc_remote)
-        stop("'upstream' remote not set to Bioconductor git repository")
+        stop(
+            sQuote(remote, FALSE),
+            " remote not set to Bioconductor git repository"
+        )
+}
+
+.validate_remote_names <- function(remotes) {
+    all_remotes <- all(c("origin", "upstream") %in% remotes[["name"]])
+    if (!all_remotes)
+        stop("'origin' and 'upstream' remotes are not set")
+}
+
+.validate_remotes <- function() {
+    remotes <- git_remote_list()
+    .validate_remote_names(remotes)
+    .validate_bioc_remote(remotes)
     TRUE
 }
 
@@ -277,7 +289,7 @@ create_devel_branch <- function(
 ) {
     old_wd <- setwd(package_name)
     on.exit({ setwd(old_wd) })
-    validate_remotes()
+    .validate_remotes()
 
     has_devel <- git_branch_exists("devel")
     if (has_devel)
@@ -294,3 +306,40 @@ create_devel_branch <- function(
     git_push(remote = "origin")
 }
 
+.check_remote_exists <- function(remotes, remote) {
+    remote %in% remotes[["name"]]
+}
+
+#' A convenience function to set the 'upstream' Bioconductor remote
+#'
+#' The function will create an 'upstream' remote using
+#' `git@git.bioconductor.org` as the primary address. If an `upstream` remote
+#' already exists, it will be validated. The remote name can be changed to the
+#' desired name via the `remote` argument but it is customarily called the
+#' 'upstream' remote.
+#'
+#' @inheritParams create_devel_branch
+#'
+#' @param remote character(1L) The name of the remote to be created. This is
+#'   usually named 'upstream' (default)
+#'
+#' @return Called for the side effect of creating an 'upstream' remote with the
+#'   Bioconductor git address for a given package
+#'
+#' @export
+set_bioc_remote <- function(package_name, remote = "upstream") {
+    old_wd <- setwd(package_name)
+    on.exit({ setwd(old_wd) })
+
+    remotes <- git_remote_list()
+    has_remote <- .check_remote_exists(remotes, remote)
+    if (has_remote)
+        return(
+            .validate_bioc_remote(remotes, remote)
+        )
+
+    ## add upstream to Bioc
+    bioc_git_slug <- .get_bioc_slug(package_name)
+
+    git_remote_add(bioc_git_slug, remote)
+}

@@ -1,3 +1,5 @@
+.OLD_DEFAULT_BRANCH <- "master"
+
 #' @importFrom gh gh gh_token
 .get_gh_repos <- function(api, per_page, pages, ...) {
     reslist <- vector("list", length = pages)
@@ -118,7 +120,6 @@ packages_list_to_be_updated <-
     .filter_gh_repos_branch(candidates, release_slug, owner = org)
 }
 
-
 #' Clone and update a GitHub repository.
 #'
 #' This function assumes that you have admin push access to the
@@ -151,7 +152,8 @@ packages_list_to_be_updated <-
 #' @export
 clone_and_push_git_repo <- function(
     package_name, release = "RELEASE_3_16",
-    gh_branch = "master", bioc_branch = "master", org = "Bioconductor"
+    gh_branch = .OLD_DEFAULT_BRANCH, bioc_branch = .OLD_DEFAULT_BRANCH,
+    org = "Bioconductor"
 ) {
     message("Working on: ", package_name)
     ## git clone git@github.com:Bioconductor/ShortRead.git
@@ -159,8 +161,8 @@ clone_and_push_git_repo <- function(
     if (!dir.exists(package_name))
         git_clone(bioc_gh_slug)
     ## cd to package dir
-    owd <- setwd(package_name)
-    on.exit({ setwd(owd) })
+    old_wd <- setwd(package_name)
+    on.exit({ setwd(old_wd) })
     git_pull("origin")
     cbranch <- git_branch()
     if (!identical(cbranch, "devel"))
@@ -204,7 +206,9 @@ clone_and_push_git_repo <- function(
 #'
 #' @export
 update_all_packages <- function(
-    release = "RELEASE_3_16", bioc_branch = "master", org = "Bioconductor"
+    release = "RELEASE_3_16",
+    bioc_branch = .OLD_DEFAULT_BRANCH,
+    org = "Bioconductor"
 ) {
     packages <- packages_list_to_be_updated(org = org)
     .clone_and_push_git_repos(

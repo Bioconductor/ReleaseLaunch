@@ -6,7 +6,7 @@
 \usage{
 update_all_packages(
   release = "RELEASE_3_16",
-  bioc_branch = "master",
+  bioc_branch = .OLD_DEFAULT_BRANCH,
   org = "Bioconductor"
 )
 }

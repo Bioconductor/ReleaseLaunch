@@ -1,8 +1,15 @@
 ---
 title: "How to version bump and branch"
 author: "Bioconductor Maintainer"
-date: "November 29, 2022"
-output: BiocStyle::html_document
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Version bumping and branching}
+  %\VignetteEncoding{UTF-8}
+output:
+  BiocStyle::html_document:
+    number_sections: yes
+    toc: true
 ---
 
 # Version-bump-and-branch-creation-HOWTO

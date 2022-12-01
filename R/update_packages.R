@@ -215,3 +215,76 @@ update_all_packages <- function(
         packages, release=release, bioc_branch = bioc_branch, org = org
     )
 }
+
+validate_remotes <- function() {
+    remotes <- git_remote_list()
+    all_remotes <- all(c("origin", "upstream") %in% names(remotes))
+    if (!all_remotes)
+        stop("'origin' and 'upstream' remotes are not set")
+    remote_url <- remotes[remotes[["name"]] == "upstream", "url"]
+    bioc_remote <- grepl("git.bioconductor.org", unlist(remote_url))
+    if (!bioc_remote)
+        stop("'upstream' remote not set to Bioconductor git repository")
+    TRUE
+}
+
+#' Create the 'devel' branch locally and on GitHub
+#'
+#' The function is meant to be run one level up from the local git repository.
+#' It will create the 'devel' branch and push to the `origin` remote which
+#' should be set to GitHub. Upstream tracking can be configured to either the
+#' `origin` or `upstream` remote.
+#'
+#' @details The `origin` remote is assumed to be GitHub, i.e.,
+#'   `git@github.com:user/package` but this requirement is not checked or
+#'   enforced; thus, allowing flexibility in remote `origin` locations. The
+#'   `upstream` remote is validated against the Bioconductor git repository
+#'   address, i.e., `git@git.bioconductor.org:packages/package`. The local
+#'   repository is validated before the `devel` branch is created.
+#'
+#' @inheritParams clone_and_push_git_repo
+#'
+#' @param from_branch character(1) The old default branch from which to base the
+#'   new 'devel' branch from (default: 'master')
+#'
+#' @param set_upstream character(1) The remote location that will be tracked by
+#'   the local branch, either "origin/devel" (default) or "upstream/devel"
+#'
+#' @return Called for the side effect of creating a 'devel' branch on the local
+#'   and remote repositories on GitHub
+#'
+#' @examples
+#' if (interactive()) {
+#'
+#'   create_devel_branch(
+#'     package_name = "SummarizedExperiment",
+#'     org = "Bioconductor",
+#'     set_upstream = "upstream/devel"
+#'   )
+#'
+#' }
+#'
+#' @export
+create_devel_branch <- function(
+    package_name, from_branch = .OLD_DEFAULT_BRANCH, org = "Bioconductor",
+    set_upstream = c("origin/devel", "upstream/devel")
+) {
+    old_wd <- setwd(package_name)
+    on.exit({ setwd(old_wd) })
+    validate_remotes()
+
+    has_devel <- git_branch_exists("devel")
+    if (has_devel)
+        stop("'devel' branch already exists")
+
+    git_branch_checkout(from_branch)
+    git_pull(remote = "origin")
+    git_pull(remote = "upstream")
+    git_branch_create("devel", checkout = TRUE)
+
+    set_upstream <- match.arg(set_upstream)
+    git_branch_set_upstream(set_upstream)
+
+    git_push(remote = "origin")
+}
+

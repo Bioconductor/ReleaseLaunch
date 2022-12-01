@@ -172,7 +172,8 @@ clone_and_push_git_repo <- function(
     if (!"upstream" %in% git_remote_list()[["name"]])
         git_remote_add(bioc_git_slug, name = "upstream")
     git_fetch("upstream")
-    git_merge("upstream/master")
+    up_remote <- paste0("upstream/", bioc_branch)
+    git_merge(up_remote)
     ## git push origin master
     git_push("origin")
     ##

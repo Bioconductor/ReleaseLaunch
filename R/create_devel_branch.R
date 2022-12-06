@@ -114,6 +114,28 @@ add_bioc_remote <- function(package_name, remote = "upstream") {
     git_remote_add(bioc_git_slug, remote)
 }
 
+#' Convenience function to create the devel branch for all GitHub packages
+#'
+#' This function identifies an organization's repositories that are packages
+#' given the current version of Bioconductor (from `BiocManager::version()`)
+#' and identifies which repositories need to have a `devel` branch added.
+#' It then adds the `devel` branch using the `create_devel_branch` function.
+#' It is highly recommended that the user run this on the devel version of
+#' Bioconductor to avoid missing packages that are only in devel.
+#'
+#' @details
+#'
+#' Note that the `clone` argument allows the user to clone the repository first
+#' from GitHub via SSH. It is recommended that this be enabled and that the
+#' user running this function can clone packages via SSH and have access to
+#' modifying packages on the GitHub organization.
+#'
+#' @inheritParams create_devel_branch
+#'
+#' @param old_branches character() A vector of default branch names to be
+#'   replaced, by default this includes 'master' and 'main'
+#'
+#' @export
 branch_all_packages <- function(
     version = BiocManager::version(),
     old_branches = c(.OLD_DEFAULT_BRANCH, "main"),

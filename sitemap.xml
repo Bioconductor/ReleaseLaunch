@@ -52,6 +52,9 @@
     <loc>https://github.com/Bioconductor/ReleaseLaunch/reference/packages_list_to_be_updated.html</loc>
   </url>
   <url>
+    <loc>https://github.com/Bioconductor/ReleaseLaunch/reference/packages_with_default_branch.html</loc>
+  </url>
+  <url>
     <loc>https://github.com/Bioconductor/ReleaseLaunch/reference/update_all_packages.html</loc>
   </url>
 </urlset>

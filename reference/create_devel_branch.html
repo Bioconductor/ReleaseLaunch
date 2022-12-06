@@ -76,16 +76,16 @@ should be set to GitHub. Upstream tracking can be configured to either the
 <span>  <span class="va">package_name</span>,</span>
 <span>  from_branch <span class="op">=</span> <span class="va">.OLD_DEFAULT_BRANCH</span>,</span>
 <span>  org <span class="op">=</span> <span class="st">"Bioconductor"</span>,</span>
-<span>  set_upstream <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"origin/devel"</span>, <span class="st">"upstream/devel"</span><span class="op">)</span></span>
+<span>  set_upstream <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"origin/devel"</span>, <span class="st">"upstream/devel"</span><span class="op">)</span>,</span>
+<span>  clone <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>package_name</dt>
-<dd><p>named character(1) A scalar string of the default
-branch whose name corresponds to a Bioconductor GitHub repository, as
-given by <code><a href="packages_list_to_be_updated.html">packages_list_to_be_updated()</a></code>.</p></dd>
+<dd><p>character(1) The name of the organization R package that
+is also available on GitHub.</p></dd>
 
 
 <dt>from_branch</dt>

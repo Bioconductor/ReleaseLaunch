@@ -1,7 +1,22 @@
+#' Find packages with default branches for an organization
+#'
+#' This function will search through an organizations repositories and identify
+#' packages whose default branches are in the `branches` argument. This allows
+#' the user to identify which repositories will need to have a `devel` branch
+#' added.
+#'
+#' @inheritParams create_devel_branch
+#'
+#' @param branches character() A vector of branches that are sought as default
+#'   branches
+#'
+#' @return A named character vector of default branches whose names correspond
+#'   to package repositories on GitHub
+#'
 #' @export
-packages_with_default <- function(
+packages_with_default_branch <- function(
     version = BiocManager::version(),
-    branch = .OLD_DEFAULT_BRANCH,
+    branches = c(.OLD_DEFAULT_BRANCH, "main"),
     org = "Bioconductor"
 ) {
     repos <- BiocManager:::.repositories_bioc(version)["BioCsoft"]
@@ -10,7 +25,7 @@ packages_with_default <- function(
     pre_existing_pkgs <- get_org_github_repos(org = org)
     candidates <- intersect(names(pre_existing_pkgs), software)
     candidates <- pre_existing_pkgs[candidates]
-    .filter_old_branches(candidates)
+    candidates[candidates %in% branches]
 }
 
 #' Create the 'devel' branch locally and on GitHub
@@ -143,7 +158,7 @@ branch_all_packages <- function(
     set_upstream = c("origin/devel", "upstream/devel"),
     clone = TRUE
 ) {
-    packages <- packages_with_default(version, old_branches, org)
+    packages <- packages_with_default_branch(version, old_branches, org)
     mapply(
         FUN = create_devel_branch,
         package_name = names(packages),

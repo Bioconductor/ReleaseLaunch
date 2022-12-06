@@ -17,10 +17,6 @@
     paste0(.GITHUB_ADDRESS, ":", org, "/", package_name)
 }
 
-.filter_old_branches <- function(pkgs) {
-    pkgs[pkgs %in% c(.OLD_DEFAULT_BRANCH, "main")]
-}
-
 .validate_bioc_remote <- function(remotes, remote = "upstream") {
     remote_url <- remotes[remotes[["name"]] == remote, "url"]
     bioc_remote <- grepl("git.bioconductor.org", unlist(remote_url))

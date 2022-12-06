@@ -13,9 +13,8 @@ clone_and_push_git_repo(
 )
 }
 \arguments{
-\item{package_name}{named character(1) A scalar string of the default
-branch whose name corresponds to a Bioconductor GitHub repository, as
-given by \code{packages_list_to_be_updated()}.}
+\item{package_name}{character(1) The name of the organization R package that
+is also available on GitHub.}
 
 \item{release}{character(1) The Bioconductor version branch tag, e.g.,
 "RELEASE_3_16"}

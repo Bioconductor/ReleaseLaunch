@@ -85,7 +85,7 @@
                         <h4 data-toc-skip class="author">Bioconductor
 Maintainer</h4>
             
-            <h4 data-toc-skip class="date">December 06, 2022</h4>
+            <h4 data-toc-skip class="date">December 07, 2022</h4>
       
       
       <div class="hidden name"><code>Version-bump-and-branch-creation-HOWTO.Rmd</code></div>
@@ -545,11 +545,12 @@ with the latest version bump from a Bioconductor release, use the
 <p>First, create a fine-grained Personal Access Token (PAT) under User
 &gt; Settings &gt; Developer Settings &gt; PATs &gt; Fine-grained
 tokens.</p>
-<p>When generating a new token, select <code>Bioconductor</code> as the
-resource owner, then ‘All repositories’ and under ‘Repository
-permissions’ select ‘Content’ &gt; ‘Read and Write’. Add this as the
-<code>GITHUB_PAT</code> variable in the <code>~/.Renviron</code>
-file.</p>
+<p>When generating a new token, select <code>Bioconductor</code> (or
+organization) as the resource owner, then ‘All repositories’ and under
+‘Repository permissions’ select ‘Contents’ &gt; ‘Read and Write’. If you
+are also modifying default branches, select ‘Read and Write’ under
+‘Administration’. It is recommended to use
+<code><a href="https://gitcreds.r-lib.org/reference/gitcreds_get.html" class="external-link">gitcreds::gitcreds_set()</a></code> to store the fine-grained PAT.</p>
 <p><strong>Note</strong>. Depending on the organization’s settings, R /
 Bioconductor packages hosted on GitHub may also be updated with a
 classic PAT. These commands only work if the user has admin access to

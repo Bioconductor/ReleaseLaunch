@@ -10,6 +10,8 @@
 #' @param branches character() A vector of branches that are sought as default
 #'   branches
 #'
+#' @seealso repos_with_default_branch
+#'
 #' @return A named character vector of default branches whose names correspond
 #'   to package repositories on GitHub
 #'
@@ -26,6 +28,15 @@ packages_with_default_branch <- function(
     candidates <- intersect(names(pre_existing_pkgs), software)
     candidates <- pre_existing_pkgs[candidates]
     candidates[candidates %in% branches]
+}
+
+#' @export
+repos_with_default_branch <- function(
+    branches = c(.OLD_DEFAULT_BRANCH, "main"),
+    org = "Bioconductor"
+) {
+    repos <- get_org_github_repos(org = org)
+    repos[repos %in% branches]
 }
 
 #' Create the 'devel' branch locally and on GitHub
@@ -68,7 +79,7 @@ packages_with_default_branch <- function(
 create_devel_branch <- function(
     package_name, from_branch = .OLD_DEFAULT_BRANCH, org = "Bioconductor",
     set_upstream = c("origin/devel", "upstream/devel"),
-    clone = FALSE
+    clone = FALSE, is_package = TRUE
 ) {
     if (!dir.exists(package_name) && clone)
         git_clone(url = .get_slug_gh(package_name, org))
@@ -77,7 +88,8 @@ create_devel_branch <- function(
 
     old_wd <- setwd(package_name)
     on.exit({ setwd(old_wd) })
-    .validate_remotes()
+    if (is_package)
+        .validate_remotes()
 
     has_devel <- git_branch_exists("devel")
     if (has_devel)
@@ -85,13 +97,25 @@ create_devel_branch <- function(
 
     git_branch_checkout(from_branch)
     git_pull(remote = "origin")
-    git_pull(remote = "upstream")
-    git_branch_create("devel", checkout = TRUE)
+    if (is_package)
+        git_pull(remote = "upstream")
+    git_branch_move(branch = from_branch, new_branch = "devel", repo = I("."))
+    if (git_branch_exists(from_branch))
+        git_branch_delete(from_branch)
+    gh::gh(
+        "POST /repos/{owner}/{repo}/branches/{branch}/rename",
+        owner = org,
+        repo = package_name,
+        branch = from_branch, new_name = "devel",
+        .token = gh::gh_token()
+    )
 
     set_upstream <- match.arg(set_upstream)
     ## push first then set upstream
     git_push(remote = "origin")
 
+    ## set head to origin/devel
+    system2("git", "remote set-head origin devel")
     git_branch_set_upstream(set_upstream)
 }
 
@@ -129,6 +153,27 @@ add_bioc_remote <- function(package_name, remote = "upstream") {
     git_remote_add(bioc_git_slug, remote)
 }
 
+.create_devel_branch <- function(
+    packages,
+    org = "Bioconductor",
+    set_upstream = c("origin/devel", "upstream/devel"),
+    clone = TRUE,
+    is_package = TRUE
+) {
+    mapply(
+        FUN = create_devel_branch,
+        package_name = names(packages),
+        from_branch = packages,
+        MoreArgs = list(
+            org = org,
+            set_upstream = set_upstream,
+            clone = clone,
+            is_package = is_package
+        ),
+        SIMPLIFY = FALSE
+    )
+}
+
 #' Convenience function to create the devel branch for all GitHub packages
 #'
 #' This function identifies an organization's repositories that are packages
@@ -159,15 +204,28 @@ branch_all_packages <- function(
     clone = TRUE
 ) {
     packages <- packages_with_default_branch(version, old_branches, org)
-    mapply(
-        FUN = create_devel_branch,
-        package_name = names(packages),
-        from_branch = packages,
-        MoreArgs = list(
-            set_upstream = set_upstream,
-            clone = clone,
-            org = org
-        ),
-        SIMPLIFY = FALSE
+    .create_devel_branch(
+        packages = packages,
+        org = org,
+        set_upstream = set_upstream,
+        clone = clone,
+        is_package = TRUE
+    )
+}
+
+#' @export
+branch_all_repos <- function(
+    old_branches = c(.OLD_DEFAULT_BRANCH, "main"),
+    org = "Bioconductor",
+    set_upstream = c("origin/devel", "upstream/devel"),
+    clone = TRUE
+) {
+    repos <- repos_with_default_branch(old_branches, org)
+    .create_devel_branch(
+        packages = repos,
+        org = org,
+        set_upstream = set_upstream,
+        clone = clone,
+        is_package = FALSE
     )
 }

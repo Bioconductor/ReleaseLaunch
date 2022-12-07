@@ -9,7 +9,8 @@ create_devel_branch(
   from_branch = .OLD_DEFAULT_BRANCH,
   org = "Bioconductor",
   set_upstream = c("origin/devel", "upstream/devel"),
-  clone = FALSE
+  clone = FALSE,
+  is_package = TRUE
 )
 }
 \arguments{
@@ -24,6 +25,10 @@ the repositories on GitHub (default "Bioconductor").}
 
 \item{set_upstream}{character(1) The remote location that will be tracked by
 the local branch, either "origin/devel" (default) or "upstream/devel"}
+
+\item{is_package}{logical(1) Whether the repository is an R package on
+Bioconductor. If so, additional validity checks will be run on the git
+remotes.}
 }
 \value{
 Called for the side effect of creating a 'devel' branch on the local

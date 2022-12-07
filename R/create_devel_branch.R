@@ -30,6 +30,23 @@ packages_with_default_branch <- function(
     candidates[candidates %in% branches]
 }
 
+#' Identify repositories that have old default branches
+#'
+#' The function obtains all the repositories within the given organization
+#' (Bioconductor) that match the `branches` argument.
+#'
+#' @details
+#'
+#' The output of this function is used to rename branches with
+#' `branch_all_repos`.
+#'
+#' @inheritParams packages_with_default_branch
+#'
+#' @return A named character vector of default branches whose names correspond
+#'   to organization repositories on GitHub
+#'
+#' @seealso packages_with_default_branch
+#'
 #' @export
 repos_with_default_branch <- function(
     branches = c(.OLD_DEFAULT_BRANCH, "main"),
@@ -60,6 +77,10 @@ repos_with_default_branch <- function(
 #'
 #' @param set_upstream character(1) The remote location that will be tracked by
 #'   the local branch, either "origin/devel" (default) or "upstream/devel"
+#'
+#' @param is_package logical(1) Whether the repository is an R package on
+#'   Bioconductor. If so, additional validity checks will be run on the git
+#'   remotes.
 #'
 #' @return Called for the side effect of creating a 'devel' branch on the local
 #'   and remote repositories on GitHub
@@ -213,6 +234,13 @@ branch_all_packages <- function(
     )
 }
 
+#' Convenience function to create the devel branch for all GitHub repositories
+#'
+#' This function identifies all repositories within an organization that have
+#' `old_branches`, i.e., either 'master' or 'main' by default. It then
+#' sets the default branch to `devel`.
+#'
+#'
 #' @export
 branch_all_repos <- function(
     old_branches = c(.OLD_DEFAULT_BRANCH, "main"),

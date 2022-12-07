@@ -78,6 +78,28 @@ sets the default branch to <code>devel</code>.</p>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
+    <div id="arguments">
+    <h2>Arguments</h2>
+    <dl><dt>old_branches</dt>
+<dd><p>character() A vector of default branch names to be
+replaced, by default this includes 'master' and 'main'</p></dd>
+
+
+<dt>org</dt>
+<dd><p>character(1L) The organization for which to extract the names of
+the repositories on GitHub (default "Bioconductor").</p></dd>
+
+
+<dt>set_upstream</dt>
+<dd><p>character(1) The remote location that will be tracked by
+the local branch, either "origin/devel" (default) or "upstream/devel"</p></dd>
+
+
+<dt>clone</dt>
+<dd><p>logical(1) Whether to clone the GitHub repository into the
+current working directory (default: TRUE)</p></dd>
+
+</dl></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

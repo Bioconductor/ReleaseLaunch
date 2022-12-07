@@ -87,7 +87,14 @@ Bioconductor to avoid missing packages that are only in devel.</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>old_branches</dt>
+    <dl><dt>version</dt>
+<dd><p>character(1) The current development version of Bioconductor
+given by <code><a href="https://rdrr.io/pkg/BiocManager/man/version.html" class="external-link">BiocManager::version()</a></code> (default). It is used to obtain the
+packages currently available in the Bioconductor CRAN-like repository with
+<code><a href="https://rdrr.io/pkg/BiocManager/man/repositories.html" class="external-link">BiocManager::repositories()</a></code>.</p></dd>
+
+
+<dt>old_branches</dt>
 <dd><p>character() A vector of default branch names to be
 replaced, by default this includes 'master' and 'main'</p></dd>
 
@@ -100,6 +107,11 @@ the repositories on GitHub (default "Bioconductor").</p></dd>
 <dt>set_upstream</dt>
 <dd><p>character(1) The remote location that will be tracked by
 the local branch, either "origin/devel" (default) or "upstream/devel"</p></dd>
+
+
+<dt>clone</dt>
+<dd><p>logical(1) Whether to clone the GitHub repository into the
+current working directory (default: TRUE)</p></dd>
 
 </dl></div>
     <div id="details">

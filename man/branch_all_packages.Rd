@@ -13,6 +13,11 @@ branch_all_packages(
 )
 }
 \arguments{
+\item{version}{character(1) The current development version of Bioconductor
+given by \code{BiocManager::version()} (default). It is used to obtain the
+packages currently available in the Bioconductor CRAN-like repository with
+\code{BiocManager::repositories()}.}
+
 \item{old_branches}{character() A vector of default branch names to be
 replaced, by default this includes 'master' and 'main'}
 
@@ -21,6 +26,9 @@ the repositories on GitHub (default "Bioconductor").}
 
 \item{set_upstream}{character(1) The remote location that will be tracked by
 the local branch, either "origin/devel" (default) or "upstream/devel"}
+
+\item{clone}{logical(1) Whether to clone the GitHub repository into the
+current working directory (default: TRUE)}
 }
 \description{
 This function identifies an organization's repositories that are packages

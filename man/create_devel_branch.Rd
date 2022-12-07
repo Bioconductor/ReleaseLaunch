@@ -26,6 +26,9 @@ the repositories on GitHub (default "Bioconductor").}
 \item{set_upstream}{character(1) The remote location that will be tracked by
 the local branch, either "origin/devel" (default) or "upstream/devel"}
 
+\item{clone}{logical(1) Whether to clone the GitHub repository into the
+current working directory (default: TRUE)}
+
 \item{is_package}{logical(1) Whether the repository is an R package on
 Bioconductor. If so, additional validity checks will be run on the git
 remotes.}

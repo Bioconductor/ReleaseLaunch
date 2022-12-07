@@ -11,6 +11,19 @@ branch_all_repos(
   clone = TRUE
 )
 }
+\arguments{
+\item{old_branches}{character() A vector of default branch names to be
+replaced, by default this includes 'master' and 'main'}
+
+\item{org}{character(1L) The organization for which to extract the names of
+the repositories on GitHub (default "Bioconductor").}
+
+\item{set_upstream}{character(1) The remote location that will be tracked by
+the local branch, either "origin/devel" (default) or "upstream/devel"}
+
+\item{clone}{logical(1) Whether to clone the GitHub repository into the
+current working directory (default: TRUE)}
+}
 \description{
 This function identifies all repositories within an organization that have
 \code{old_branches}, i.e., either 'master' or 'main' by default. It then

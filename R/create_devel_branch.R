@@ -7,6 +7,11 @@
 #'
 #' @inheritParams create_devel_branch
 #'
+#' @param version character(1) The current development version of Bioconductor
+#'   given by `BiocManager::version()` (default). It is used to obtain the
+#'   packages currently available in the Bioconductor CRAN-like repository with
+#'   `BiocManager::repositories()`.
+#'
 #' @param branches character() A vector of branches that are sought as default
 #'   branches
 #'
@@ -77,6 +82,9 @@ repos_with_default_branch <- function(
 #'
 #' @param set_upstream character(1) The remote location that will be tracked by
 #'   the local branch, either "origin/devel" (default) or "upstream/devel"
+#'
+#' @param clone logical(1) Whether to clone the GitHub repository into the
+#'   current working directory (default: TRUE)
 #'
 #' @param is_package logical(1) Whether the repository is an R package on
 #'   Bioconductor. If so, additional validity checks will be run on the git
@@ -213,6 +221,8 @@ add_bioc_remote <- function(package_name, remote = "upstream") {
 #'
 #' @inheritParams create_devel_branch
 #'
+#' @inheritParams packages_with_default_branch
+#'
 #' @param old_branches character() A vector of default branch names to be
 #'   replaced, by default this includes 'master' and 'main'
 #'
@@ -240,6 +250,7 @@ branch_all_packages <- function(
 #' `old_branches`, i.e., either 'master' or 'main' by default. It then
 #' sets the default branch to `devel`.
 #'
+#' @inheritParams branch_all_packages
 #'
 #' @export
 branch_all_repos <- function(

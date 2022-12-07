@@ -28,6 +28,8 @@ getNEWSdb <- function(news, def_FUN = tools:::.news_reader_default) {
     tryCatch({ build_news_db(news) }, error = function(e) emptyNewsDB())
 }
 
+utils::globalVariables("Version")
+
 getLatestNews <- function(news, ver) {
     db <- getNEWSdb(news)
     if (nrow(db))

@@ -496,10 +496,11 @@ version bump from a Bioconductor release, use the `ReleaseLaunch` R package at
 First, create a fine-grained Personal Access Token (PAT) under User \> Settings
 \> Developer Settings \> PATs \> Fine-grained tokens.
 
-When generating a new token, select `Bioconductor` as the resource owner, 
-then 'All repositories' and under 'Repository permissions' select 'Content' \>
-'Read and Write'. Add this as the `GITHUB_PAT` variable in the `~/.Renviron`
-file.
+When generating a new token, select `Bioconductor` (or organization) as the
+resource owner, then 'All repositories' and under 'Repository permissions'
+select 'Contents' \> 'Read and Write'. If you are also modifying default
+branches, select 'Read and Write' under 'Administration'. It is recommended to
+use `gitcreds::gitcreds_set()` to store the fine-grained PAT.
 
 **Note**. Depending on the organization's settings, R / Bioconductor packages
 hosted on GitHub may also be updated with a classic PAT. These commands only

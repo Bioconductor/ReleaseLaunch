@@ -129,7 +129,7 @@ rename_branch_to_devel <- function(
     if (is_package)
         git_pull(remote = "upstream")
     git_branch_move(branch = from_branch, new_branch = "devel", repo = I("."))
-    if (git_branch_exists(from_branch))
+    if (git_branch_exists(from_branch) && git_branch_exists("devel"))
         git_branch_delete(from_branch)
     gh::gh(
         "POST /repos/{owner}/{repo}/branches/{branch}/rename",

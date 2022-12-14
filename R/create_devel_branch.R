@@ -5,7 +5,7 @@
 #' the user to identify which repositories will need to have a `devel` branch
 #' added.
 #'
-#' @inheritParams create_devel_branch
+#' @inheritParams rename_branch_to_devel
 #'
 #' @param version character(1) The current development version of Bioconductor
 #'   given by `BiocManager::version()` (default). It is used to obtain the
@@ -96,7 +96,7 @@ repos_with_default_branch <- function(
 #' @examples
 #' if (interactive()) {
 #'
-#'   create_devel_branch(
+#'   rename_branch_to_devel(
 #'     package_name = "SummarizedExperiment",
 #'     org = "Bioconductor",
 #'     set_upstream = "upstream/devel"
@@ -105,7 +105,7 @@ repos_with_default_branch <- function(
 #' }
 #'
 #' @export
-create_devel_branch <- function(
+rename_branch_to_devel <- function(
     package_name, from_branch = .OLD_DEFAULT_BRANCH, org = "Bioconductor",
     set_upstream = c("origin/devel", "upstream/devel"),
     clone = FALSE, is_package = TRUE
@@ -156,7 +156,7 @@ create_devel_branch <- function(
 #' desired name via the `remote` argument but it is customarily called the
 #' 'upstream' remote.
 #'
-#' @inheritParams create_devel_branch
+#' @inheritParams rename_branch_to_devel
 #'
 #' @param remote character(1L) The name of the remote to be created. This is
 #'   usually named 'upstream' (default)
@@ -182,7 +182,7 @@ add_bioc_remote <- function(package_name, remote = "upstream") {
     git_remote_add(bioc_git_slug, remote)
 }
 
-.create_devel_branch <- function(
+.rename_branch_to_devel <- function(
     packages,
     org = "Bioconductor",
     set_upstream = c("origin/devel", "upstream/devel"),
@@ -190,7 +190,7 @@ add_bioc_remote <- function(package_name, remote = "upstream") {
     is_package = TRUE
 ) {
     mapply(
-        FUN = create_devel_branch,
+        FUN = rename_branch_to_devel,
         package_name = names(packages),
         from_branch = packages,
         MoreArgs = list(
@@ -208,7 +208,7 @@ add_bioc_remote <- function(package_name, remote = "upstream") {
 #' This function identifies an organization's repositories that are packages
 #' given the current version of Bioconductor (from `BiocManager::version()`)
 #' and identifies which repositories need to have a `devel` branch added.
-#' It then adds the `devel` branch using the `create_devel_branch` function.
+#' It then adds the `devel` branch using the `rename_branch_to_devel` function.
 #' It is highly recommended that the user run this on the devel version of
 #' Bioconductor to avoid missing packages that are only in devel.
 #'
@@ -219,7 +219,7 @@ add_bioc_remote <- function(package_name, remote = "upstream") {
 #' user running this function can clone packages via SSH and have access to
 #' modifying packages on the GitHub organization.
 #'
-#' @inheritParams create_devel_branch
+#' @inheritParams rename_branch_to_devel
 #'
 #' @inheritParams packages_with_default_branch
 #'
@@ -235,7 +235,7 @@ branch_all_packages <- function(
     clone = TRUE
 ) {
     packages <- packages_with_default_branch(version, old_branches, org)
-    .create_devel_branch(
+    .rename_branch_to_devel(
         packages = packages,
         org = org,
         set_upstream = set_upstream,
@@ -260,7 +260,7 @@ branch_all_repos <- function(
     clone = TRUE
 ) {
     repos <- repos_with_default_branch(old_branches, org)
-    .create_devel_branch(
+    .rename_branch_to_devel(
         packages = repos,
         org = org,
         set_upstream = set_upstream,

@@ -34,7 +34,7 @@ current working directory (default: TRUE)}
 This function identifies an organization's repositories that are packages
 given the current version of Bioconductor (from \code{BiocManager::version()})
 and identifies which repositories need to have a \code{devel} branch added.
-It then adds the \code{devel} branch using the \code{create_devel_branch} function.
+It then adds the \code{devel} branch using the \code{rename_branch_to_devel} function.
 It is highly recommended that the user run this on the devel version of
 Bioconductor to avoid missing packages that are only in devel.
 }

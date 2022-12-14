@@ -37,9 +37,6 @@
     <loc>https://github.com/Bioconductor/ReleaseLaunch/reference/clone_and_push_git_repo.html</loc>
   </url>
   <url>
-    <loc>https://github.com/Bioconductor/ReleaseLaunch/reference/create_devel_branch.html</loc>
-  </url>
-  <url>
     <loc>https://github.com/Bioconductor/ReleaseLaunch/reference/getPackagesNEWS.html</loc>
   </url>
   <url>
@@ -56,6 +53,9 @@
   </url>
   <url>
     <loc>https://github.com/Bioconductor/ReleaseLaunch/reference/packages_with_default_branch.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/Bioconductor/ReleaseLaunch/reference/rename_branch_to_devel.html</loc>
   </url>
   <url>
     <loc>https://github.com/Bioconductor/ReleaseLaunch/reference/repos_with_default_branch.html</loc>

@@ -86,9 +86,10 @@ repos_with_default_branch <- function(
 #' @param clone logical(1) Whether to clone the GitHub repository into the
 #'   current working directory (default: TRUE)
 #'
-#' @param is_package logical(1) Whether the repository is an R package on
-#'   Bioconductor. If so, additional validity checks will be run on the git
-#'   remotes.
+#' @param is_bioc_pkg logical(1) Whether the repository is an R package that has
+#'   an upstream remote on Bioconductor, i.e.,
+#'   <git@git.bioconductor.org:packages/Package>. If so, additional validity
+#'   checks will be run on the git remotes.
 #'
 #' @return Called for the side effect of creating a 'devel' branch on the local
 #'   and remote repositories on GitHub
@@ -108,7 +109,7 @@ repos_with_default_branch <- function(
 rename_branch_to_devel <- function(
     package_name, from_branch = .OLD_DEFAULT_BRANCH, org = "Bioconductor",
     set_upstream = c("origin/devel", "upstream/devel"),
-    clone = FALSE, is_package = TRUE
+    clone = FALSE, is_bioc_pkg = TRUE
 ) {
     if (!dir.exists(package_name) && clone)
         git_clone(url = .get_slug_gh(package_name, org))
@@ -117,7 +118,7 @@ rename_branch_to_devel <- function(
 
     old_wd <- setwd(package_name)
     on.exit({ setwd(old_wd) })
-    if (is_package)
+    if (is_bioc_pkg)
         .validate_remotes()
 
     has_devel <- git_branch_exists("devel")
@@ -126,7 +127,7 @@ rename_branch_to_devel <- function(
 
     git_branch_checkout(from_branch)
     git_pull(remote = "origin")
-    if (is_package)
+    if (is_bioc_pkg)
         git_pull(remote = "upstream")
     git_branch_move(branch = from_branch, new_branch = "devel", repo = I("."))
     if (git_branch_exists(from_branch) && git_branch_exists("devel"))
@@ -187,7 +188,7 @@ add_bioc_remote <- function(package_name, remote = "upstream") {
     org = "Bioconductor",
     set_upstream = c("origin/devel", "upstream/devel"),
     clone = TRUE,
-    is_package = TRUE
+    is_bioc_pkg = TRUE
 ) {
     mapply(
         FUN = rename_branch_to_devel,
@@ -197,7 +198,7 @@ add_bioc_remote <- function(package_name, remote = "upstream") {
             org = org,
             set_upstream = set_upstream,
             clone = clone,
-            is_package = is_package
+            is_bioc_pkg = is_bioc_pkg
         ),
         SIMPLIFY = FALSE
     )
@@ -240,7 +241,7 @@ branch_all_packages <- function(
         org = org,
         set_upstream = set_upstream,
         clone = clone,
-        is_package = TRUE
+        is_bioc_pkg = TRUE
     )
 }
 
@@ -265,6 +266,6 @@ branch_all_repos <- function(
         org = org,
         set_upstream = set_upstream,
         clone = clone,
-        is_package = FALSE
+        is_bioc_pkg = FALSE
     )
 }

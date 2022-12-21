@@ -10,7 +10,7 @@ rename_branch_to_devel(
   org = "Bioconductor",
   set_upstream = c("origin/devel", "upstream/devel"),
   clone = FALSE,
-  is_package = TRUE
+  is_bioc_pkg = TRUE
 )
 }
 \arguments{
@@ -29,9 +29,10 @@ the local branch, either "origin/devel" (default) or "upstream/devel"}
 \item{clone}{logical(1) Whether to clone the GitHub repository into the
 current working directory (default: TRUE)}
 
-\item{is_package}{logical(1) Whether the repository is an R package on
-Bioconductor. If so, additional validity checks will be run on the git
-remotes.}
+\item{is_bioc_pkg}{logical(1) Whether the repository is an R package that has
+an upstream remote on Bioconductor, i.e.,
+<git@git.bioconductor.org:packages/Package>. If so, additional validity
+checks will be run on the git remotes.}
 }
 \value{
 Called for the side effect of creating a 'devel' branch on the local

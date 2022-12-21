@@ -78,7 +78,7 @@ should be set to GitHub. Upstream tracking can be configured to either the
 <span>  org <span class="op">=</span> <span class="st">"Bioconductor"</span>,</span>
 <span>  set_upstream <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"origin/devel"</span>, <span class="st">"upstream/devel"</span><span class="op">)</span>,</span>
 <span>  clone <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  is_package <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  is_bioc_pkg <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -109,10 +109,11 @@ the local branch, either "origin/devel" (default) or "upstream/devel"</p></dd>
 current working directory (default: TRUE)</p></dd>
 
 
-<dt>is_package</dt>
-<dd><p>logical(1) Whether the repository is an R package on
-Bioconductor. If so, additional validity checks will be run on the git
-remotes.</p></dd>
+<dt>is_bioc_pkg</dt>
+<dd><p>logical(1) Whether the repository is an R package that has
+an upstream remote on Bioconductor, i.e.,
+&lt;git@git.bioconductor.org:packages/Package&gt;. If so, additional validity
+checks will be run on the git remotes.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -158,7 +159,7 @@ repository is validated before the <code>devel</code> branch is created.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

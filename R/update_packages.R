@@ -173,7 +173,7 @@ clone_and_push_git_repo <- function(
     bioc_git_slug <- .get_bioc_slug(package_name)
     ## git remote add upstream git@git.bioconductor.org:packages/<pkg>.git
     remotes <- git_remote_list()
-    if (.check_remote_exists(remotes, "upstream"))
+    if (!.check_remote_exists(remotes, "upstream"))
         git_remote_add(bioc_git_slug, name = "upstream")
     git_fetch("upstream")
     up_remote <- paste0("upstream/", bioc_branch)

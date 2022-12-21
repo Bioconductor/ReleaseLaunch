@@ -104,16 +104,21 @@ get_bioc_software_manifest <-
 #' @param version character(1L) The numeric version of the Bioconductor release,
 #'   e.g., "3.16"
 #'
+#' @param type character(1L) The official repository name as given by
+#'   `BiocManager::repositories()`. Currently, only software and experiment data
+#'   ('BioCsoft' and 'BioCexp', respectively) are supported.
+#'
 #' @return A named scalar string of the default branch whose name corresponds to
 #'   a Bioconductor GitHub repository
 #'
 #' @export
-packages_list_to_be_updated <-
-    function(version = "3.16", org = "Bioconductor")
-{
+packages_list_to_be_updated <- function(
+    version = "3.16", org = "Bioconductor", type = c("BioCsoft", "BioCexp")
+) {
+    type <- match.arg(type)
     release_slug <- paste0("RELEASE_", gsub("\\.", "_", version))
     ## software <- get_bioc_software_manifest()
-    repos <- BiocManager:::.repositories_bioc(version)["BioCsoft"]
+    repos <- BiocManager:::.repositories_bioc(version)[type]
     db <- utils::available.packages(repos = repos, type = "source")
     software <- rownames(db)
     pre_existing_pkgs <- get_org_github_repos(org = org)

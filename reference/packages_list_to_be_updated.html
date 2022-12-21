@@ -70,7 +70,11 @@ and filters them to only valid R packages and repositories that do not have a
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">packages_list_to_be_updated</span><span class="op">(</span>version <span class="op">=</span> <span class="st">"3.16"</span>, org <span class="op">=</span> <span class="st">"Bioconductor"</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">packages_list_to_be_updated</span><span class="op">(</span></span>
+<span>  version <span class="op">=</span> <span class="st">"3.16"</span>,</span>
+<span>  org <span class="op">=</span> <span class="st">"Bioconductor"</span>,</span>
+<span>  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BioCsoft"</span>, <span class="st">"BioCexp"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -83,6 +87,12 @@ e.g., "3.16"</p></dd>
 <dt>org</dt>
 <dd><p>character(1L) The organization for which to extract the names of
 the repositories on GitHub (default "Bioconductor").</p></dd>
+
+
+<dt>type</dt>
+<dd><p>character(1L) The official repository name as given by
+<code><a href="https://rdrr.io/pkg/BiocManager/man/repositories.html" class="external-link">BiocManager::repositories()</a></code>. Currently, only software and experiment data
+('BioCsoft' and 'BioCexp', respectively) are supported.</p></dd>
 
 </dl></div>
     <div id="value">

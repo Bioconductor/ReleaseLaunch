@@ -5,12 +5,17 @@
 \title{Function to update all the packages.}
 \usage{
 update_all_packages(
+  packages = character(0L),
   release = "RELEASE_3_16",
   bioc_branch = .OLD_DEFAULT_BRANCH,
   org = "Bioconductor"
 )
 }
 \arguments{
+\item{packages}{named character() A character vector of default branches
+whose names correspond to Bioconductor package names. See
+\code{packages_without_release_branch}.}
+
 \item{release}{character(1) The Bioconductor version branch tag, e.g.,
 "RELEASE_3_16"}
 
@@ -23,4 +28,7 @@ the repositories on GitHub (default "Bioconductor").}
 \description{
 Updates all the packages in the GitHub organization maintained by
 the core team.
+}
+\seealso{
+packages_without_release_branch
 }

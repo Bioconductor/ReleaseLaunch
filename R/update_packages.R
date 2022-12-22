@@ -134,7 +134,7 @@ get_bioc_software_manifest <-
 #'   a Bioconductor GitHub repository
 #'
 #' @export
-packages_list_to_be_updated <- function(
+packages_without_release_branch <- function(
     version = "3.16", org = "Bioconductor", type = c("BioCsoft", "BioCexp")
 ) {
     type <- match.arg(type)
@@ -233,13 +233,23 @@ clone_and_push_git_repo <- function(
 #'
 #' @inheritParams clone_and_push_git_repo
 #'
+#' @param packages named character() A character vector of default branches
+#'   whose names correspond to Bioconductor package names. See
+#'   `packages_without_release_branch`.
+#'
+#' @seealso packages_without_release_branch
+#'
 #' @export
 update_all_packages <- function(
+    packages = character(0L),
     release = "RELEASE_3_16",
     bioc_branch = .OLD_DEFAULT_BRANCH,
     org = "Bioconductor"
 ) {
-    packages <- packages_list_to_be_updated(org = org)
+    if (!length(packages))
+        packages <- packages_without_release_branch(org = org)
+    if (is.null(names(packages)))
+        stop("'packages' must have names")
     .clone_and_push_git_repos(
         packages, release=release, bioc_branch = bioc_branch, org = org
     )

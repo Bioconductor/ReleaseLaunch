@@ -20,11 +20,13 @@
     do.call(c, reslist)
 }
 
-#' Get all repositories for a given GitHub organization
+#' Get all repositories for a given GitHub organization or username
 #'
-#' This uses the GitHub API, to get the Bioconductor repositories hosted
-#' on GitHub. It returns all packages in https:://github.com/Bioconductor
-#' by default.
+#' @aliases get_org_github_repos get_user_github_repos
+#'
+#' @description `get_user_github_repos` and `get_org_github_repos` use the
+#' GitHub API, to obtain the repositories hosted on GitHub via the 'username'
+#' or the organization ('org') names, respectively.
 #'
 #' @inheritParams gh::gh
 #'
@@ -36,6 +38,8 @@
 #' @return A vector of default branches whose names correspond to the
 #'   organization's GitHub repositories
 #'
+#' @name get-github-repos
+#'
 #' @export
 get_org_github_repos <-
     function(per_page = 100, pages = 10, org = "Bioconductor")
@@ -44,6 +48,24 @@ get_org_github_repos <-
         api = "/orgs/{org}/repos", per_page = per_page, pages = pages, org = org
     )
     ## return all repo names
+    defaults <- vapply(results, `[[`, character(1L), "default_branch")
+    repos <- vapply(results, `[[`, character(1L), "name")
+    names(defaults) <- repos
+    defaults
+}
+
+#' @rdname get-github-repos
+#'
+#' @param username character(1) The GitHub username used to query repositories
+#'
+#' @export
+get_user_github_repos <-
+    function(per_page = 100, pages = 10, username)
+{
+    results <- .get_gh_repos(
+        api = "/users/{username}/repos", per_page = 100,
+        pages = 10, username = username
+    )
     defaults <- vapply(results, `[[`, character(1L), "default_branch")
     repos <- vapply(results, `[[`, character(1L), "name")
     names(defaults) <- repos
@@ -99,7 +121,7 @@ get_bioc_software_manifest <-
 #' and filters them to only valid R packages and repositories that do not have a
 #' `RELEASE_XX_YY` branch.
 #'
-#' @inheritParams get_org_github_repos
+#' @inheritParams get-github-repos
 #'
 #' @param version character(1L) The numeric version of the Bioconductor release,
 #'   e.g., "3.16"
@@ -144,7 +166,7 @@ packages_list_to_be_updated <- function(
 #' @param bioc_branch character(1) The name of the default branch on the
 #'   Bioconductor git server (default 'master')
 #'
-#' @inheritParams get_org_github_repos
+#' @inheritParams get-github-repos
 #'
 #' @import gert
 #'

@@ -313,6 +313,7 @@ rename_branch_repos <- function(
 #'   default packages
 #'
 #' @inheritParams gert::git_branch_move
+#' @inheritParams rename_branch_repos
 #'
 #' @export
 update_local_repos <- function(

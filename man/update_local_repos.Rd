@@ -19,6 +19,9 @@ repositories exist for the user}
 default packages}
 
 \item{new_branch}{target name of the branch once the move is performed; this name is validated for consistency.}
+
+\item{set_upstream}{character(1) The remote location that will be tracked by
+the local branch, either "origin/devel" (default) or "upstream/devel"}
 }
 \description{
 This function works \emph{only} after renaming branches on GitHub from \code{master} to

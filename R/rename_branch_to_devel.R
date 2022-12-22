@@ -224,18 +224,28 @@ add_bioc_remote <- function(package_name, remote = "upstream") {
 #'
 #' @inheritParams packages_with_default_branch
 #'
+#' @param packages named character() A character vector of default branches
+#'   whose names correspond to Bioconductor package names. See
+#'   `packages_with_default_branch`.
+#'
 #' @param old_branches character() A vector of default branch names to be
 #'   replaced, by default this includes 'master' and 'main'
 #'
+#' @seealso packages_with_default_branch
+#'
 #' @export
 branch_all_packages <- function(
+    packages = character(0L),
     version = BiocManager::version(),
     old_branches = c(.OLD_DEFAULT_BRANCH, "main"),
     org = "Bioconductor",
     set_upstream = c("origin/devel", "upstream/devel"),
     clone = TRUE
 ) {
-    packages <- packages_with_default_branch(version, old_branches, org)
+    if (!length(packages))
+        packages <- packages_with_default_branch(version, old_branches, org)
+    if (is.null(names(packages)))
+        stop("'packages' must have names")
     .rename_branch_to_devel(
         packages = packages,
         org = org,
@@ -253,14 +263,24 @@ branch_all_packages <- function(
 #'
 #' @inheritParams branch_all_packages
 #'
+#' @param repos named character() A vector of default branches whose names
+#'   correspond to repositories hosted on GitHub. If missing,
+#'   `repos_with_default_branch` is called and its result is used.
+#'
+#' @seealso repos_with_default_branch
+#'
 #' @export
 branch_all_repos <- function(
+    repos = character(0L),
     old_branches = c(.OLD_DEFAULT_BRANCH, "main"),
     org = "Bioconductor",
     set_upstream = c("origin/devel", "upstream/devel"),
     clone = TRUE
 ) {
-    repos <- repos_with_default_branch(old_branches, org)
+    if (!length(repos))
+        repos <- repos_with_default_branch(old_branches, org)
+    if (is.null(names(repos)))
+        stop("'repos' must have names")
     .rename_branch_to_devel(
         packages = repos,
         org = org,

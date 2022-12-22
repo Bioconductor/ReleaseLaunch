@@ -5,6 +5,7 @@
 \title{Convenience function to create the devel branch for all GitHub packages}
 \usage{
 branch_all_packages(
+  packages = character(0L),
   version = BiocManager::version(),
   old_branches = c(.OLD_DEFAULT_BRANCH, "main"),
   org = "Bioconductor",
@@ -13,6 +14,10 @@ branch_all_packages(
 )
 }
 \arguments{
+\item{packages}{named character() A character vector of default branches
+whose names correspond to Bioconductor package names. See
+\code{packages_with_default_branch}.}
+
 \item{version}{character(1) The current development version of Bioconductor
 given by \code{BiocManager::version()} (default). It is used to obtain the
 packages currently available in the Bioconductor CRAN-like repository with
@@ -43,4 +48,7 @@ Note that the \code{clone} argument allows the user to clone the repository firs
 from GitHub via SSH. It is recommended that this be enabled and that the
 user running this function can clone packages via SSH and have access to
 modifying packages on the GitHub organization.
+}
+\seealso{
+packages_with_default_branch
 }

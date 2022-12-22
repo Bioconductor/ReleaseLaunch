@@ -5,6 +5,7 @@
 \title{Convenience function to create the devel branch for all GitHub repositories}
 \usage{
 branch_all_repos(
+  repos = character(0L),
   old_branches = c(.OLD_DEFAULT_BRANCH, "main"),
   org = "Bioconductor",
   set_upstream = c("origin/devel", "upstream/devel"),
@@ -12,6 +13,10 @@ branch_all_repos(
 )
 }
 \arguments{
+\item{repos}{named character() A vector of default branches whose names
+correspond to repositories hosted on GitHub. If missing,
+\code{repos_with_default_branch} is called and its result is used.}
+
 \item{old_branches}{character() A vector of default branch names to be
 replaced, by default this includes 'master' and 'main'}
 
@@ -28,4 +33,7 @@ current working directory (default: TRUE)}
 This function identifies all repositories within an organization that have
 \code{old_branches}, i.e., either 'master' or 'main' by default. It then
 sets the default branch to \code{devel}.
+}
+\seealso{
+repos_with_default_branch
 }

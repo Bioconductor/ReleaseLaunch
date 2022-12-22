@@ -557,12 +557,12 @@ classic PAT. These commands only work if the user has admin access to
 the organization’s GitHub account.</p>
 <p>To update all packages, run the following command:</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/update_all_packages.html">update_all_packages</a></span><span class="op">(</span>release <span class="op">=</span> <span class="st">"RELEASE_3_16"</span>, org <span class="op">=</span> <span class="st">"Bioconductor"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/branch-release-gh.html">add_gh_release_branches</a></span><span class="op">(</span>release <span class="op">=</span> <span class="st">"RELEASE_3_16"</span>, org <span class="op">=</span> <span class="st">"Bioconductor"</span><span class="op">)</span></span></code></pre></div>
 <p>Be sure to edit the <code>release</code> argument in the
 function.</p>
 <p>To update an individual package, run the following function:</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/clone_and_push_git_repo.html">clone_and_push_git_repo</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/branch-release-gh.html">add_gh_release_branch</a></span><span class="op">(</span></span>
 <span>    package_name <span class="op">=</span> <span class="st">"updateObject"</span>, release <span class="op">=</span> <span class="st">"RELEASE_3_16"</span>, gh_branch <span class="op">=</span> <span class="st">"master"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Note that the <code>gh_branch</code> corresponds to the default

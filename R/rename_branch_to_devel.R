@@ -1,3 +1,5 @@
+.OLD_DEFAULT_BRANCH <- "master"
+
 #' Find packages with default branches for an organization
 #'
 #' This function will search through an organizations repositories and identify
@@ -75,7 +77,7 @@ repos_with_default_branch <- function(
 #'   address, i.e., `git@git.bioconductor.org:packages/package`. The local
 #'   repository is validated before the `devel` branch is created.
 #'
-#' @inheritParams clone_and_push_git_repo
+#' @inheritParams branch-release-gh
 #'
 #' @param from_branch character(1) The old default branch from which to base the
 #'   new 'devel' branch from (default: 'master')

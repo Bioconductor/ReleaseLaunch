@@ -509,7 +509,7 @@ work if the user has admin access to the organization's GitHub account.
 To update all packages, run the following command:
 
 ```r
-update_all_packages(release = "RELEASE_3_16", org = "Bioconductor")
+add_gh_release_branches(release = "RELEASE_3_16", org = "Bioconductor")
 ```
 
 Be sure to edit the `release` argument in the function.
@@ -517,7 +517,7 @@ Be sure to edit the `release` argument in the function.
 To update an individual package, run the following function:
 
 ```r
-clone_and_push_git_repo(
+add_gh_release_branch(
     package_name = "updateObject", release = "RELEASE_3_16", gh_branch = "master"
 )
 ```

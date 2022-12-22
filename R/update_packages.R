@@ -1,4 +1,4 @@
-.OLD_DEFAULT_BRANCH <- "master"
+.BIOC_DEFAULT_BRANCH <- "master"
 .BIOC_GIT_ADDRESS <- "git@git.bioconductor.org"
 .GITHUB_ADDRESS <- "git@github.com"
 
@@ -149,10 +149,10 @@ packages_without_release_branch <- function(
     .filter_gh_repos_branch(candidates, release_slug, owner = org)
 }
 
-#' Clone and update a GitHub repository.
+#' Add the release branch to GitHub package repositories
 #'
-#' This function assumes that you have admin push access to the
-#' bioconductor github organization.
+#' This function assumes that you have admin push access to the GitHub
+#' organization indicated by `org`.
 #'
 #' @param package_name character(1) The name of the organization R package that
 #'   is also available on GitHub.
@@ -168,19 +168,23 @@ packages_without_release_branch <- function(
 #'
 #' @inheritParams get-github-repos
 #'
+#' @name branch-release-gh
+#'
+#' @aliases add_gh_release_branch add_gh_release_branches
+#'
 #' @import gert
 #'
 #' @examples
 #' if (interactive()) {
-#'   clone_and_push_git_repo(
+#'   add_gh_release_branch (
 #'     package_name = "updateObject", gh_branch = "master"
 #'   )
 #' }
 #'
 #' @export
-clone_and_push_git_repo <- function(
+add_gh_release_branch <- function(
     package_name, release = "RELEASE_3_16",
-    gh_branch = .OLD_DEFAULT_BRANCH, bioc_branch = .OLD_DEFAULT_BRANCH,
+    gh_branch = .BIOC_DEFAULT_BRANCH, bioc_branch = .BIOC_DEFAULT_BRANCH,
     org = "Bioconductor"
 ) {
     message("Working on: ", package_name)
@@ -215,9 +219,9 @@ clone_and_push_git_repo <- function(
     git_branch_checkout(cbranch)
 }
 
-.clone_and_push_git_repos <- function(packages, release, bioc_branch, org) {
+.add_gh_release_branches <- function(packages, release, bioc_branch, org) {
     Map(
-        clone_and_push_git_repo,
+        add_gh_release_branch,
         package_name = names(packages),
         release = release,
         gh_branch = packages,
@@ -226,12 +230,7 @@ clone_and_push_git_repo <- function(
     )
 }
 
-#' Function to update all the packages.
-#'
-#' Updates all the packages in the GitHub organization maintained by
-#' the core team.
-#'
-#' @inheritParams clone_and_push_git_repo
+#' @rdname branch-release-gh
 #'
 #' @param packages named character() A character vector of default branches
 #'   whose names correspond to Bioconductor package names. See
@@ -240,17 +239,17 @@ clone_and_push_git_repo <- function(
 #' @seealso packages_without_release_branch
 #'
 #' @export
-update_all_packages <- function(
+add_gh_release_branches <- function(
     packages = character(0L),
     release = "RELEASE_3_16",
-    bioc_branch = .OLD_DEFAULT_BRANCH,
+    bioc_branch = .BIOC_DEFAULT_BRANCH,
     org = "Bioconductor"
 ) {
     if (!length(packages))
         packages <- packages_without_release_branch(org = org)
     if (is.null(names(packages)))
         stop("'packages' must have names")
-    .clone_and_push_git_repos(
+    .add_gh_release_branches(
         packages, release=release, bioc_branch = bioc_branch, org = org
     )
 }

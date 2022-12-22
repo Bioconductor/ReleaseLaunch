@@ -20,7 +20,7 @@ is also available on GitHub.}
 \item{from_branch}{character(1) The old default branch from which to base the
 new 'devel' branch from (default: 'master')}
 
-\item{org}{character(1L) The organization for which to extract the names of
+\item{org}{character(1) The organization for which to extract the names of
 the repositories on GitHub (default "Bioconductor").}
 
 \item{set_upstream}{character(1) The remote location that will be tracked by

@@ -25,7 +25,7 @@ may be 'main', 'master', or 'devel' depending on the repository}
 \item{bioc_branch}{character(1) The name of the default branch on the
 Bioconductor git server (default 'master')}
 
-\item{org}{character(1L) The organization for which to extract the names of
+\item{org}{character(1) The organization for which to extract the names of
 the repositories on GitHub (default "Bioconductor").}
 }
 \description{

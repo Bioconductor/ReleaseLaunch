@@ -14,7 +14,7 @@ packages_list_to_be_updated(
 \item{version}{character(1L) The numeric version of the Bioconductor release,
 e.g., "3.16"}
 
-\item{org}{character(1L) The organization for which to extract the names of
+\item{org}{character(1) The organization for which to extract the names of
 the repositories on GitHub (default "Bioconductor").}
 
 \item{type}{character(1L) The official repository name as given by

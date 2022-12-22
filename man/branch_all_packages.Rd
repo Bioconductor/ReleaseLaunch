@@ -27,7 +27,7 @@ packages currently available in the Bioconductor CRAN-like repository with
 replaced, both 'master' and 'main' are included by default. This argument
 only works when either \code{packages} or \code{repos} are not specified.}
 
-\item{org}{character(1L) The organization for which to extract the names of
+\item{org}{character(1) The organization for which to extract the names of
 the repositories on GitHub (default "Bioconductor").}
 
 \item{set_upstream}{character(1) The remote location that will be tracked by

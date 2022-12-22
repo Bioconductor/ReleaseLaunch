@@ -17,7 +17,7 @@ otherwise determined by the API (never greater than 100).}
 
 \item{pages}{numeric(1) The number of pages to 'flip' through (default 10)}
 
-\item{org}{character(1L) The organization for which to extract the names of
+\item{org}{character(1) The organization for which to extract the names of
 the repositories on GitHub (default "Bioconductor").}
 
 \item{username}{character(1) The GitHub username used to query repositories}

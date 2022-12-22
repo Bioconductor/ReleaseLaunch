@@ -22,9 +22,7 @@
 
 #' Get all repositories for a given GitHub organization or username
 #'
-#' @aliases get_org_github_repos get_user_github_repos
-#'
-#' @description `get_user_github_repos` and `get_org_github_repos` use the
+#' `get_user_github_repos` and `get_org_github_repos` use the
 #' GitHub API, to obtain the repositories hosted on GitHub via the 'username'
 #' or the organization ('org') names, respectively.
 #'
@@ -39,6 +37,8 @@
 #'   organization's GitHub repositories
 #'
 #' @name get-github-repos
+#'
+#' @aliases get_org_github_repos get_user_github_repos
 #'
 #' @export
 get_org_github_repos <-

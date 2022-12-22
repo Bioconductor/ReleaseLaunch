@@ -24,7 +24,7 @@ the repositories on GitHub (default "Bioconductor").}
 }
 \value{
 A vector of default branches whose names correspond to the
-organization's GitHub repositories
+organization or user GitHub repositories
 }
 \description{
 \code{get_user_github_repos} and \code{get_org_github_repos} use the

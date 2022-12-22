@@ -34,7 +34,7 @@
 #'   the repositories on GitHub (default "Bioconductor").
 #'
 #' @return A vector of default branches whose names correspond to the
-#'   organization's GitHub repositories
+#'   organization or user GitHub repositories
 #'
 #' @name get-github-repos
 #'

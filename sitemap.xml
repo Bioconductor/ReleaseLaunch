@@ -28,12 +28,6 @@
     <loc>https://github.com/Bioconductor/ReleaseLaunch/reference/add_bioc_remote.html</loc>
   </url>
   <url>
-    <loc>https://github.com/Bioconductor/ReleaseLaunch/reference/branch_all_packages.html</loc>
-  </url>
-  <url>
-    <loc>https://github.com/Bioconductor/ReleaseLaunch/reference/branch_all_repos.html</loc>
-  </url>
-  <url>
     <loc>https://github.com/Bioconductor/ReleaseLaunch/reference/clone_and_push_git_repo.html</loc>
   </url>
   <url>
@@ -53,6 +47,12 @@
   </url>
   <url>
     <loc>https://github.com/Bioconductor/ReleaseLaunch/reference/packages_without_release_branch.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/Bioconductor/ReleaseLaunch/reference/rename_branch_packages.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/Bioconductor/ReleaseLaunch/reference/rename_branch_repos.html</loc>
   </url>
   <url>
     <loc>https://github.com/Bioconductor/ReleaseLaunch/reference/rename_branch_to_devel.html</loc>

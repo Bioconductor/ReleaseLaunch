@@ -37,13 +37,13 @@
     <loc>https://github.com/Bioconductor/ReleaseLaunch/reference/clone_and_push_git_repo.html</loc>
   </url>
   <url>
+    <loc>https://github.com/Bioconductor/ReleaseLaunch/reference/get-github-repos.html</loc>
+  </url>
+  <url>
     <loc>https://github.com/Bioconductor/ReleaseLaunch/reference/getPackagesNEWS.html</loc>
   </url>
   <url>
     <loc>https://github.com/Bioconductor/ReleaseLaunch/reference/get_bioc_software_manifest.html</loc>
-  </url>
-  <url>
-    <loc>https://github.com/Bioconductor/ReleaseLaunch/reference/get_org_github_repos.html</loc>
   </url>
   <url>
     <loc>https://github.com/Bioconductor/ReleaseLaunch/reference/index.html</loc>
@@ -62,5 +62,8 @@
   </url>
   <url>
     <loc>https://github.com/Bioconductor/ReleaseLaunch/reference/update_all_packages.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/Bioconductor/ReleaseLaunch/reference/update_local_repos.html</loc>
   </url>
 </urlset>

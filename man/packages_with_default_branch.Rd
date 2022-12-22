@@ -32,6 +32,9 @@ packages whose default branches are in the \code{branches} argument. This allows
 the user to identify which repositories will need to have a \code{devel} branch
 added.
 }
+\details{
+The output of this function is used in \code{rename_branch_packages}.
+}
 \seealso{
-repos_with_default_branch
+rename_branch_packages
 }

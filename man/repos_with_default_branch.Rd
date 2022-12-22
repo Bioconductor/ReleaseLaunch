@@ -26,8 +26,8 @@ The function obtains all the repositories within the given organization
 }
 \details{
 The output of this function is used to rename branches with
-\code{branch_all_repos}.
+\code{rename_branch_repos}.
 }
 \seealso{
-packages_with_default_branch
+rename_branch_repos
 }

@@ -5,6 +5,8 @@
 #' the user to identify which repositories will need to have a `devel` branch
 #' added.
 #'
+#' @details The output of this function is used in `rename_branch_packages`.
+#'
 #' @inheritParams rename_branch_to_devel
 #'
 #' @param version character(1) The current development version of Bioconductor
@@ -15,7 +17,7 @@
 #' @param branches character() A vector of branches that are sought as default
 #'   branches
 #'
-#' @seealso repos_with_default_branch
+#' @seealso rename_branch_packages
 #'
 #' @return A named character vector of default branches whose names correspond
 #'   to package repositories on GitHub
@@ -40,17 +42,15 @@ packages_with_default_branch <- function(
 #' The function obtains all the repositories within the given organization
 #' (Bioconductor) that match the `branches` argument.
 #'
-#' @details
-#'
-#' The output of this function is used to rename branches with
-#' `branch_all_repos`.
+#' @details The output of this function is used to rename branches with
+#'   `rename_branch_repos`.
 #'
 #' @inheritParams packages_with_default_branch
 #'
 #' @return A named character vector of default branches whose names correspond
 #'   to organization repositories on GitHub
 #'
-#' @seealso packages_with_default_branch
+#' @seealso rename_branch_repos
 #'
 #' @export
 repos_with_default_branch <- function(
@@ -235,7 +235,7 @@ add_bioc_remote <- function(package_name, remote = "upstream") {
 #' @seealso packages_with_default_branch
 #'
 #' @export
-branch_all_packages <- function(
+rename_branch_packages <- function(
     packages = character(0L),
     version = BiocManager::version(),
     old_branches = c(.OLD_DEFAULT_BRANCH, "main"),
@@ -262,7 +262,7 @@ branch_all_packages <- function(
 #' `old_branches`, i.e., either 'master' or 'main' by default. It then
 #' sets the default branch to `devel`.
 #'
-#' @inheritParams branch_all_packages
+#' @inheritParams rename_branch_packages
 #'
 #' @param repos named character() A vector of default branches whose names
 #'   correspond to repositories hosted on GitHub. If missing,
@@ -271,7 +271,7 @@ branch_all_packages <- function(
 #' @seealso repos_with_default_branch
 #'
 #' @export
-branch_all_repos <- function(
+rename_branch_repos <- function(
     repos = character(0L),
     old_branches = c(.OLD_DEFAULT_BRANCH, "main"),
     org = "Bioconductor",

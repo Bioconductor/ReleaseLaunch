@@ -229,7 +229,8 @@ add_bioc_remote <- function(package_name, remote = "upstream") {
 #'   `packages_with_default_branch`.
 #'
 #' @param old_branches character() A vector of default branch names to be
-#'   replaced, by default this includes 'master' and 'main'
+#'   replaced, both 'master' and 'main' are included by default. This argument
+#'   only works when either `packages` or `repos` are not specified.
 #'
 #' @seealso packages_with_default_branch
 #'

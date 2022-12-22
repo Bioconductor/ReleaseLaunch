@@ -24,7 +24,8 @@ packages currently available in the Bioconductor CRAN-like repository with
 \code{BiocManager::repositories()}.}
 
 \item{old_branches}{character() A vector of default branch names to be
-replaced, by default this includes 'master' and 'main'}
+replaced, both 'master' and 'main' are included by default. This argument
+only works when either \code{packages} or \code{repos} are not specified.}
 
 \item{org}{character(1L) The organization for which to extract the names of
 the repositories on GitHub (default "Bioconductor").}

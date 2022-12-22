@@ -49,10 +49,10 @@
     <loc>https://github.com/Bioconductor/ReleaseLaunch/reference/index.html</loc>
   </url>
   <url>
-    <loc>https://github.com/Bioconductor/ReleaseLaunch/reference/packages_list_to_be_updated.html</loc>
+    <loc>https://github.com/Bioconductor/ReleaseLaunch/reference/packages_with_default_branch.html</loc>
   </url>
   <url>
-    <loc>https://github.com/Bioconductor/ReleaseLaunch/reference/packages_with_default_branch.html</loc>
+    <loc>https://github.com/Bioconductor/ReleaseLaunch/reference/packages_without_release_branch.html</loc>
   </url>
   <url>
     <loc>https://github.com/Bioconductor/ReleaseLaunch/reference/rename_branch_to_devel.html</loc>

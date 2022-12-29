@@ -4,11 +4,11 @@
 \alias{add_bioc_remote}
 \title{A convenience function to set the 'upstream' Bioconductor remote}
 \usage{
-add_bioc_remote(package_name, remote = "upstream")
+add_bioc_remote(package_path, remote = "upstream")
 }
 \arguments{
-\item{package_name}{character(1) The name of the organization R package that
-is also available on GitHub.}
+\item{package_path}{character(1L) The local path to a package directory whose
+upstream remote should be set}
 
 \item{remote}{character(1L) The name of the remote to be created. This is
 usually named 'upstream' (default)}

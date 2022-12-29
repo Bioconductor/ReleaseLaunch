@@ -126,15 +126,23 @@ rename_branch_to_devel <- function(
 
     has_devel <- git_branch_exists("devel")
     if (has_devel)
-        stop("'devel' branch already exists")
+        warning("'devel' branch exists locally")
 
+    git_fetch(remote = "origin")
+    if (!git_branch_exists(from_branch))
+        git_branch_create(from_branch)
     git_branch_checkout(from_branch)
     git_pull(remote = "origin")
     if (is_bioc_pkg)
         git_pull(remote = "upstream")
-    git_branch_move(branch = from_branch, new_branch = "devel", repo = I("."))
-    if (git_branch_exists(from_branch) && git_branch_exists("devel"))
+    if (!has_devel)
+        git_branch_move(
+            branch = from_branch, new_branch = "devel", repo = I(".")
+        )
+    if (git_branch_exists(from_branch) && git_branch_exists("devel")) {
+        git_branch_checkout("devel")
         git_branch_delete(from_branch)
+    }
     gh::gh(
         "POST /repos/{owner}/{repo}/branches/{branch}/rename",
         owner = org,
@@ -160,7 +168,8 @@ rename_branch_to_devel <- function(
 #' desired name via the `remote` argument but it is customarily called the
 #' 'upstream' remote.
 #'
-#' @inheritParams rename_branch_to_devel
+#' @param package_path character(1L) The local path to a package directory whose
+#'   upstream remote should be set
 #'
 #' @param remote character(1L) The name of the remote to be created. This is
 #'   usually named 'upstream' (default)
@@ -169,7 +178,7 @@ rename_branch_to_devel <- function(
 #'   Bioconductor git address for a given package
 #'
 #' @export
-add_bioc_remote <- function(package_name, remote = "upstream") {
+add_bioc_remote <- function(package_path, remote = "upstream") {
     old_wd <- setwd(package_name)
     on.exit({ setwd(old_wd) })
 
@@ -181,7 +190,7 @@ add_bioc_remote <- function(package_name, remote = "upstream") {
         )
 
     ## add upstream to Bioc
-    bioc_git_slug <- .get_bioc_slug(package_name)
+    bioc_git_slug <- .get_bioc_slug(basename(package_name))
 
     git_remote_add(bioc_git_slug, remote)
 }

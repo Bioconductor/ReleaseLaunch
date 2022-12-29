@@ -74,14 +74,14 @@ desired name via the <code>remote</code> argument but it is customarily called t
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">add_bioc_remote</span><span class="op">(</span><span class="va">package_name</span>, remote <span class="op">=</span> <span class="st">"upstream"</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">add_bioc_remote</span><span class="op">(</span><span class="va">package_path</span>, remote <span class="op">=</span> <span class="st">"upstream"</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>package_name</dt>
-<dd><p>character(1) The name of the organization R package that
-is also available on GitHub.</p></dd>
+    <dl><dt>package_path</dt>
+<dd><p>character(1L) The local path to a package directory whose
+upstream remote should be set</p></dd>
 
 
 <dt>remote</dt>

@@ -179,7 +179,7 @@ rename_branch_to_devel <- function(
 #'
 #' @export
 add_bioc_remote <- function(package_path, remote = "upstream") {
-    old_wd <- setwd(package_name)
+    old_wd <- setwd(package_path)
     on.exit({ setwd(old_wd) })
 
     remotes <- git_remote_list()
@@ -190,7 +190,7 @@ add_bioc_remote <- function(package_path, remote = "upstream") {
         )
 
     ## add upstream to Bioc
-    bioc_git_slug <- .get_bioc_slug(basename(package_name))
+    bioc_git_slug <- .get_bioc_slug(basename(package_path))
 
     git_remote_add(bioc_git_slug, remote)
 }

@@ -33,6 +33,9 @@
 #' @param org character(1) The organization for which to extract the names of
 #'   the repositories on GitHub (default "Bioconductor").
 #'
+#' @param archived logical(1) Whether to include archived repositories in the
+#'   query results (default FALSE)
+#'
 #' @return A vector of default branches whose names correspond to the
 #'   organization or user GitHub repositories
 #'
@@ -42,12 +45,14 @@
 #'
 #' @export
 get_org_github_repos <-
-    function(per_page = 100, pages = 10, org = "Bioconductor")
+    function(per_page = 100, pages = 10, org = "Bioconductor", archived = FALSE)
 {
     results <- .get_gh_repos(
         api = "/orgs/{org}/repos", per_page = per_page, pages = pages, org = org
     )
-    ## return all repo names
+    ## return all repo names and filter archived
+    if (!archived)
+        results <- Filter(function(x) { !x[["archived"]] }, results)
     defaults <- vapply(results, `[[`, character(1L), "default_branch")
     repos <- vapply(results, `[[`, character(1L), "name")
     names(defaults) <- repos
@@ -57,9 +62,6 @@ get_org_github_repos <-
 #' @rdname get-github-repos
 #'
 #' @param username character(1) The GitHub username used to query repositories
-#'
-#' @param archived logical(1) Whether to include archived repositories in the
-#'   query results (default FALSE)
 #'
 #' @examples
 #'

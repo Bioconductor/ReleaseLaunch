@@ -6,7 +6,12 @@
 \alias{get_user_github_repos}
 \title{Get all repositories for a given GitHub organization or username}
 \usage{
-get_org_github_repos(per_page = 100, pages = 10, org = "Bioconductor")
+get_org_github_repos(
+  per_page = 100,
+  pages = 10,
+  org = "Bioconductor",
+  archived = FALSE
+)
 
 get_user_github_repos(per_page = 100, pages = 10, username, archived = FALSE)
 }
@@ -20,10 +25,10 @@ otherwise determined by the API (never greater than 100).}
 \item{org}{character(1) The organization for which to extract the names of
 the repositories on GitHub (default "Bioconductor").}
 
-\item{username}{character(1) The GitHub username used to query repositories}
-
 \item{archived}{logical(1) Whether to include archived repositories in the
 query results (default FALSE)}
+
+\item{username}{character(1) The GitHub username used to query repositories}
 }
 \value{
 A vector of default branches whose names correspond to the

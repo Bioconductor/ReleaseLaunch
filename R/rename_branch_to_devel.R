@@ -327,9 +327,13 @@ rename_branch_repos <- function(
 #'
 #' @export
 update_local_repos <- function(
-    basedir, username, new_branch = "devel", set_upstream = "origin/devel"
+    basedir, org = "Bioconductor", username,
+    new_branch = "devel", set_upstream = "origin/devel"
 ) {
-    repos <- get_user_github_repos(username = username)
+    if (!missing(username))
+        repos <- get_user_github_repos(username = username)
+    else
+        repos <- get_org_github_repos(org = org)
     repos <- repos[repos == new_branch]
     folders <- list.dirs(basedir, recursive = FALSE)
     fnames <- basename(folders)

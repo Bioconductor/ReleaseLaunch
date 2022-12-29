@@ -6,6 +6,7 @@
 \usage{
 update_local_repos(
   basedir,
+  org = "Bioconductor",
   username,
   new_branch = "devel",
   set_upstream = "origin/devel"
@@ -14,6 +15,9 @@ update_local_repos(
 \arguments{
 \item{basedir}{character(1) The base directory where all packages /
 repositories exist for the user}
+
+\item{org}{character(1) The organization for which to extract the names of
+the repositories on GitHub (default "Bioconductor").}
 
 \item{username}{character(1) The GitHub username used in the query to check
 default packages}

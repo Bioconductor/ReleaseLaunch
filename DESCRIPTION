@@ -1,6 +1,6 @@
 Package: ReleaseLaunch
 Title: R utilities related to Bioconductor release tasks
-Version: 0.99.6
+Version: 0.99.7
 Authors@R: c(
     person("Marcel", "Ramos", , "marcel.ramosperez@roswellpark.org",
     c("aut", "cre"), c(ORCID = "0000-0002-3242-0582")),

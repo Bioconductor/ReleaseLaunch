@@ -113,6 +113,7 @@ rename_branch_to_devel <- function(
     set_upstream = c("origin/devel", "upstream/devel"),
     clone = FALSE, is_bioc_pkg = TRUE
 ) {
+    message("Working on: ", package_name)
     if (!dir.exists(package_name) && clone)
         git_clone(url = .get_slug_gh(package_name, org))
     else if (!dir.exists(package_name))

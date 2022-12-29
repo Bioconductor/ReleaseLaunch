@@ -19,7 +19,7 @@ or the organization ('org') names, respectively."><!-- mathjax --><script src="h
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ReleaseLaunch</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.6</span>
       </span>
     </div>
 
@@ -72,7 +72,7 @@ or the organization ('org') names, respectively.</p>
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_org_github_repos</span><span class="op">(</span>per_page <span class="op">=</span> <span class="fl">100</span>, pages <span class="op">=</span> <span class="fl">10</span>, org <span class="op">=</span> <span class="st">"Bioconductor"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">get_user_github_repos</span><span class="op">(</span>per_page <span class="op">=</span> <span class="fl">100</span>, pages <span class="op">=</span> <span class="fl">10</span>, <span class="va">username</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">get_user_github_repos</span><span class="op">(</span>per_page <span class="op">=</span> <span class="fl">100</span>, pages <span class="op">=</span> <span class="fl">10</span>, <span class="va">username</span>, archived <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -95,6 +95,11 @@ the repositories on GitHub (default "Bioconductor").</p></dd>
 <dt>username</dt>
 <dd><p>character(1) The GitHub username used to query repositories</p></dd>
 
+
+<dt>archived</dt>
+<dd><p>logical(1) Whether to include archived repositories in the
+query results (default FALSE)</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
@@ -104,6 +109,22 @@ the repositories on GitHub (default "Bioconductor").</p></dd>
 organization or user GitHub repositories</p>
     </div>
 
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">my_repos</span> <span class="op">&lt;-</span> <span class="fu">get_user_github_repos</span><span class="op">(</span>username <span class="op">=</span> <span class="st">"github-username"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">change</span> <span class="op">&lt;-</span> <span class="va">my_repos</span><span class="op">[</span><span class="va">my_repos</span> <span class="op">==</span> <span class="st">"master"</span><span class="op">]</span></span></span>
+<span class="r-in"><span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">change</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="rename_branch_repos.html">rename_branch_repos</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      repos <span class="op">=</span> <span class="va">change</span>,</span></span>
+<span class="r-in"><span>      org <span class="op">=</span> <span class="st">"github-username"</span>,</span></span>
+<span class="r-in"><span>      clone <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>

@@ -58,14 +58,33 @@ get_org_github_repos <-
 #'
 #' @param username character(1) The GitHub username used to query repositories
 #'
+#' @param archived logical(1) Whether to include archived repositories in the
+#'   query results (default FALSE)
+#'
+#' @examples
+#'
+#' if (interactive()) {
+#'   my_repos <- get_user_github_repos(username = "github-username")
+#'   change <- my_repos[my_repos == "master"]
+#'   if (length(change))
+#'     rename_branch_repos(
+#'       repos = change,
+#'       org = "github-username",
+#'       clone = TRUE
+#'     )
+#' }
+#'
 #' @export
 get_user_github_repos <-
-    function(per_page = 100, pages = 10, username)
+    function(per_page = 100, pages = 10, username, archived = FALSE)
 {
     results <- .get_gh_repos(
         api = "/users/{username}/repos", per_page = 100,
         pages = 10, username = username
     )
+    if (!archived)
+        results <- Filter(function(x) { !x[["archived"]] }, results)
+    archived <- vapply(results, `[[`, logical(1L), "archived")
     defaults <- vapply(results, `[[`, character(1L), "default_branch")
     repos <- vapply(results, `[[`, character(1L), "name")
     names(defaults) <- repos

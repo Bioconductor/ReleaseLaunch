@@ -8,7 +8,7 @@
 \usage{
 get_org_github_repos(per_page = 100, pages = 10, org = "Bioconductor")
 
-get_user_github_repos(per_page = 100, pages = 10, username)
+get_user_github_repos(per_page = 100, pages = 10, username, archived = FALSE)
 }
 \arguments{
 \item{per_page}{Number of items to return per page. If omitted,
@@ -21,6 +21,9 @@ otherwise determined by the API (never greater than 100).}
 the repositories on GitHub (default "Bioconductor").}
 
 \item{username}{character(1) The GitHub username used to query repositories}
+
+\item{archived}{logical(1) Whether to include archived repositories in the
+query results (default FALSE)}
 }
 \value{
 A vector of default branches whose names correspond to the
@@ -30,4 +33,18 @@ organization or user GitHub repositories
 \code{get_user_github_repos} and \code{get_org_github_repos} use the
 GitHub API, to obtain the repositories hosted on GitHub via the 'username'
 or the organization ('org') names, respectively.
+}
+\examples{
+
+if (interactive()) {
+  my_repos <- get_user_github_repos(username = "github-username")
+  change <- my_repos[my_repos == "master"]
+  if (length(change))
+    rename_branch_repos(
+      repos = change,
+      org = "github-username",
+      clone = TRUE
+    )
+}
+
 }

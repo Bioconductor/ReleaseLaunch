@@ -170,22 +170,23 @@ getNEWSFromFile <- function(
 
 #' @rdname getPackagesNEWS
 #'
-#' @param dbs A list of `news_db` elements, as returned by `getPackageNEWS`.
+#' @param dbs list() The `news_db` list as returned by `getPackageNEWS`.
 #'
-#' @param destfile character(1) file path to the location where NEWS will be
-#'   printed.
+#' @param destfile character(1) The file path location to where `NEWS` will be
+#'   saved.
 #'
-#' @param overwrite logical(1) indicating whether `destfile` can be
+#' @param overwrite logical(1) Indicate whether `destfile` should be
 #'   over-written, if it exists.
 #'
-#' @param width numeric(1) number of characters news items are to be wrapped to,
-#'   excluding indent.
+#' @param width numeric(1) The maximum number of characters `NEWS` items can
+#'   span before wrapping, excludes indent.
 #'
-#' @param output character(1) output to text or markdown format.
+#' @param output character(1) Either 'md' or 'text' indicating the output in
+#'   markdown or text format, respectively.
 #'
-#' @param relativeLink Should links to packages be relative links on
-#'   bioconductor.org website or include full url 'https//bioconductor.org'.
-#'   default: FALSE is full url.
+#' @param relativeLink logical(1) Whether to include links relative to the
+#'   Bioconductor website or provide the full URL, i.e.,
+#'   <https://bioconductor.org>  (default: `FALSE`).
 #'
 #' @param ... additional arguments, unused.
 #'

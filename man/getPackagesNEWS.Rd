@@ -36,22 +36,23 @@ to compare news}
 \item{srcdir}{(Optional) character(1) The source directory in which all the
 Bioconductor packages, whose \code{NEWS} files are to be interrogated, reside}
 
-\item{dbs}{A list of \code{news_db} elements, as returned by \code{getPackageNEWS}.}
+\item{dbs}{list() The \code{news_db} list as returned by \code{getPackageNEWS}.}
 
-\item{destfile}{character(1) file path to the location where NEWS will be
-printed.}
+\item{destfile}{character(1) The file path location to where \code{NEWS} will be
+saved.}
 
-\item{overwrite}{logical(1) indicating whether \code{destfile} can be
+\item{overwrite}{logical(1) Indicate whether \code{destfile} should be
 over-written, if it exists.}
 
-\item{width}{numeric(1) number of characters news items are to be wrapped to,
-excluding indent.}
+\item{width}{numeric(1) The maximum number of characters \code{NEWS} items can
+span before wrapping, excludes indent.}
 
-\item{output}{character(1) output to text or markdown format.}
+\item{output}{character(1) Either 'md' or 'text' indicating the output in
+markdown or text format, respectively.}
 
-\item{relativeLink}{Should links to packages be relative links on
-bioconductor.org website or include full url 'https//bioconductor.org'.
-default: FALSE is full url.}
+\item{relativeLink}{logical(1) Whether to include links relative to the
+Bioconductor website or provide the full URL, i.e.,
+\url{https://bioconductor.org}  (default: \code{FALSE}).}
 
 \item{...}{additional arguments, unused.}
 }

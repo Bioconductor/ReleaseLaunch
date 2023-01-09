@@ -168,7 +168,30 @@ getNEWSFromFile <- function(
     return(invisible())
 }
 
+#' @rdname getPackagesNEWS
+#'
+#' @param dbs A list of `news_db` elements, as returned by `getPackageNEWS`.
+#'
+#' @param destfile character(1) file path to the location where NEWS will be
+#'   printed.
+#'
+#' @param overwrite logical(1) indicating whether `destfile` can be
+#'   over-written, if it exists.
+#'
+#' @param width numeric(1) number of characters news items are to be wrapped to,
+#'   excluding indent.
+#'
+#' @param output character(1) output to text or markdown format.
+#'
+#' @param relativeLink Should links to packages be relative links on
+#'   bioconductor.org website or include full url 'https//bioconductor.org'.
+#'   default: FALSE is full url.
+#'
+#' @param ... additional arguments, unused.
+#'
 #' @importFrom methods is
+#'
+#' @export
 printNEWS <- function(
     dbs, destfile, overwrite=FALSE, width=68, output=c("md", "text"),
     relativeLink=FALSE, ...
@@ -304,6 +327,22 @@ convertNEWSToText <- function(tarball, srcDir, destDir) {
     getNEWSFromFile(srcDir, destFile, output="text")
 }
 
+#' Extract NEWS files from source package tarballs
+#'
+#' Extracts NEWS files from source tarballs of packages.
+#'
+#' @param reposRoot Top level path for CRAN-style repos
+#'
+#' @param srcContrib Location of source packages
+#'
+#' @param destDir where to extract
+#'
+#' @param unpackDir character(1) The directory to extract files to (default is
+#'   the `tempdir()` location)
+#'
+#' @keywords utilities
+#'
+#' @export
 extractNEWS <- function(
     reposRoot, srcContrib,
     destDir = file.path(reposRoot, "news"),

@@ -2,6 +2,7 @@
 % Please edit documentation in R/getPackagesNEWS.R
 \name{getPackagesNEWS}
 \alias{getPackagesNEWS}
+\alias{printNEWS}
 \title{Compare the old and current releases to generate the release announcements
 NEWS compilation}
 \usage{
@@ -10,6 +11,16 @@ getPackagesNEWS(
   currRepos = "3.16",
   repo = c("bioc", "data/experiment", "workflows"),
   srcdir = NULL
+)
+
+printNEWS(
+  dbs,
+  destfile,
+  overwrite = FALSE,
+  width = 68,
+  output = c("md", "text"),
+  relativeLink = FALSE,
+  ...
 )
 }
 \arguments{
@@ -24,6 +35,25 @@ to compare news}
 
 \item{srcdir}{(Optional) character(1) The source directory in which all the
 Bioconductor packages, whose \code{NEWS} files are to be interrogated, reside}
+
+\item{dbs}{A list of \code{news_db} elements, as returned by \code{getPackageNEWS}.}
+
+\item{destfile}{character(1) file path to the location where NEWS will be
+printed.}
+
+\item{overwrite}{logical(1) indicating whether \code{destfile} can be
+over-written, if it exists.}
+
+\item{width}{numeric(1) number of characters news items are to be wrapped to,
+excluding indent.}
+
+\item{output}{character(1) output to text or markdown format.}
+
+\item{relativeLink}{Should links to packages be relative links on
+bioconductor.org website or include full url 'https//bioconductor.org'.
+default: FALSE is full url.}
+
+\item{...}{additional arguments, unused.}
 }
 \value{
 A list of NEWS

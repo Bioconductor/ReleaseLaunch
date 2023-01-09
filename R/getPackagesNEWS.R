@@ -335,10 +335,12 @@ convertNEWSToText <- function(tarball, srcDir, destDir) {
 #'
 #' @param srcContrib Location of source packages
 #'
-#' @param destDir where to extract
+#' @param destDir character(1) The top-level directory location for extracted
+#'   `NEWS` file. `destDir` will be followed by the package subfolder and `NEWS`
+#'   file, i.e., `/<packageName>/NEWS`
 #'
-#' @param unpackDir character(1) The directory to extract files to (default is
-#'   the `tempdir()` location)
+#' @param unpackDir character(1) The directory to extract files to from the
+#'   tarball (default is the `tempdir()` location)
 #'
 #' @keywords utilities
 #'

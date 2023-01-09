@@ -16,10 +16,12 @@ extractNEWS(
 
 \item{srcContrib}{Location of source packages}
 
-\item{destDir}{where to extract}
+\item{destDir}{character(1) The top-level directory location for extracted
+\code{NEWS} file. \code{destDir} will be followed by the package subfolder and \code{NEWS}
+file, i.e., \verb{/<packageName>/NEWS}}
 
-\item{unpackDir}{character(1) The directory to extract files to (default is
-the \code{tempdir()} location)}
+\item{unpackDir}{character(1) The directory to extract files to from the
+tarball (default is the \code{tempdir()} location)}
 }
 \description{
 Extracts NEWS files from source tarballs of packages.

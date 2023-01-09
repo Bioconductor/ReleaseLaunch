@@ -76,6 +76,16 @@ a single package's <code>NEWS</code> file.</p>
 <span>  currRepos <span class="op">=</span> <span class="st">"3.16"</span>,</span>
 <span>  repo <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"bioc"</span>, <span class="st">"data/experiment"</span>, <span class="st">"workflows"</span><span class="op">)</span>,</span>
 <span>  srcdir <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">printNEWS</span><span class="op">(</span></span>
+<span>  <span class="va">dbs</span>,</span>
+<span>  <span class="va">destfile</span>,</span>
+<span>  overwrite <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  width <span class="op">=</span> <span class="fl">68</span>,</span>
+<span>  output <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"md"</span>, <span class="st">"text"</span><span class="op">)</span>,</span>
+<span>  relativeLink <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -99,6 +109,40 @@ to compare news</p></dd>
 <dt>srcdir</dt>
 <dd><p>(Optional) character(1) The source directory in which all the
 Bioconductor packages, whose <code>NEWS</code> files are to be interrogated, reside</p></dd>
+
+
+<dt>dbs</dt>
+<dd><p>list() The <code>news_db</code> list as returned by <code>getPackageNEWS</code>.</p></dd>
+
+
+<dt>destfile</dt>
+<dd><p>character(1) The file path location to where <code>NEWS</code> will be
+saved.</p></dd>
+
+
+<dt>overwrite</dt>
+<dd><p>logical(1) Indicate whether <code>destfile</code> should be
+over-written, if it exists.</p></dd>
+
+
+<dt>width</dt>
+<dd><p>numeric(1) The maximum number of characters <code>NEWS</code> items can
+span before wrapping, excludes indent.</p></dd>
+
+
+<dt>output</dt>
+<dd><p>character(1) Either 'md' or 'text' indicating the output in
+markdown or text format, respectively.</p></dd>
+
+
+<dt>relativeLink</dt>
+<dd><p>logical(1) Whether to include links relative to the
+Bioconductor website or provide the full URL, i.e.,
+<a href="https://bioconductor.org" class="external-link">https://bioconductor.org</a>  (default: <code>FALSE</code>).</p></dd>
+
+
+<dt>...</dt>
+<dd><p>additional arguments, unused.</p></dd>
 
 </dl></div>
     <div id="value">

@@ -1,6 +1,5 @@
 .BIOC_DEFAULT_BRANCH <- "master"
 .BIOC_GIT_ADDRESS <- "git@git.bioconductor.org"
-.GITHUB_ADDRESS <- "git@github.com"
 
 #' @importFrom gh gh gh_token
 .get_gh_repos <- function(api, per_page, pages, ...) {

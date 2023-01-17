@@ -20,7 +20,7 @@ a single package's NEWS file."><!-- mathjax --><script src="https://cdnjs.cloudf
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ReleaseLaunch</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.10</span>
       </span>
     </div>
 
@@ -92,51 +92,51 @@ a single package's <code>NEWS</code> file.</p>
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>prevRepos</dt>
-<dd><p>character(1) The version string indicating the old release
+<dd><p><code>character(1)</code> The version string indicating the old release
 version of Bioconductor</p></dd>
 
 
 <dt>currRepos</dt>
-<dd><p>character(1) The version string indicating the newest and
+<dd><p><code>character(1)</code> The version string indicating the newest and
 current release version of Bioconductor</p></dd>
 
 
 <dt>repo</dt>
-<dd><p>character(1) The repository nickname indicating which repository
+<dd><p><code>character(1)</code> The repository nickname indicating which repository
 to compare news</p></dd>
 
 
 <dt>srcdir</dt>
-<dd><p>(Optional) character(1) The source directory in which all the
+<dd><p>(Optional) <code>character(1)</code> The source directory in which all the
 Bioconductor packages, whose <code>NEWS</code> files are to be interrogated, reside</p></dd>
 
 
 <dt>dbs</dt>
-<dd><p>list() The <code>news_db</code> list as returned by <code>getPackageNEWS</code>.</p></dd>
+<dd><p><code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code> The <code>news_db</code> list as returned by <code>getPackageNEWS</code>.</p></dd>
 
 
 <dt>destfile</dt>
-<dd><p>character(1) The file path location to where <code>NEWS</code> will be
+<dd><p><code>character(1)</code> The file path location to where <code>NEWS</code> will be
 saved.</p></dd>
 
 
 <dt>overwrite</dt>
-<dd><p>logical(1) Indicate whether <code>destfile</code> should be
+<dd><p><code>logical(1)</code> Indicate whether <code>destfile</code> should be
 over-written, if it exists.</p></dd>
 
 
 <dt>width</dt>
-<dd><p>numeric(1) The maximum number of characters <code>NEWS</code> items can
+<dd><p><code>numeric(1)</code> The maximum number of characters <code>NEWS</code> items can
 span before wrapping, excludes indent.</p></dd>
 
 
 <dt>output</dt>
-<dd><p>character(1) Either 'md' or 'text' indicating the output in
+<dd><p><code>character(1)</code> Either 'md' or 'text' indicating the output in
 markdown or text format, respectively.</p></dd>
 
 
 <dt>relativeLink</dt>
-<dd><p>logical(1) Whether to include links relative to the
+<dd><p><code>logical(1)</code> Whether to include links relative to the
 Bioconductor website or provide the full URL, i.e.,
 <a href="https://bioconductor.org" class="external-link">https://bioconductor.org</a>  (default: <code>FALSE</code>).</p></dd>
 

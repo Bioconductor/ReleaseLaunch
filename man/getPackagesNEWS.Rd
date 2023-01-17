@@ -24,33 +24,33 @@ printNEWS(
 )
 }
 \arguments{
-\item{prevRepos}{character(1) The version string indicating the old release
+\item{prevRepos}{\code{character(1)} The version string indicating the old release
 version of Bioconductor}
 
-\item{currRepos}{character(1) The version string indicating the newest and
+\item{currRepos}{\code{character(1)} The version string indicating the newest and
 current release version of Bioconductor}
 
-\item{repo}{character(1) The repository nickname indicating which repository
+\item{repo}{\code{character(1)} The repository nickname indicating which repository
 to compare news}
 
-\item{srcdir}{(Optional) character(1) The source directory in which all the
+\item{srcdir}{(Optional) \code{character(1)} The source directory in which all the
 Bioconductor packages, whose \code{NEWS} files are to be interrogated, reside}
 
-\item{dbs}{list() The \code{news_db} list as returned by \code{getPackageNEWS}.}
+\item{dbs}{\code{list()} The \code{news_db} list as returned by \code{getPackageNEWS}.}
 
-\item{destfile}{character(1) The file path location to where \code{NEWS} will be
+\item{destfile}{\code{character(1)} The file path location to where \code{NEWS} will be
 saved.}
 
-\item{overwrite}{logical(1) Indicate whether \code{destfile} should be
+\item{overwrite}{\code{logical(1)} Indicate whether \code{destfile} should be
 over-written, if it exists.}
 
-\item{width}{numeric(1) The maximum number of characters \code{NEWS} items can
+\item{width}{\code{numeric(1)} The maximum number of characters \code{NEWS} items can
 span before wrapping, excludes indent.}
 
-\item{output}{character(1) Either 'md' or 'text' indicating the output in
+\item{output}{\code{character(1)} Either 'md' or 'text' indicating the output in
 markdown or text format, respectively.}
 
-\item{relativeLink}{logical(1) Whether to include links relative to the
+\item{relativeLink}{\code{logical(1)} Whether to include links relative to the
 Bioconductor website or provide the full URL, i.e.,
 \url{https://bioconductor.org}  (default: \code{FALSE}).}
 

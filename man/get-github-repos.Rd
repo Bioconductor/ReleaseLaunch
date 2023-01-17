@@ -20,15 +20,15 @@ get_user_github_repos(per_page = 100, pages = 10, username, archived = FALSE)
 will be substituted by \code{max(.limit, 100)} if \code{.limit} is set,
 otherwise determined by the API (never greater than 100).}
 
-\item{pages}{numeric(1) The number of pages to 'flip' through (default 10)}
+\item{pages}{\code{numeric(1)} The number of pages to 'flip' through (default 10)}
 
-\item{org}{character(1) The organization for which to extract the names of
+\item{org}{\code{character(1)} The organization for which to extract the names of
 the repositories on GitHub (default "Bioconductor").}
 
-\item{archived}{logical(1) Whether to include archived repositories in the
+\item{archived}{\code{logical(1)} Whether to include archived repositories in the
 query results (default FALSE)}
 
-\item{username}{character(1) The GitHub username used to query repositories}
+\item{username}{\code{character(1)} The GitHub username used to query repositories}
 }
 \value{
 A vector of default branches whose names correspond to the

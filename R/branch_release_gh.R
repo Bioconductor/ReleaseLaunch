@@ -27,12 +27,12 @@
 #'
 #' @inheritParams gh::gh
 #'
-#' @param pages numeric(1) The number of pages to 'flip' through (default 10)
+#' @param pages `numeric(1)` The number of pages to 'flip' through (default 10)
 #'
-#' @param org character(1) The organization for which to extract the names of
+#' @param org `character(1)` The organization for which to extract the names of
 #'   the repositories on GitHub (default "Bioconductor").
 #'
-#' @param archived logical(1) Whether to include archived repositories in the
+#' @param archived `logical(1)` Whether to include archived repositories in the
 #'   query results (default FALSE)
 #'
 #' @return A vector of default branches whose names correspond to the
@@ -60,7 +60,7 @@ get_org_github_repos <-
 
 #' @rdname get-github-repos
 #'
-#' @param username character(1) The GitHub username used to query repositories
+#' @param username `character(1)` The GitHub username used to query repositories
 #'
 #' @examples
 #'
@@ -143,10 +143,10 @@ get_bioc_software_manifest <-
 #'
 #' @inheritParams get-github-repos
 #'
-#' @param version character(1L) The numeric version of the Bioconductor release,
+#' @param version `character(1)` The numeric version of the Bioconductor release,
 #'   e.g., "3.16"
 #'
-#' @param type character(1L) The official repository name as given by
+#' @param type `character(1)` The official repository name as given by
 #'   `BiocManager::repositories()`. Currently, only software and experiment data
 #'   ('BioCsoft' and 'BioCexp', respectively) are supported.
 #'
@@ -174,16 +174,16 @@ packages_without_release_branch <- function(
 #' This function assumes that you have admin push access to the GitHub
 #' organization indicated by `org`.
 #'
-#' @param package_name character(1) The name of the organization R package that
+#' @param package_name `character(1)` The name of the organization R package that
 #'   is also available on GitHub.
 #'
-#' @param release character(1) The Bioconductor version branch tag, e.g.,
+#' @param release `character(1)` The Bioconductor version branch tag, e.g.,
 #'   "RELEASE_3_16"
 #'
-#' @param gh_branch character(1) The name of the default branch on GitHub. It
+#' @param gh_branch `character(1)` The name of the default branch on GitHub. It
 #'   may be 'main', 'master', or 'devel' depending on the repository
 #'
-#' @param bioc_branch character(1) The name of the default branch on the
+#' @param bioc_branch `character(1)` The name of the default branch on the
 #'   Bioconductor git server (default 'master')
 #'
 #' @inheritParams get-github-repos
@@ -252,7 +252,7 @@ add_gh_release_branch <- function(
 
 #' @rdname branch-release-gh
 #'
-#' @param packages named character() A character vector of default branches
+#' @param packages `named character()` A character vector of default branches
 #'   whose names correspond to Bioconductor package names. See
 #'   `packages_without_release_branch`.
 #'

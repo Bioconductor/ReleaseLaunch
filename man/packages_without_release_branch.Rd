@@ -11,13 +11,13 @@ packages_without_release_branch(
 )
 }
 \arguments{
-\item{version}{character(1L) The numeric version of the Bioconductor release,
+\item{version}{\code{character(1)} The numeric version of the Bioconductor release,
 e.g., "3.16"}
 
-\item{org}{character(1) The organization for which to extract the names of
+\item{org}{\code{character(1)} The organization for which to extract the names of
 the repositories on GitHub (default "Bioconductor").}
 
-\item{type}{character(1L) The official repository name as given by
+\item{type}{\code{character(1)} The official repository name as given by
 \code{BiocManager::repositories()}. Currently, only software and experiment data
 ('BioCsoft' and 'BioCexp', respectively) are supported.}
 }

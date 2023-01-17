@@ -67,16 +67,16 @@ getDCFPackageVer <- function(version, repo) {
 #' The function uses previous and current versions of Bioconductor to generate
 #' a single package's `NEWS` file.
 #'
-#' @param prevRepos character(1) The version string indicating the old release
+#' @param prevRepos `character(1)` The version string indicating the old release
 #'   version of Bioconductor
 #'
-#' @param currRepos character(1) The version string indicating the newest and
+#' @param currRepos `character(1)` The version string indicating the newest and
 #'   current release version of Bioconductor
 #'
-#' @param repo character(1) The repository nickname indicating which repository
+#' @param repo `character(1)` The repository nickname indicating which repository
 #'   to compare news
 #'
-#' @param srcdir (Optional) character(1) The source directory in which all the
+#' @param srcdir (Optional) `character(1)` The source directory in which all the
 #'   Bioconductor packages, whose `NEWS` files are to be interrogated, reside
 #'
 #' @return A list of NEWS
@@ -170,21 +170,21 @@ getNEWSFromFile <- function(
 
 #' @rdname getPackagesNEWS
 #'
-#' @param dbs list() The `news_db` list as returned by `getPackageNEWS`.
+#' @param dbs `list()` The `news_db` list as returned by `getPackageNEWS`.
 #'
-#' @param destfile character(1) The file path location to where `NEWS` will be
+#' @param destfile `character(1)` The file path location to where `NEWS` will be
 #'   saved.
 #'
-#' @param overwrite logical(1) Indicate whether `destfile` should be
+#' @param overwrite `logical(1)` Indicate whether `destfile` should be
 #'   over-written, if it exists.
 #'
-#' @param width numeric(1) The maximum number of characters `NEWS` items can
+#' @param width `numeric(1)` The maximum number of characters `NEWS` items can
 #'   span before wrapping, excludes indent.
 #'
-#' @param output character(1) Either 'md' or 'text' indicating the output in
+#' @param output `character(1)` Either 'md' or 'text' indicating the output in
 #'   markdown or text format, respectively.
 #'
-#' @param relativeLink logical(1) Whether to include links relative to the
+#' @param relativeLink `logical(1)` Whether to include links relative to the
 #'   Bioconductor website or provide the full URL, i.e.,
 #'   <https://bioconductor.org>  (default: `FALSE`).
 #'
@@ -336,11 +336,11 @@ convertNEWSToText <- function(tarball, srcDir, destDir) {
 #'
 #' @param srcContrib Location of source packages
 #'
-#' @param destDir character(1) The top-level directory location for extracted
+#' @param destDir `character(1)` The top-level directory location for extracted
 #'   `NEWS` file. `destDir` will be followed by the package subfolder and `NEWS`
 #'   file, i.e., `/<packageName>/NEWS`
 #'
-#' @param unpackDir character(1) The directory to extract files to from the
+#' @param unpackDir `character(1)` The directory to extract files to from the
 #'   tarball (default is the `tempdir()` location)
 #'
 #' @keywords utilities

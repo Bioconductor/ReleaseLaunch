@@ -22,22 +22,22 @@ add_gh_release_branches(
 )
 }
 \arguments{
-\item{package_name}{character(1) The name of the organization R package that
+\item{package_name}{\code{character(1)} The name of the organization R package that
 is also available on GitHub.}
 
-\item{release}{character(1) The Bioconductor version branch tag, e.g.,
+\item{release}{\code{character(1)} The Bioconductor version branch tag, e.g.,
 "RELEASE_3_16"}
 
-\item{gh_branch}{character(1) The name of the default branch on GitHub. It
+\item{gh_branch}{\code{character(1)} The name of the default branch on GitHub. It
 may be 'main', 'master', or 'devel' depending on the repository}
 
-\item{bioc_branch}{character(1) The name of the default branch on the
+\item{bioc_branch}{\code{character(1)} The name of the default branch on the
 Bioconductor git server (default 'master')}
 
-\item{org}{character(1) The organization for which to extract the names of
+\item{org}{\code{character(1)} The organization for which to extract the names of
 the repositories on GitHub (default "Bioconductor").}
 
-\item{packages}{named character() A character vector of default branches
+\item{packages}{\verb{named character()} A character vector of default branches
 whose names correspond to Bioconductor package names. See
 \code{packages_without_release_branch}.}
 }

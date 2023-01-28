@@ -282,13 +282,17 @@ Make sure to reserve enough time.</p>
 <h4 id="c1--comment-out-all-builds-in-crontab-on-central-bioc-3-16-builder">C1. Comment out all builds in crontab on central BioC 3.16
 builder<a class="anchor" aria-label="anchor" href="#c1--comment-out-all-builds-in-crontab-on-central-bioc-3-16-builder"></a>
 </h4>
-<p>No 3.16 build should start until the bump and branch process is
-complete and <code>BBS_BIOC_GIT_BRANCH</code> is switched from
-<code>master</code> to <code>RELEASE_3_16</code> on the central BioC
-3.16 builder (this switch is documented in section F3 below). Maybe no
-build is scheduled to start during the next 3 hours, in which case
-everything is fine. Otherwise, comment out all the builds that are at
-the risk to start before step F3 is completed.</p>
+<p>No 3.16 build should start until:</p>
+<ul>
+<li><p>the bump and branch process is complete</p></li>
+<li><p><strong>and</strong> <code>BBS_BIOC_GIT_BRANCH</code> is switched
+from <code>master</code> to <code>RELEASE_3_16</code> on the central
+BioC 3.16 builder (this switch is documented in section F3
+below).</p></li>
+</ul>
+<p>Maybe no build is scheduled to start during the next 3 hours, in
+which case everything is fine. Otherwise, comment out all the builds
+that are at the risk to start before step F3 is completed.</p>
 </div>
 <div class="section level4">
 <h4 id="c2--ask-people-to-stop-committingpushing-changes-to-the-bioc-git-server">C2. Ask people to stop committing/pushing changes to the BioC git

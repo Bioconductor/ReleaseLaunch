@@ -499,8 +499,8 @@ Then remove the `manifest` and `MEAT0` folders from `~/bbs-3.16-bioc/`,
 `~/bbs-3.16-workflows/`, and `~/bbs-3.16-books/`. They'll get automatically
 re-created and re-populated when the builds start.
 
-Once you're done, don't forget to uncomment all the builds that were temporary
-commented out in the crontab (see section C1 above).
+Once you're done, don't forget to uncomment all the builds that were
+temporarily commented out in the crontab (see section C1 above).
 
 ### F4. Sync all core Bioconductor packages hosted on GitHub
 

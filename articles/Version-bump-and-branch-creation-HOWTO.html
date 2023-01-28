@@ -85,7 +85,7 @@
                         <h4 data-toc-skip class="author">Bioconductor
 Maintainer</h4>
             
-            <h4 data-toc-skip class="date">January 17, 2023</h4>
+            <h4 data-toc-skip class="date">January 28, 2023</h4>
       
       
       <div class="hidden name"><code>Version-bump-and-branch-creation-HOWTO.Rmd</code></div>
@@ -134,7 +134,7 @@ changes. This will need to be done on the day prior to the release
 before the BioC 3.16 builds start for software, data-experiment,
 workflow, and book packages.</p>
 <p>Look for the prerun jobs in the crontab for the
-<code>biocbuild</code> user on the main BioC 3.16 builder to get the
+<code>biocbuild</code> user on the central BioC 3.16 builder to get the
 times the software and data-experiment builds get kicked off. Make sure
 to check the crontab again a couple of days before the release as we
 sometimes make small adjustments to the crontabs on the build machines.
@@ -276,18 +276,30 @@ regardless of inactivated (commented out) lines in
 </h3>
 <p>Perform these steps on the day prior to the release. They must be
 completed before the software builds get kicked off (see <strong>A.
-Introduction</strong>). The full procedure should take about 2.5 hours.
+Introduction</strong>). The full procedure should take about 3 hours.
 Make sure to reserve enough time.</p>
 <div class="section level4">
-<h4 id="c1--ask-people-to-stop-committingpushing-changes-to-the-bioc-git-server">C1. Ask people to stop committing/pushing changes to the BioC git
-server<a class="anchor" aria-label="anchor" href="#c1--ask-people-to-stop-committingpushing-changes-to-the-bioc-git-server"></a>
+<h4 id="c1--comment-out-all-builds-in-crontab-on-central-bioc-3-16-builder">C1. Comment out all builds in crontab on central BioC 3.16
+builder<a class="anchor" aria-label="anchor" href="#c1--comment-out-all-builds-in-crontab-on-central-bioc-3-16-builder"></a>
+</h4>
+<p>No 3.16 build should start until the bump and branch process is
+complete and <code>BBS_BIOC_GIT_BRANCH</code> is switched from
+<code>master</code> to <code>RELEASE_3_16</code> on the central BioC
+3.16 builder (this switch is documented in section F3 below). Maybe no
+build is scheduled to start during the next 3 hours, in which case
+everything is fine. Otherwise, comment out all the builds that are at
+the risk to start before step F3 is completed.</p>
+</div>
+<div class="section level4">
+<h4 id="c2--ask-people-to-stop-committingpushing-changes-to-the-bioc-git-server">C2. Ask people to stop committing/pushing changes to the BioC git
+server<a class="anchor" aria-label="anchor" href="#c2--ask-people-to-stop-committingpushing-changes-to-the-bioc-git-server"></a>
 </h4>
 <p>Announce or ask a core team member to announce on the bioc-devel
 mailing list that people must stop committing/pushing changes to the
-BioC git server (git.bioconductor.org) for the next 2.5 hours.</p>
+BioC git server (git.bioconductor.org) for the next 3 hours.</p>
 </div>
 <div class="section level4">
-<h4 id="c2--modify-packages-conf-to-block-all-commits">C2. Modify packages.conf to block all commits<a class="anchor" aria-label="anchor" href="#c2--modify-packages-conf-to-block-all-commits"></a>
+<h4 id="c3--modify-packages-conf-to-block-all-commits">C3. Modify packages.conf to block all commits<a class="anchor" aria-label="anchor" href="#c3--modify-packages-conf-to-block-all-commits"></a>
 </h4>
 <p>The <code>RELEASE_3_15</code> lines in
 <code>gitolite-admin/conf/packages.conf</code> were commented out when
@@ -308,7 +320,7 @@ This issue reflects the issue <a href="https://stat.ethz.ch/pipermail/bioc-devel
 effective.</p>
 </div>
 <div class="section level4">
-<h4 id="c3--disable-hooks">C3. Disable hooks<a class="anchor" aria-label="anchor" href="#c3--disable-hooks"></a>
+<h4 id="c4--disable-hooks">C4. Disable hooks<a class="anchor" aria-label="anchor" href="#c4--disable-hooks"></a>
 </h4>
 <p>Log on to git.bioconductor.org as the <code>git</code> user.</p>
 <ul>
@@ -326,8 +338,8 @@ scripts/sedCommandsForVariousTasks.txt. This changes is made in the
 hook_maintainer repo.</p>
 </div>
 <div class="section level4">
-<h4 id="c4--login-to-the-machine-where-youve-performed-the-preliminary-steps">C4. Login to the machine where you’ve performed the preliminary
-steps<a class="anchor" aria-label="anchor" href="#c4--login-to-the-machine-where-youve-performed-the-preliminary-steps"></a>
+<h4 id="c5--login-to-the-machine-where-youve-performed-the-preliminary-steps">C5. Login to the machine where you’ve performed the preliminary
+steps<a class="anchor" aria-label="anchor" href="#c5--login-to-the-machine-where-youve-performed-the-preliminary-steps"></a>
 </h4>
 <p>Make sure to use the <code>-A</code> flag to enable forwarding of the
 authentication agent connection e.g.:</p>
@@ -335,8 +347,8 @@ authentication agent connection e.g.:</p>
 <p>See <strong>B. Preliminary steps</strong> above for the details.</p>
 </div>
 <div class="section level4">
-<h4 id="c5--checkoutupdate-the-release_3_16-branch-of-the-manifest-repo">C5. Checkout/update the <code>RELEASE_3_16</code> branch of the
-<code>manifest</code> repo<a class="anchor" aria-label="anchor" href="#c5--checkoutupdate-the-release_3_16-branch-of-the-manifest-repo"></a>
+<h4 id="c6--checkoutupdate-the-release_3_16-branch-of-the-manifest-repo">C6. Checkout/update the <code>RELEASE_3_16</code> branch of the
+<code>manifest</code> repo<a class="anchor" aria-label="anchor" href="#c6--checkoutupdate-the-release_3_16-branch-of-the-manifest-repo"></a>
 </h4>
 <div class="sourceCode" id="cb11"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/git.bioconductor.org/manifest</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> pull <span class="at">--all</span></span>
@@ -345,8 +357,8 @@ authentication agent connection e.g.:</p>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status</span></code></pre></div>
 </div>
 <div class="section level4">
-<h4 id="c6--set-the-bbs_home-working_dir-and-manifest_file-environment-variables">C6. Set the <code>BBS_HOME</code>, <code>WORKING_DIR</code> and
-<code>MANIFEST_FILE</code> environment variables<a class="anchor" aria-label="anchor" href="#c6--set-the-bbs_home-working_dir-and-manifest_file-environment-variables"></a>
+<h4 id="c7--set-the-bbs_home-working_dir-and-manifest_file-environment-variables">C7. Set the <code>BBS_HOME</code>, <code>WORKING_DIR</code> and
+<code>MANIFEST_FILE</code> environment variables<a class="anchor" aria-label="anchor" href="#c7--set-the-bbs_home-working_dir-and-manifest_file-environment-variables"></a>
 </h4>
 <ul>
 <li>
@@ -376,7 +388,7 @@ the manifest file for software packages. This must be the file from the
 </ul>
 </div>
 <div class="section level4">
-<h4 id="c7--run-bump_version_and_create_branch-py">C7. Run <code>bump_version_and_create_branch.py</code><a class="anchor" aria-label="anchor" href="#c7--run-bump_version_and_create_branch-py"></a>
+<h4 id="c8--run-bump_version_and_create_branch-py">C8. Run <code>bump_version_and_create_branch.py</code><a class="anchor" aria-label="anchor" href="#c8--run-bump_version_and_create_branch-py"></a>
 </h4>
 <p>We’re going to run the script on all the software packages. It will
 take care of applying and pushing the changes described in <strong>A.
@@ -415,7 +427,7 @@ fixed, re-run the script.</p></li>
 </ul>
 </div>
 <div class="section level4">
-<h4 id="c8--check-bump_version_and_create_branch-log">C8. Check <code>bump_version_and_create_branch.log</code><a class="anchor" aria-label="anchor" href="#c8--check-bump_version_and_create_branch-log"></a>
+<h4 id="c9--check-bump_version_and_create_branch-log">C9. Check <code>bump_version_and_create_branch.log</code><a class="anchor" aria-label="anchor" href="#c9--check-bump_version_and_create_branch-log"></a>
 </h4>
 <p>After completion of the
 <code>bump_version_and_create_branch.py</code> run, open
@@ -430,7 +442,7 @@ workflows, and books<a class="anchor" aria-label="anchor" href="#d--version-bump
 <div class="section level4">
 <h4 id="d1--data-experiment-packages">D1. Data-experiment packages<a class="anchor" aria-label="anchor" href="#d1--data-experiment-packages"></a>
 </h4>
-<p>Repeat steps C5 to C8 above <strong>but for C6 define the environment
+<p>Repeat steps C6 to C9 above <strong>but for C7 define the environment
 variables as follows</strong>:</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">WORKING_DIR</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/git.bioconductor.org/data-experiment"</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">MANIFEST_FILE</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/git.bioconductor.org/manifest/data-experiment.txt"</span></span></code></pre></div>
@@ -438,7 +450,7 @@ variables as follows</strong>:</p>
 <div class="section level4">
 <h4 id="d2--workflows">D2. Workflows<a class="anchor" aria-label="anchor" href="#d2--workflows"></a>
 </h4>
-<p>Repeat steps C5 to C8 above <strong>but for C6 define the environment
+<p>Repeat steps C6 to C9 above <strong>but for C7 define the environment
 variables as follows</strong>:</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">WORKING_DIR</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/git.bioconductor.org/workflows"</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">MANIFEST_FILE</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/git.bioconductor.org/manifest/workflows.txt"</span></span></code></pre></div>
@@ -446,7 +458,7 @@ variables as follows</strong>:</p>
 <div class="section level4">
 <h4 id="d3--books">D3. Books<a class="anchor" aria-label="anchor" href="#d3--books"></a>
 </h4>
-<p>Repeat steps C5 to C8 above <strong>but for C6 define the environment
+<p>Repeat steps C6 to C9 above <strong>but for C7 define the environment
 variables as follows</strong>:</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">WORKING_DIR</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/git.bioconductor.org/books"</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">MANIFEST_FILE</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/git.bioconductor.org/manifest/books.txt"</span></span></code></pre></div>
@@ -457,11 +469,11 @@ variables as follows</strong>:</p>
 </h3>
 <p>Note that for data-annotation packages we <strong>create the new
 branch WITHOUT BUMPING VERSIONS</strong>.</p>
-<p>Repeat steps C5 to C8 above <strong>but for C6 define the environment
+<p>Repeat steps C6 to C9 above <strong>but for C7 define the environment
 variables as follows</strong>:</p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">WORKING_DIR</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/git.bioconductor.org/data-annotation"</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">MANIFEST_FILE</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/git.bioconductor.org/manifest/data-annotation.txt"</span></span></code></pre></div>
-<p>Then for C7, <strong>make sure to call the
+<p>Then for C8, <strong>make sure to call the
 <code>bump_version_and_create_branch.py</code> script with the
 <code>--no-bump</code> option</strong>:</p>
 <div class="sourceCode" id="cb22"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$WORKING_DIR</span></span>
@@ -510,13 +522,13 @@ mailing list that committing/pushing changes to the BioC git server
 (git.bioconductor.org) can resume.</p>
 </div>
 <div class="section level4">
-<h4 id="f3--switch-bbs_bioc_git_branch-from-master-to-release_3_16-on-main-bioc-3-16-builder">F3. Switch <code>BBS_BIOC_GIT_BRANCH</code> from <code>master</code>
-to <code>RELEASE_3_16</code> on main BioC 3.16 builder<a class="anchor" aria-label="anchor" href="#f3--switch-bbs_bioc_git_branch-from-master-to-release_3_16-on-main-bioc-3-16-builder"></a>
+<h4 id="f3--switch-bbs_bioc_git_branch-from-master-to-release_3_16-on-central-bioc-3-16-builder">F3. Switch <code>BBS_BIOC_GIT_BRANCH</code> from <code>master</code>
+to <code>RELEASE_3_16</code> on central BioC 3.16 builder<a class="anchor" aria-label="anchor" href="#f3--switch-bbs_bioc_git_branch-from-master-to-release_3_16-on-central-bioc-3-16-builder"></a>
 </h4>
 <p>DON’T FORGET THIS STEP! Its purpose is to make the BioC 3.16 builds
 grab the <code>RELEASE_3_16</code> branch of all packages instead of
 their <code>master</code> branch.</p>
-<p>Login to the main BioC 3.16 builder as <code>biocbuild</code> and
+<p>Login to the central BioC 3.16 builder as <code>biocbuild</code> and
 replace</p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">BBS_BIOC_GIT_BRANCH</span><span class="op">=</span><span class="st">"master"</span></span></code></pre></div>
 <p>with</p>
@@ -534,6 +546,8 @@ from <code>~/bbs-3.16-bioc/</code>,
 <code>~/bbs-3.16-workflows/</code>, and <code>~/bbs-3.16-books/</code>.
 They’ll get automatically re-created and re-populated when the builds
 start.</p>
+<p>Once you’re done, don’t forget to uncomment all the builds that were
+temporary commented out in the crontab (see section C1 above).</p>
 </div>
 <div class="section level4">
 <h4 id="f4--sync-all-core-bioconductor-packages-hosted-on-github">F4. Sync all core Bioconductor packages hosted on GitHub<a class="anchor" aria-label="anchor" href="#f4--sync-all-core-bioconductor-packages-hosted-on-github"></a>

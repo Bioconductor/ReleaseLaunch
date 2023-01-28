@@ -44,7 +44,7 @@ push these changes. This will need to be done on the day prior to the release
 before the BioC 3.16 builds start for software, data-experiment, workflow, and
 book packages.
 
-Look for the prerun jobs in the crontab for the `biocbuild` user on the main
+Look for the prerun jobs in the crontab for the `biocbuild` user on the central
 BioC 3.16 builder to get the times the software and data-experiment builds get
 kicked off. Make sure to check the crontab again a couple of days before the
 release as we sometimes make small adjustments to the crontabs on the build
@@ -196,15 +196,24 @@ in sections **C.** and **D.**.
 
 Perform these steps on the day prior to the release. They must be completed
 before the software builds get kicked off (see **A. Introduction**). The full
-procedure should take about 2.5 hours. Make sure to reserve enough time.
+procedure should take about 3 hours. Make sure to reserve enough time.
 
-### C1. Ask people to stop committing/pushing changes to the BioC git server
+### C1. Comment out all builds in crontab on central BioC 3.16 builder
+
+No 3.16 build should start until the bump and branch process is complete and
+`BBS_BIOC_GIT_BRANCH` is switched from `master` to `RELEASE_3_16` on the
+central BioC 3.16 builder (this switch is documented in section F3 below).
+Maybe no build is scheduled to start during the next 3 hours, in which case
+everything is fine. Otherwise, comment out all the builds that are at the risk
+to start before step F3 is completed.
+
+### C2. Ask people to stop committing/pushing changes to the BioC git server
 
 Announce or ask a core team member to announce on the bioc-devel mailing
 list that people must stop committing/pushing changes to the BioC git server
-(git.bioconductor.org) for the next 2.5 hours.
+(git.bioconductor.org) for the next 3 hours.
 
-### C2. Modify packages.conf to block all commits
+### C3. Modify packages.conf to block all commits
 
 The `RELEASE_3_15` lines in `gitolite-admin/conf/packages.conf` were commented
 out when the release builds were frozen. At this point, only the `master`
@@ -230,7 +239,7 @@ Or Lori created `sed` commands see `scripts/sedCommandsForVariousTasks.txt`
 Once `packages.conf` is updated, push to `gitolite-admin` on the git server
 to make the changes effective.
 
-### C3. Disable hooks
+### C4. Disable hooks
 
 Log on to git.bioconductor.org as the `git` user.
 
@@ -249,7 +258,7 @@ scripts/sedCommandsForVariousTasks.txt. This changes is made in the
 hook_maintainer repo. 
 
 
-### C4. Login to the machine where you've performed the preliminary steps
+### C5. Login to the machine where you've performed the preliminary steps
 
 Make sure to use the `-A` flag to enable forwarding of the authentication
 agent connection e.g.:
@@ -260,7 +269,7 @@ ssh -A hpages@malbec1.bioconductor.org
 
 See **B. Preliminary steps** above for the details.
 
-### C5. Checkout/update the `RELEASE_3_16` branch of the `manifest` repo
+### C6. Checkout/update the `RELEASE_3_16` branch of the `manifest` repo
 
 ```sh
 cd ~/git.bioconductor.org/manifest
@@ -270,7 +279,7 @@ git branch
 git status
 ```
 
-### C6. Set the `BBS_HOME`, `WORKING_DIR` and `MANIFEST_FILE` environment variables
+### C7. Set the `BBS_HOME`, `WORKING_DIR` and `MANIFEST_FILE` environment variables
 
 - `BBS_HOME`:
 
@@ -304,7 +313,7 @@ workflows, and books.
   export MANIFEST_FILE="$HOME/git.bioconductor.org/manifest/software.txt"
   ```
 
-### C7. Run `bump_version_and_create_branch.py`
+### C8. Run `bump_version_and_create_branch.py`
 
 We're going to run the script on all the software packages. It will take care
 of applying and pushing the changes described in **A. Introduction**.
@@ -347,7 +356,7 @@ Notes:
   Rdisop first time I tested this). Report these errors to `gitolite`
   experts Lori or Jen. Once the problem is fixed, re-run the script.
 
-### C8. Check `bump_version_and_create_branch.log`
+### C9. Check `bump_version_and_create_branch.log`
 
 After completion of the `bump_version_and_create_branch.py` run,
 open `bump_version_and_create_branch.log` and make sure everything
@@ -358,7 +367,7 @@ looks ok.
 
 ### D1. Data-experiment packages
 
-Repeat steps C5 to C8 above **but for C6 define the environment variables
+Repeat steps C6 to C9 above **but for C7 define the environment variables
 as follows**:
 
 ```sh
@@ -368,7 +377,7 @@ export MANIFEST_FILE="$HOME/git.bioconductor.org/manifest/data-experiment.txt"
 
 ### D2. Workflows
 
-Repeat steps C5 to C8 above **but for C6 define the environment variables
+Repeat steps C6 to C9 above **but for C7 define the environment variables
 as follows**:
 
 ```sh
@@ -378,7 +387,7 @@ export MANIFEST_FILE="$HOME/git.bioconductor.org/manifest/workflows.txt"
 
 ### D3. Books
 
-Repeat steps C5 to C8 above **but for C6 define the environment variables
+Repeat steps C6 to C9 above **but for C7 define the environment variables
 as follows**:
 
 ```sh
@@ -392,7 +401,7 @@ export MANIFEST_FILE="$HOME/git.bioconductor.org/manifest/books.txt"
 Note that for data-annotation packages we **create the new branch WITHOUT
 BUMPING VERSIONS**.
 
-Repeat steps C5 to C8 above **but for C6 define the environment variables
+Repeat steps C6 to C9 above **but for C7 define the environment variables
 as follows**:
 
 ```sh
@@ -400,7 +409,7 @@ export WORKING_DIR="$HOME/git.bioconductor.org/data-annotation"
 export MANIFEST_FILE="$HOME/git.bioconductor.org/manifest/data-annotation.txt"
 ```
 
-Then for C7, **make sure to call the `bump_version_and_create_branch.py`
+Then for C8, **make sure to call the `bump_version_and_create_branch.py`
 script with the `--no-bump` option**:
 
 ```sh
@@ -425,7 +434,6 @@ repo (`git clone git@git.bioconductor.org:gitolite-admin`).
 
 See scripts/sedCommandsForVariousTasks.txt for help on re-enabling access
 
-
 - If using hooks exclusion file for allowing version bump. Restore original
   hooks file. 
 
@@ -448,12 +456,12 @@ Announce or ask a core team member to announce on the bioc-devel mailing list
 that committing/pushing changes to the BioC git server (git.bioconductor.org)
 can resume.
 
-### F3. Switch `BBS_BIOC_GIT_BRANCH` from `master` to `RELEASE_3_16` on main BioC 3.16 builder
+### F3. Switch `BBS_BIOC_GIT_BRANCH` from `master` to `RELEASE_3_16` on central BioC 3.16 builder
 
 DON'T FORGET THIS STEP! Its purpose is to make the BioC 3.16 builds grab the
 `RELEASE_3_16` branch of all packages instead of their `master` branch.
 
-Login to the main BioC 3.16 builder as `biocbuild` and replace
+Login to the central BioC 3.16 builder as `biocbuild` and replace
 
 ```sh
 export BBS_BIOC_GIT_BRANCH="master"
@@ -485,6 +493,9 @@ Then remove the `manifest` and `MEAT0` folders from `~/bbs-3.16-bioc/`,
 `~/bbs-3.16-data-annotation/`, `~/bbs-3.16-data-experiment/`,
 `~/bbs-3.16-workflows/`, and `~/bbs-3.16-books/`. They'll get automatically
 re-created and re-populated when the builds start.
+
+Once you're done, don't forget to uncomment all the builds that were temporary
+commented out in the crontab (see section C1 above).
 
 ### F4. Sync all core Bioconductor packages hosted on GitHub
 

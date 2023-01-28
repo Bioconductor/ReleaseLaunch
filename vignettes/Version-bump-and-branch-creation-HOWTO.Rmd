@@ -202,7 +202,7 @@ procedure should take about 3 hours. Make sure to reserve enough time.
 
 No 3.16 build should start until:
 
-- the bump and branch process is complete
+- the bump and branch process is complete,
 
 - **and** `BBS_BIOC_GIT_BRANCH` is switched from `master` to `RELEASE_3_16`
   on the central BioC 3.16 builder (this switch is documented in section

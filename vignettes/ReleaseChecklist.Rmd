@@ -195,7 +195,7 @@ variable!
   experiment). The bump and branch took about 2 hours.
 
 - Bump versions and create BioC 3.6 release branch
-  <https://github.com/Bioconductor/ReleaseLaunch/blob/master/vignettes/Version-bump-and-branch-creation-HOWTO.Rmd>
+  <https://github.com/Bioconductor/ReleaseLaunch/blob/devel/vignettes/Version-bump-and-branch-creation-HOWTO.Rmd>
 
 - Confirm MEAT0 is pointed at the correct manifest for the
   3.6 and 3.7 builds.

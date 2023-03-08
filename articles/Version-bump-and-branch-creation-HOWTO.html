@@ -106,19 +106,19 @@ release, <strong>in this order</strong>:</p>
 <ul>
 <li>
 <strong>First version bump</strong>: bump x.y.z version to even y
-<strong>in the <code>master</code> branch</strong>
+<strong>in the <code>devel</code> branch</strong>
 </li>
 <li>
 <strong>Branch creation</strong>: create the release branch</li>
 <li>
 <strong>Second version bump</strong>: bump x.y.z version to odd y
-<strong>in the <code>master</code> branch</strong>
+<strong>in the <code>devel</code> branch</strong>
 </li>
 </ul>
-<p>For example, for the BioC 3.16 release, we will need to do this for
+<p>For example, for the BioC 3.17 release, we will need to do this for
 all the packages listed in the <code>software.txt</code>,
 <code>data-experiment.txt</code>, <code>workflows.txt</code>, and
-<code>books.txt</code> files of the <code>RELEASE_3_16</code> branch of
+<code>books.txt</code> files of the <code>RELEASE_3_17</code> branch of
 the <code>manifest</code> repo.</p>
 <p>Note that there are some exceptions:</p>
 <ul>
@@ -131,10 +131,10 @@ the new branch but we won’t bump versions.</p></li>
 <p>We’ll use Python script
 <code>bump_version_and_create_branch.py</code> to apply and push these
 changes. This will need to be done on the day prior to the release
-before the BioC 3.16 builds start for software, data-experiment,
+before the BioC 3.17 builds start for software, data-experiment,
 workflow, and book packages.</p>
 <p>Look for the prerun jobs in the crontab for the
-<code>biocbuild</code> user on the central BioC 3.16 builder to get the
+<code>biocbuild</code> user on the central BioC 3.17 builder to get the
 times the software and data-experiment builds get kicked off. Make sure
 to check the crontab again a couple of days before the release as we
 sometimes make small adjustments to the crontabs on the build machines.
@@ -148,8 +148,8 @@ Coast.</p>
 steps in sections <strong>C.</strong> and <strong>D.</strong>.</p>
 <ul>
 <li><p>Update this document to reflect the BioC version to be released
-i.e. replace all occurrences of <code>3.16</code> and
-<code>RELEASE_3_16</code> with appropriate version. This will avoid
+i.e. replace all occurrences of <code>3.17</code> and
+<code>RELEASE_3_17</code> with appropriate version. This will avoid
 potentially disastrous mistakes when copying/pasting/executing commands
 from this document.</p></li>
 <li><p>Choose a Linux machine with enough disk space to clone all the
@@ -192,22 +192,22 @@ sections <strong>C.</strong>, <strong>D.</strong>, and
 <div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">BBS_HOME</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/BBS"</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># clone `manifest` repo</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="va">$BBS_HOME</span><span class="ex">/utils/update_bioc_git_repos.py</span> manifest RELEASE_3_16</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="va">$BBS_HOME</span><span class="ex">/utils/update_bioc_git_repos.py</span> manifest RELEASE_3_17</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># clone software package repos (takes approx. 1h20)</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="bu">time</span> <span class="va">$BBS_HOME</span>/utils/update_bioc_git_repos.py software master RELEASE_3_16</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="bu">time</span> <span class="va">$BBS_HOME</span>/utils/update_bioc_git_repos.py software devel RELEASE_3_17</span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co"># clone data-annotation package repos (takes a couple of minutes)</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="bu">time</span> <span class="va">$BBS_HOME</span>/utils/update_bioc_git_repos.py data-annotation master RELEASE_3_16</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="bu">time</span> <span class="va">$BBS_HOME</span>/utils/update_bioc_git_repos.py data-annotation devel RELEASE_3_17</span>
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co"># clone data-experiment package repos (takes approx. 1h50)</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="bu">time</span> <span class="va">$BBS_HOME</span>/utils/update_bioc_git_repos.py data-experiment master RELEASE_3_16</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="bu">time</span> <span class="va">$BBS_HOME</span>/utils/update_bioc_git_repos.py data-experiment devel RELEASE_3_17</span>
 <span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co"># clone workflow package repos (takes approx. 4 min)</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="bu">time</span> <span class="va">$BBS_HOME</span>/utils/update_bioc_git_repos.py workflows master RELEASE_3_16</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="bu">time</span> <span class="va">$BBS_HOME</span>/utils/update_bioc_git_repos.py workflows devel RELEASE_3_17</span>
 <span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co"># clone book repos (takes &lt; 1 min)</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="bu">time</span> <span class="va">$BBS_HOME</span>/utils/update_bioc_git_repos.py books master RELEASE_3_16</span></code></pre></div>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="bu">time</span> <span class="va">$BBS_HOME</span>/utils/update_bioc_git_repos.py books devel RELEASE_3_17</span></code></pre></div>
 </li>
 <li>
 <p>Make sure you can push changes to the BioC git server (at
@@ -279,16 +279,15 @@ completed before the software builds get kicked off (see <strong>A.
 Introduction</strong>). The full procedure should take about 3 hours.
 Make sure to reserve enough time.</p>
 <div class="section level4">
-<h4 id="c1--comment-out-all-builds-in-crontab-on-central-bioc-3-16-builder">C1. Comment out all builds in crontab on central BioC 3.16
-builder<a class="anchor" aria-label="anchor" href="#c1--comment-out-all-builds-in-crontab-on-central-bioc-3-16-builder"></a>
+<h4 id="c1--comment-out-all-builds-in-crontab-on-central-bioc-3-17-builder">C1. Comment out all builds in crontab on central BioC 3.17
+builder<a class="anchor" aria-label="anchor" href="#c1--comment-out-all-builds-in-crontab-on-central-bioc-3-17-builder"></a>
 </h4>
-<p>No 3.16 build should start until:</p>
+<p>No 3.17 build should start until:</p>
 <ul>
 <li><p>the bump and branch process is complete,</p></li>
 <li><p><strong>and</strong> <code>BBS_BIOC_GIT_BRANCH</code> is switched
-from <code>master</code> to <code>RELEASE_3_16</code> on the central
-BioC 3.16 builder (this switch is documented in section F3
-below).</p></li>
+from <code>devel</code> to <code>RELEASE_3_17</code> on the central BioC
+3.17 builder (this switch is documented in section F3 below).</p></li>
 </ul>
 <p>Maybe no build is scheduled to start during the next 3 hours, in
 which case everything is fine. Otherwise, comment out all the builds
@@ -305,18 +304,18 @@ BioC git server (git.bioconductor.org) for the next 3 hours.</p>
 <div class="section level4">
 <h4 id="c3--modify-packages-conf-to-block-all-commits">C3. Modify packages.conf to block all commits<a class="anchor" aria-label="anchor" href="#c3--modify-packages-conf-to-block-all-commits"></a>
 </h4>
-<p>The <code>RELEASE_3_15</code> lines in
+<p>The <code>RELEASE_3_16</code> lines in
 <code>gitolite-admin/conf/packages.conf</code> were commented out when
 the release builds were frozen. At this point, only the
-<code>master</code> lines are still active.</p>
-<p>Deactivate all push access by commenting out the <code>master</code>
+<code>devel</code> lines are still active.</p>
+<p>Deactivate all push access by commenting out the <code>devel</code>
 lines in <code>gitolite-admin/conf/packages.conf</code>.</p>
-<p>NOTE: Do not change the branch from RELEASE_3_15 to RELEASE_3_16, it
+<p>NOTE: Do not change the branch from RELEASE_3_16 to RELEASE_3_17, it
 is not a good solution. Maintainers now will be able to push their own
-RELEASE_3_16 branch before we are able to create it at release time.
+RELEASE_3_17 branch before we are able to create it at release time.
 This issue reflects the issue <a href="https://stat.ethz.ch/pipermail/bioc-devel/2019-May/015048.html" class="external-link uri">https://stat.ethz.ch/pipermail/bioc-devel/2019-May/015048.html</a>.</p>
 <p>Using vim, it is possible with a one liner:</p>
-<pre class="vi"><code>:g/RW master/s/^/#</code></pre>
+<pre class="vi"><code>:g/RW devel/s/^/#</code></pre>
 <p>Or Lori created <code>sed</code> commands see
 <code>scripts/sedCommandsForVariousTasks.txt</code></p>
 <p>Once <code>packages.conf</code> is updated, push to
@@ -337,7 +336,7 @@ file from the <code>hook/</code> directory in each package, e.g.,
 <div class="sourceCode" id="cb9"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-rf</span> ~/repositories/packages/<span class="pp">*</span>.git/hooks/pre-receive.h00-pre-receive-hook-software</span></code></pre></div>
 </li>
 </ul>
-<p>Or (trying as of release 3.16) try using hooks exclusion file. See
+<p>Or (trying as of release 3.17) try using hooks exclusion file. See
 scripts/sedCommandsForVariousTasks.txt. This changes is made in the
 hook_maintainer repo.</p>
 </div>
@@ -351,12 +350,12 @@ authentication agent connection e.g.:</p>
 <p>See <strong>B. Preliminary steps</strong> above for the details.</p>
 </div>
 <div class="section level4">
-<h4 id="c6--checkoutupdate-the-release_3_16-branch-of-the-manifest-repo">C6. Checkout/update the <code>RELEASE_3_16</code> branch of the
-<code>manifest</code> repo<a class="anchor" aria-label="anchor" href="#c6--checkoutupdate-the-release_3_16-branch-of-the-manifest-repo"></a>
+<h4 id="c6--checkoutupdate-the-release_3_17-branch-of-the-manifest-repo">C6. Checkout/update the <code>RELEASE_3_17</code> branch of the
+<code>manifest</code> repo<a class="anchor" aria-label="anchor" href="#c6--checkoutupdate-the-release_3_17-branch-of-the-manifest-repo"></a>
 </h4>
 <div class="sourceCode" id="cb11"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/git.bioconductor.org/manifest</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> pull <span class="at">--all</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> checkout RELEASE_3_16</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> checkout RELEASE_3_17</span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> branch</span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status</span></code></pre></div>
 </div>
@@ -386,7 +385,7 @@ performed from <em>within</em> this folder:</p>
 <li>
 <p><code>MANIFEST_FILE</code>: Point <code>MANIFEST_FILE</code> to
 the manifest file for software packages. This must be the file from the
-<code>RELEASE_3_16</code> branch of the <code>manifest</code> repo:</p>
+<code>RELEASE_3_17</code> branch of the <code>manifest</code> repo:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">MANIFEST_FILE</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/git.bioconductor.org/manifest/software.txt"</span></span></code></pre></div>
 </li>
 </ul>
@@ -400,13 +399,13 @@ Introduction</strong>.</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$WORKING_DIR</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="va">pkgs_in_manifest</span><span class="op">=</span><span class="kw">`</span><span class="fu">grep</span> <span class="st">'Package: '</span> <span class="va">$MANIFEST_FILE</span> <span class="kw">|</span> <span class="fu">sed</span> <span class="st">'s/Package: //g'</span><span class="kw">`</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="va">$BBS_HOME</span><span class="ex">/utils/bump_version_and_create_branch.py</span> <span class="at">--push</span> RELEASE_3_16 <span class="va">$pkgs_in_manifest</span> <span class="op">&gt;</span>bump_version_and_create_branch.log <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">&amp;</span></span></code></pre></div>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="va">$BBS_HOME</span><span class="ex">/utils/bump_version_and_create_branch.py</span> <span class="at">--push</span> RELEASE_3_17 <span class="va">$pkgs_in_manifest</span> <span class="op">&gt;</span>bump_version_and_create_branch.log <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">&amp;</span></span></code></pre></div>
 <p>The <code>bump_version_and_create_branch.py</code> run above can be
 replaced with a 2-pass run:</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># First pass (apply all the changes but do NOT push them):</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="va">$BBS_HOME</span><span class="ex">/utils/bump_version_and_create_branch.py</span> RELEASE_3_16 <span class="va">$pkgs_in_manifest</span> <span class="op">&gt;</span>bump_version_and_create_branch.log1 <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">&amp;</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="va">$BBS_HOME</span><span class="ex">/utils/bump_version_and_create_branch.py</span> RELEASE_3_17 <span class="va">$pkgs_in_manifest</span> <span class="op">&gt;</span>bump_version_and_create_branch.log1 <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">&amp;</span></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Second pass (push all the changes):</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="va">$BBS_HOME</span><span class="ex">/utils/bump_version_and_create_branch.py</span> <span class="at">--push</span> RELEASE_3_16 <span class="va">$pkgs_in_manifest</span> <span class="op">&gt;</span>bump_version_and_create_branch.log2 <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">&amp;</span></span></code></pre></div>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="va">$BBS_HOME</span><span class="ex">/utils/bump_version_and_create_branch.py</span> <span class="at">--push</span> RELEASE_3_17 <span class="va">$pkgs_in_manifest</span> <span class="op">&gt;</span>bump_version_and_create_branch.log2 <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">&amp;</span></span></code></pre></div>
 <p>The 2-pass run can be useful if one wants to inspect the changes
 before pushing them.</p>
 <p>Notes:</p>
@@ -417,7 +416,7 @@ before pushing them.</p>
 treatment.</p></li>
 <li><p>In the 2-pass run, the second pass checks the packages and
 applies the changes only if needed (i.e. if a package does not already
-have the <code>RELEASE_3_16</code> branch) before pushing the
+have the <code>RELEASE_3_17</code> branch) before pushing the
 changes.</p></li>
 <li><p>If for some reason the
 <code>bump_version_and_create_branch.py</code> script stops prematurly,
@@ -483,21 +482,21 @@ variables as follows</strong>:</p>
 <div class="sourceCode" id="cb22"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$WORKING_DIR</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="va">pkgs_in_manifest</span><span class="op">=</span><span class="kw">`</span><span class="fu">grep</span> <span class="st">'Package: '</span> <span class="va">$MANIFEST_FILE</span> <span class="kw">|</span> <span class="fu">sed</span> <span class="st">'s/Package: //g'</span><span class="kw">`</span></span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="va">$BBS_HOME</span><span class="ex">/utils/bump_version_and_create_branch.py</span> <span class="at">--no-bump</span> <span class="at">--push</span> RELEASE_3_16 <span class="va">$pkgs_in_manifest</span> <span class="op">&gt;</span>bump_version_and_create_branch.log <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">&amp;</span></span></code></pre></div>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="va">$BBS_HOME</span><span class="ex">/utils/bump_version_and_create_branch.py</span> <span class="at">--no-bump</span> <span class="at">--push</span> RELEASE_3_17 <span class="va">$pkgs_in_manifest</span> <span class="op">&gt;</span>bump_version_and_create_branch.log <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">&amp;</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="f--finishing-up">F. Finishing up<a class="anchor" aria-label="anchor" href="#f--finishing-up"></a>
 </h3>
 <div class="section level4">
-<h4 id="f1--enable-push-access-to-new-release_3_16-branch">F1. Enable push access to new <code>RELEASE_3_16</code> branch<a class="anchor" aria-label="anchor" href="#f1--enable-push-access-to-new-release_3_16-branch"></a>
+<h4 id="f1--enable-push-access-to-new-release_3_17-branch">F1. Enable push access to new <code>RELEASE_3_17</code> branch<a class="anchor" aria-label="anchor" href="#f1--enable-push-access-to-new-release_3_17-branch"></a>
 </h4>
 <p>This is done by editing the <code>conf/packages.conf</code> file in
 the <code>gitolite-admin</code> repo
 (<code>git clone git@git.bioconductor.org:gitolite-admin</code>).</p>
 <ul>
 <li><p>If not done already, replace all instances of
-<code>RELEASE_3_15</code> with <code>RELEASE_3_16</code>.</p></li>
-<li><p>Uncomment all <code>RELEASE_3_16</code> and <code>master</code>
+<code>RELEASE_3_16</code> with <code>RELEASE_3_17</code>.</p></li>
+<li><p>Uncomment all <code>RELEASE_3_17</code> and <code>devel</code>
 lines.</p></li>
 </ul>
 <p>See scripts/sedCommandsForVariousTasks.txt for help on re-enabling
@@ -512,7 +511,7 @@ re-enable the hooks.</p></li>
 dummy package BiocGenerics_test.</p>
 <p>Check:</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> checkout RELEASE_3_16</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> checkout RELEASE_3_17</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> pull</span></code></pre></div>
 </li>
 </ul>
@@ -526,28 +525,28 @@ mailing list that committing/pushing changes to the BioC git server
 (git.bioconductor.org) can resume.</p>
 </div>
 <div class="section level4">
-<h4 id="f3--switch-bbs_bioc_git_branch-from-master-to-release_3_16-on-central-bioc-3-16-builder">F3. Switch <code>BBS_BIOC_GIT_BRANCH</code> from <code>master</code>
-to <code>RELEASE_3_16</code> on central BioC 3.16 builder<a class="anchor" aria-label="anchor" href="#f3--switch-bbs_bioc_git_branch-from-master-to-release_3_16-on-central-bioc-3-16-builder"></a>
+<h4 id="f3--switch-bbs_bioc_git_branch-from-devel-to-release_3_17-on-central-bioc-3-17-builder">F3. Switch <code>BBS_BIOC_GIT_BRANCH</code> from <code>devel</code>
+to <code>RELEASE_3_17</code> on central BioC 3.17 builder<a class="anchor" aria-label="anchor" href="#f3--switch-bbs_bioc_git_branch-from-devel-to-release_3_17-on-central-bioc-3-17-builder"></a>
 </h4>
-<p>DON’T FORGET THIS STEP! Its purpose is to make the BioC 3.16 builds
-grab the <code>RELEASE_3_16</code> branch of all packages instead of
-their <code>master</code> branch.</p>
-<p>Login to the central BioC 3.16 builder as <code>biocbuild</code> and
+<p>DON’T FORGET THIS STEP! Its purpose is to make the BioC 3.17 builds
+grab the <code>RELEASE_3_17</code> branch of all packages instead of
+their <code>devel</code> branch.</p>
+<p>Login to the central BioC 3.17 builder as <code>biocbuild</code> and
 replace</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">BBS_BIOC_GIT_BRANCH</span><span class="op">=</span><span class="st">"master"</span></span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">BBS_BIOC_GIT_BRANCH</span><span class="op">=</span><span class="st">"devel"</span></span></code></pre></div>
 <p>with</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">BBS_BIOC_GIT_BRANCH</span><span class="op">=</span><span class="st">"RELEASE_3_16"</span></span></code></pre></div>
-<p>in <code>~/BBS/3.16/config.sh</code></p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">BBS_BIOC_GIT_BRANCH</span><span class="op">=</span><span class="st">"RELEASE_3_17"</span></span></code></pre></div>
+<p>in <code>~/BBS/3.17/config.sh</code></p>
 <p>Also replace</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> BBS_BIOC_GIT_BRANCH=master</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> BBS_BIOC_GIT_BRANCH=devel</span></code></pre></div>
 <p>with</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> BBS_BIOC_GIT_BRANCH=RELEASE_3_16</span></code></pre></div>
-<p>in <code>~/BBS/3.16/config.bat</code></p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> BBS_BIOC_GIT_BRANCH=RELEASE_3_17</span></code></pre></div>
+<p>in <code>~/BBS/3.17/config.bat</code></p>
 <p>Then remove the <code>manifest</code> and <code>MEAT0</code> folders
-from <code>~/bbs-3.16-bioc/</code>,
-<code>~/bbs-3.16-data-annotation/</code>,
-<code>~/bbs-3.16-data-experiment/</code>,
-<code>~/bbs-3.16-workflows/</code>, and <code>~/bbs-3.16-books/</code>.
+from <code>~/bbs-3.17-bioc/</code>,
+<code>~/bbs-3.17-data-annotation/</code>,
+<code>~/bbs-3.17-data-experiment/</code>,
+<code>~/bbs-3.17-workflows/</code>, and <code>~/bbs-3.17-books/</code>.
 They’ll get automatically re-created and re-populated when the builds
 start.</p>
 <p>Once you’re done, don’t forget to uncomment all the builds that were
@@ -575,13 +574,13 @@ classic PAT. These commands only work if the user has admin access to
 the organization’s GitHub account.</p>
 <p>To update all packages, run the following command:</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/branch-release-gh.html">add_gh_release_branches</a></span><span class="op">(</span>release <span class="op">=</span> <span class="st">"RELEASE_3_16"</span>, org <span class="op">=</span> <span class="st">"Bioconductor"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/branch-release-gh.html">add_gh_release_branches</a></span><span class="op">(</span>release <span class="op">=</span> <span class="st">"RELEASE_3_17"</span>, org <span class="op">=</span> <span class="st">"Bioconductor"</span><span class="op">)</span></span></code></pre></div>
 <p>Be sure to edit the <code>release</code> argument in the
 function.</p>
 <p>To update an individual package, run the following function:</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/branch-release-gh.html">add_gh_release_branch</a></span><span class="op">(</span></span>
-<span>    package_name <span class="op">=</span> <span class="st">"updateObject"</span>, release <span class="op">=</span> <span class="st">"RELEASE_3_16"</span>, gh_branch <span class="op">=</span> <span class="st">"master"</span></span>
+<span>    package_name <span class="op">=</span> <span class="st">"updateObject"</span>, release <span class="op">=</span> <span class="st">"RELEASE_3_17"</span>, gh_branch <span class="op">=</span> <span class="st">"devel"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Note that the <code>gh_branch</code> corresponds to the default
 branch on GitHub. On some repositories, the <code>gh_branch</code> can

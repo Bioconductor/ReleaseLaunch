@@ -1,4 +1,4 @@
-.BIOC_DEFAULT_BRANCH <- "master"
+.BIOC_DEFAULT_BRANCH <- "devel"
 .BIOC_GIT_ADDRESS <- "git@git.bioconductor.org"
 
 #' @importFrom gh gh gh_token
@@ -65,14 +65,7 @@ get_org_github_repos <-
 #' @examples
 #'
 #' if (interactive()) {
-#'   my_repos <- get_user_github_repos(username = "github-username")
-#'   change <- my_repos[my_repos == "master"]
-#'   if (length(change))
-#'     rename_branch_repos(
-#'       repos = change,
-#'       org = "github-username",
-#'       clone = TRUE
-#'     )
+#'   get_user_github_repos(username = "github-username")
 #' }
 #'
 #' @export
@@ -181,10 +174,10 @@ packages_without_release_branch <- function(
 #'   "RELEASE_3_16"
 #'
 #' @param gh_branch `character(1)` The name of the default branch on GitHub. It
-#'   may be 'main', 'master', or 'devel' depending on the repository
+#'   may be 'devel' or 'main' depending on the repository
 #'
 #' @param bioc_branch `character(1)` The name of the default branch on the
-#'   Bioconductor git server (default 'master')
+#'   Bioconductor git server (default 'devel')
 #'
 #' @inheritParams get-github-repos
 #'
@@ -197,7 +190,7 @@ packages_without_release_branch <- function(
 #' @examples
 #' if (interactive()) {
 #'   add_gh_release_branch (
-#'     package_name = "updateObject", gh_branch = "master"
+#'     package_name = "updateObject", gh_branch = "devel"
 #'   )
 #' }
 #'
@@ -229,7 +222,7 @@ add_gh_release_branch <- function(
     git_fetch("upstream")
     up_remote <- paste0("upstream/", bioc_branch)
     git_merge(up_remote)
-    ## git push origin master
+    ## git push origin devel
     git_push("origin")
     ##
     if (!git_branch_exists(branch = release))

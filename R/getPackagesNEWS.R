@@ -238,7 +238,7 @@ printNEWS <- function(
 # manifest:  software.txt data-experiment.txt workflows.txt
 # status:  new or removed
 getPackageTitles <- function(
-    prevBranch="RELEASE_3_6", currBranch="master",
+    prevBranch="RELEASE_3_6", currBranch="devel",
     manifest=c("software.txt", "data-experiment.txt", "workflows.txt"),
     status = c("new", "removed")
 ) {
@@ -291,7 +291,7 @@ getPackageDescriptions <-
 
     file <- tempfile()
     DESC_FILE <-
-        "git archive --remote=ssh://git@git.bioconductor.org/packages/%s master DESCRIPTION|tar -xO > %s"
+        "git archive --remote=ssh://git@git.bioconductor.org/packages/%s devel DESCRIPTION|tar -xO > %s"
 
     urlBase <- ifelse(relativeLink, "/packages/","https://bioconductor.org/packages/")
     desc = lapply(pkgs, function(pkg) {

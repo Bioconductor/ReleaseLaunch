@@ -42,14 +42,7 @@ or the organization ('org') names, respectively.
 \examples{
 
 if (interactive()) {
-  my_repos <- get_user_github_repos(username = "github-username")
-  change <- my_repos[my_repos == "master"]
-  if (length(change))
-    rename_branch_repos(
-      repos = change,
-      org = "github-username",
-      clone = TRUE
-    )
+  get_user_github_repos(username = "github-username")
 }
 
 }

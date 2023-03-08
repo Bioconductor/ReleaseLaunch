@@ -29,10 +29,10 @@ is also available on GitHub.}
 "RELEASE_3_16"}
 
 \item{gh_branch}{\code{character(1)} The name of the default branch on GitHub. It
-may be 'main', 'master', or 'devel' depending on the repository}
+may be 'devel' or 'main' depending on the repository}
 
 \item{bioc_branch}{\code{character(1)} The name of the default branch on the
-Bioconductor git server (default 'master')}
+Bioconductor git server (default 'devel')}
 
 \item{org}{\code{character(1)} The organization for which to extract the names of
 the repositories on GitHub (default "Bioconductor").}
@@ -48,7 +48,7 @@ organization indicated by \code{org}.
 \examples{
 if (interactive()) {
   add_gh_release_branch (
-    package_name = "updateObject", gh_branch = "master"
+    package_name = "updateObject", gh_branch = "devel"
   )
 }
 

@@ -109,13 +109,13 @@ in sections **C.** and **D.**.
   # clone `manifest` repo
   $BBS_HOME/utils/update_bioc_git_repos.py manifest RELEASE_3_17
   
-  # clone software package repos (takes approx. 1h20)
+  # clone software package repos (takes approx. 2h)
   time $BBS_HOME/utils/update_bioc_git_repos.py software devel RELEASE_3_17
   
   # clone data-annotation package repos (takes a couple of minutes)
   time $BBS_HOME/utils/update_bioc_git_repos.py data-annotation devel RELEASE_3_17
   
-  # clone data-experiment package repos (takes approx. 1h50)
+  # clone data-experiment package repos (takes approx. 2h)
   time $BBS_HOME/utils/update_bioc_git_repos.py data-experiment devel RELEASE_3_17
   
   # clone workflow package repos (takes approx. 4 min)
@@ -210,7 +210,7 @@ No 3.17 build should start until:
 
 Maybe no build is scheduled to start during the next 3 hours, in which case
 everything is fine. Otherwise, comment out all the builds that are at the risk
-to start before step F3 is completed.
+of starting before step F3 is completed.
 
 ### C2. Ask people to stop committing/pushing changes to the BioC git server
 

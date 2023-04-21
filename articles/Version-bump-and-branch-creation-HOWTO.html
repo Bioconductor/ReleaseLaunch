@@ -85,7 +85,7 @@
                         <h4 data-toc-skip class="author">Bioconductor
 Maintainer</h4>
             
-            <h4 data-toc-skip class="date">March 22, 2023</h4>
+            <h4 data-toc-skip class="date">April 21, 2023</h4>
       
       
       <div class="hidden name"><code>Version-bump-and-branch-creation-HOWTO.Rmd</code></div>
@@ -194,13 +194,13 @@ sections <strong>C.</strong>, <strong>D.</strong>, and
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># clone `manifest` repo</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="va">$BBS_HOME</span><span class="ex">/utils/update_bioc_git_repos.py</span> manifest RELEASE_3_17</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># clone software package repos (takes approx. 1h20)</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># clone software package repos (takes approx. 2h)</span></span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="bu">time</span> <span class="va">$BBS_HOME</span>/utils/update_bioc_git_repos.py software devel RELEASE_3_17</span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co"># clone data-annotation package repos (takes a couple of minutes)</span></span>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="bu">time</span> <span class="va">$BBS_HOME</span>/utils/update_bioc_git_repos.py data-annotation devel RELEASE_3_17</span>
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co"># clone data-experiment package repos (takes approx. 1h50)</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co"># clone data-experiment package repos (takes approx. 2h)</span></span>
 <span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="bu">time</span> <span class="va">$BBS_HOME</span>/utils/update_bioc_git_repos.py data-experiment devel RELEASE_3_17</span>
 <span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co"># clone workflow package repos (takes approx. 4 min)</span></span>
@@ -291,7 +291,7 @@ from <code>devel</code> to <code>RELEASE_3_17</code> on the central BioC
 </ul>
 <p>Maybe no build is scheduled to start during the next 3 hours, in
 which case everything is fine. Otherwise, comment out all the builds
-that are at the risk to start before step F3 is completed.</p>
+that are at the risk of starting before step F3 is completed.</p>
 </div>
 <div class="section level4">
 <h4 id="c2--ask-people-to-stop-committingpushing-changes-to-the-bioc-git-server">C2. Ask people to stop committing/pushing changes to the BioC git

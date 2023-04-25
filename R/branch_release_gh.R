@@ -171,7 +171,7 @@ packages_without_release_branch <- function(
 #'   is also available on GitHub.
 #'
 #' @param release `character(1)` The Bioconductor version branch tag, e.g.,
-#'   "RELEASE_3_16"
+#'   "RELEASE_3_17"
 #'
 #' @param gh_branch `character(1)` The name of the default branch on GitHub. It
 #'   may be 'devel' or 'main' depending on the repository
@@ -196,7 +196,7 @@ packages_without_release_branch <- function(
 #'
 #' @export
 add_gh_release_branch <- function(
-    package_name, release = "RELEASE_3_16",
+    package_name, release = "RELEASE_3_17",
     gh_branch = .BIOC_DEFAULT_BRANCH, bioc_branch = .BIOC_DEFAULT_BRANCH,
     org = "Bioconductor"
 ) {
@@ -254,7 +254,7 @@ add_gh_release_branch <- function(
 #' @export
 add_gh_release_branches <- function(
     packages = character(0L),
-    release = "RELEASE_3_16",
+    release = "RELEASE_3_17",
     bioc_branch = .BIOC_DEFAULT_BRANCH,
     org = "Bioconductor"
 ) {

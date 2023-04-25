@@ -8,7 +8,7 @@
 \usage{
 add_gh_release_branch(
   package_name,
-  release = "RELEASE_3_16",
+  release = "RELEASE_3_17",
   gh_branch = .BIOC_DEFAULT_BRANCH,
   bioc_branch = .BIOC_DEFAULT_BRANCH,
   org = "Bioconductor"
@@ -16,7 +16,7 @@ add_gh_release_branch(
 
 add_gh_release_branches(
   packages = character(0L),
-  release = "RELEASE_3_16",
+  release = "RELEASE_3_17",
   bioc_branch = .BIOC_DEFAULT_BRANCH,
   org = "Bioconductor"
 )
@@ -26,7 +26,7 @@ add_gh_release_branches(
 is also available on GitHub.}
 
 \item{release}{\code{character(1)} The Bioconductor version branch tag, e.g.,
-"RELEASE_3_16"}
+"RELEASE_3_17"}
 
 \item{gh_branch}{\code{character(1)} The name of the default branch on GitHub. It
 may be 'devel' or 'main' depending on the repository}

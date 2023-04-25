@@ -9,6 +9,8 @@
 sed -i '/ RELEASE_3_15 /s/^/#/' packages.conf
 ## block master
 sed -i '/ master /s/^/#/' packages.conf 
+## block devel
+sed -i '/ devel /s/^/#/' packages.conf 
 ## disable hook for bump and branch
 sed -i '/ hook.pre-receive /s/^/#/' packages.conf
 
@@ -16,6 +18,7 @@ sed -i '/ hook.pre-receive /s/^/#/' packages.conf
 ## To reinstate and change to new release
 sed -i '/ RELEASE_3_15 /s/^#//' packages.conf
 sed -i '/ master /s/^#//' packages.conf 
+sed -i '/ devel /s/^#//' packages.conf 
 sed -i 's/RELEASE_3_12/RELEASE_3_16/' packages.conf
 sed -i 's/RELEASE_3_15/RELEASE_3_16/' packages.conf
 sed -i '/ RELEASE_3_16 /s/^#//' packages.conf

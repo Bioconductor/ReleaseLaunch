@@ -258,8 +258,12 @@ add_gh_release_branches <- function(
     bioc_branch = .BIOC_DEFAULT_BRANCH,
     org = "Bioconductor"
 ) {
+    version <- gsub("RELEASE_", "", release, fixed = TRUE)
+    version <- gsub("_", ".", version, fixed = TRUE)
     if (!length(packages))
-        packages <- packages_without_release_branch(org = org)
+        packages <- packages_without_release_branch(
+            version = version, org = org
+        )
     if (is.null(names(packages)))
         stop("'packages' must have names")
     .add_gh_release_branches(

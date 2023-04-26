@@ -202,21 +202,21 @@ add_gh_release_branch <- function(
 ) {
     message("Working on: ", package_name)
     ## git clone git@github.com:Bioconductor/ShortRead.git
-    bioc_gh_slug <- paste0("git@github.com:", org, "/", package_name)
+    org_gh_slug <- paste0("git@github.com:", org, "/", package_name)
     if (!dir.exists(package_name))
-        git_clone(bioc_gh_slug)
+        git_clone(org_gh_slug)
     ## cd to package dir
     old_wd <- setwd(package_name)
     on.exit({ setwd(old_wd) })
+    remotes <- git_remote_list()
+    if (!.check_origin_gh(remotes, org_gh_slug))
+        stop("'origin' remote is not set to GitHub")
     git_pull("origin")
     cbranch <- git_branch()
-    if (!identical(cbranch, "devel"))
-        warning("Consider using 'devel' as the default GitHub branch")
     if (!identical(cbranch, gh_branch))
         git_branch_checkout(gh_branch)
     bioc_git_slug <- .get_bioc_slug(package_name)
     ## git remote add upstream git@git.bioconductor.org:packages/<pkg>.git
-    remotes <- git_remote_list()
     if (!.check_remote_exists(remotes, "upstream"))
         git_remote_add(bioc_git_slug, name = "upstream")
     git_fetch("upstream")

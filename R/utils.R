@@ -12,7 +12,7 @@
 .check_origin_gh <- function(remotes, gh_slug) {
     git_url <- remotes[remotes[["name"]] == "origin", "url"]
     git_url <- gsub(".git", "", as.character(git_url), fixed = TRUE)
-    identical(gh_slug, git_url)
+    grepl(gh_slug, git_url, ignore.case = TRUE)
 }
 
 .get_bioc_slug <- function(package_name) {

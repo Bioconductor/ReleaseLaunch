@@ -86,7 +86,7 @@ get_user_github_repos <-
 }
 
 .filter_gh_repos_branch <-
-    function(packages, release, per_page = 100, pages = 10, owner)
+    function(packages, release, per_page = 100, pages = 10, owner, without)
 {
     pkgs <- names(packages)
     hasRELEASE <- structure(
@@ -103,7 +103,7 @@ get_user_github_repos <-
         branches <- vapply(result, `[[`, character(1L), "name")
         hasRELEASE[pkg] <- release %in% branches
     }
-    packages[!hasRELEASE]
+    if (without) packages[!hasRELEASE] else packages[hasRELEASE]
 }
 
 #' Get the Bioconductor packages in the software manifest
@@ -128,18 +128,28 @@ get_bioc_software_manifest <-
     gsub("Package:\\s+", "", software)
 }
 
+get_org_packages <- function(version, org, type) {
+    ## software <- get_bioc_software_manifest()
+    repos <- BiocManager:::.repositories_bioc(version)[type]
+    db <- utils::available.packages(repos = repos, type = "source")
+    software <- rownames(db)
+    pre_existing_pkgs <- get_org_github_repos(org = org)
+    candidates <- intersect(names(pre_existing_pkgs), software)
+    pre_existing_pkgs[candidates]
+}
+
 #' Generate the list of packages to be updated
 #'
-#' This function obtains all the repositories from the Bioconductor organization
+#' These functions obtain all the repositories from the designated organization
 #' and filters them to only valid R packages and repositories that do not have a
-#' `RELEASE_XX_YY` branch.
+#' `RELEASE_XX_YY` branch or that do, depending on the function called.
 #'
 #' @inheritParams get-github-repos
 #'
 #' @param version `character(1)` The numeric version of the Bioconductor release,
 #'   e.g., "3.16"
 #'
-#' @param type `character(1)` The official repository name as given by
+#' @param type `character()` The repository names to look through as returned by
 #'   `BiocManager::repositories()`. Currently, only software and experiment data
 #'   ('BioCsoft' and 'BioCexp', respectively) are supported.
 #'
@@ -150,16 +160,24 @@ get_bioc_software_manifest <-
 packages_without_release_branch <- function(
     version = "3.16", org = "Bioconductor", type = c("BioCsoft", "BioCexp")
 ) {
-    type <- match.arg(type)
     release_slug <- paste0("RELEASE_", gsub("\\.", "_", version))
-    ## software <- get_bioc_software_manifest()
-    repos <- BiocManager:::.repositories_bioc(version)[type]
-    db <- utils::available.packages(repos = repos, type = "source")
-    software <- rownames(db)
-    pre_existing_pkgs <- get_org_github_repos(org = org)
-    candidates <- intersect(names(pre_existing_pkgs), software)
-    candidates <- pre_existing_pkgs[candidates]
-    .filter_gh_repos_branch(candidates, release_slug, owner = org)
+    candidates <- get_org_packages(version = version, org = org, type = type)
+    .filter_gh_repos_branch(
+        candidates, release_slug, owner = org, without = TRUE
+    )
+}
+
+#' @rdname packages_without_release_branch
+#'
+#' @export
+packages_with_release_branch <- function(
+    version = "3.16", org = "Bioconductor", type = c("BioCsoft", "BioCexp")
+) {
+    release_slug <- paste0("RELEASE_", gsub("\\.", "_", version))
+    candidates <- get_org_packages(version = version, org = org, type = type)
+    .filter_gh_repos_branch(
+        candidates, release_slug, owner = org, without = FALSE
+    )
 }
 
 #' Add the release branch to GitHub package repositories

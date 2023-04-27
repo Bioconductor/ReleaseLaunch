@@ -2,9 +2,16 @@
 % Please edit documentation in R/branch_release_gh.R
 \name{packages_without_release_branch}
 \alias{packages_without_release_branch}
+\alias{packages_with_release_branch}
 \title{Generate the list of packages to be updated}
 \usage{
 packages_without_release_branch(
+  version = "3.16",
+  org = "Bioconductor",
+  type = c("BioCsoft", "BioCexp")
+)
+
+packages_with_release_branch(
   version = "3.16",
   org = "Bioconductor",
   type = c("BioCsoft", "BioCexp")
@@ -17,7 +24,7 @@ e.g., "3.16"}
 \item{org}{\code{character(1)} The organization for which to extract the names of
 the repositories on GitHub (default "Bioconductor").}
 
-\item{type}{\code{character(1)} The official repository name as given by
+\item{type}{\code{character()} The repository names to look through as returned by
 \code{BiocManager::repositories()}. Currently, only software and experiment data
 ('BioCsoft' and 'BioCexp', respectively) are supported.}
 }
@@ -26,7 +33,7 @@ A named scalar string of the default branch whose name corresponds to
 a Bioconductor GitHub repository
 }
 \description{
-This function obtains all the repositories from the Bioconductor organization
+These functions obtain all the repositories from the designated organization
 and filters them to only valid R packages and repositories that do not have a
-\code{RELEASE_XX_YY} branch.
+\code{RELEASE_XX_YY} branch or that do, depending on the function called.
 }

@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ReleaseLaunch</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.13</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.15</span>
       </span>
     </div>
 
@@ -86,7 +86,7 @@ repository</h1>
                         <h4 data-toc-skip class="author">Bioconductor
 Maintainer</h4>
             
-            <h4 data-toc-skip class="date">April 27, 2023</h4>
+            <h4 data-toc-skip class="date">May 15, 2023</h4>
       
       
       <div class="hidden name"><code>Branch-annotation-repo-HOWTO.Rmd</code></div>
@@ -172,9 +172,8 @@ install.packages() even though we don’t have binaries for
 annotations.</p>
 <p>A rerun of the <code>rsync</code> command should only show changes in
 the files we just edited:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rsync</span> <span class="at">--dry-run</span> <span class="at">-ave</span> ssh</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">[biocadmin\@malbec1]</span><span class="er">(</span><span class="ex">mailto:biocadmin@malbec1</span><span class="kw">)</span><span class="ex">{.email}:PACKAGES/3.6/data/annotation/</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="bu">.</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rsync</span> <span class="at">--dry-run</span> <span class="at">-ave</span> <span class="dt">\</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>ssh [biocadmin<span class="dt">\@</span>malbec1]<span class="er">(</span><span class="ex">mailto:biocadmin@malbec1</span><span class="kw">)</span><span class="ex">{.email}:PACKAGES/3.6/data/annotation/</span> .</span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
@@ -183,9 +182,8 @@ the files we just edited:</p>
 <div class="section level4">
 <h4 id="log-on-master-as-webadmin">Log on master as webadmin<a class="anchor" aria-label="anchor" href="#log-on-master-as-webadmin"></a>
 </h4>
-<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">[ubuntu\@master.biocondcutor.org]</span><span class="er">(</span><span class="ex">mailto:ubuntu@master.biocondcutor.org</span><span class="kw">)</span><span class="ex">{.email}</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> su <span class="at">-</span> webadmin cd /extra/www/bioc/packages/3.14/data/annotation</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> [ubuntu<span class="dt">\@</span>master.biocondcutor.org]<span class="er">(</span><span class="ex">mailto:ubuntu@master.biocondcutor.org</span><span class="kw">)</span><span class="ex">{.email}</span> <span class="dt">\</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>sudo su <span class="at">-</span> webadmin cd /extra/www/bioc/packages/3.14/data/annotation</span></code></pre></div>
 <p>Products are sent to master from both nebbiolo2 and
 staging.bioconductor.org. Because of this, the rsync from nebbiolo2 to
 master is not from the top level; we want to leave the products
@@ -253,7 +251,7 @@ package that should fail.</li>
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by Marcel Ramos.</p>
+<p>Developed by Marcel Ramos, Lori Shepherd, Hervé Pages.</p>
 </div>
 
 <div class="pkgdown">

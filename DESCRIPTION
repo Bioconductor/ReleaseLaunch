@@ -4,6 +4,8 @@ Version: 0.99.14
 Authors@R: c(
     person("Marcel", "Ramos", , "marcel.ramosperez@roswellpark.org",
     c("aut", "cre"), c(ORCID = "0000-0002-3242-0582")),
+    person("Lori", "Shepherd", , , "aut"),
+    person("Hervé", "Pages", , , "aut"),
     person("Nitesh", "Turaga", , , "ctb")
   )
 Description: The package faciliates a Bioconductor release. It currently

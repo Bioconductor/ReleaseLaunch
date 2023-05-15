@@ -108,9 +108,8 @@ A rerun of the `rsync` command should only show changes in the files we just
 edited:
 
 ```sh
-rsync --dry-run -ave ssh
-[biocadmin\@malbec1](mailto:biocadmin@malbec1){.email}:PACKAGES/3.6/data/annotation/
-.
+rsync --dry-run -ave \
+ssh [biocadmin\@malbec1](mailto:biocadmin@malbec1){.email}:PACKAGES/3.6/data/annotation/ .
 ```
 
 ## Set up <master.bioconductor.org>
@@ -118,8 +117,7 @@ rsync --dry-run -ave ssh
 ### Log on master as webadmin
 
 ```sh
-ssh
-[ubuntu\@master.biocondcutor.org](mailto:ubuntu@master.biocondcutor.org){.email}
+ssh [ubuntu\@master.biocondcutor.org](mailto:ubuntu@master.biocondcutor.org){.email} \
 sudo su - webadmin cd /extra/www/bioc/packages/3.14/data/annotation
 ```
 

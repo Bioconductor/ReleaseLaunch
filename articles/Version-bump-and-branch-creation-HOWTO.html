@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ReleaseLaunch</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.17</span>
       </span>
     </div>
 
@@ -85,7 +85,7 @@
                         <h4 data-toc-skip class="author">Bioconductor
 Maintainer</h4>
             
-            <h4 data-toc-skip class="date">May 16, 2023</h4>
+            <h4 data-toc-skip class="date">October 26, 2023</h4>
       
       
       <div class="hidden name"><code>Version-bump-and-branch-creation-HOWTO.Rmd</code></div>
@@ -101,7 +101,7 @@ Maintainer</h4>
 <h3 id="a--introduction">A. Introduction<a class="anchor" aria-label="anchor" href="#a--introduction"></a>
 </h3>
 <p>On the day prior to the release, we will need to apply and push the
-following changes to all the Bioconductor packages that go in the
+following changes to all the Bioconductor packages that go in the new
 release, <strong>in this order</strong>:</p>
 <ul>
 <li>
@@ -109,18 +109,21 @@ release, <strong>in this order</strong>:</p>
 <strong>in the <code>devel</code> branch</strong>
 </li>
 <li>
-<strong>Branch creation</strong>: create the release branch</li>
+<strong>Branch creation</strong>: create the new release branch</li>
 <li>
 <strong>Second version bump</strong>: bump x.y.z version to odd y
 <strong>in the <code>devel</code> branch</strong>
 </li>
 </ul>
-<p>For example, for the BioC 3.17 release, we will need to do this for
+<p>For example, for the BioC 3.18 release, we will need to do this for
 all the packages listed in the <code>software.txt</code>,
-<code>data-experiment.txt</code>, <code>workflows.txt</code>, and
-<code>books.txt</code> files of the <code>RELEASE_3_17</code> branch of
-the <code>manifest</code> repo.</p>
-<p>Note that there are some exceptions:</p>
+<code>data-annotation.txt</code>, <code>data-experiment.txt</code>,
+<code>workflows.txt</code>, and <code>books.txt</code> files of the
+<code>RELEASE_3_18</code> branch of the <code>manifest</code> repo.
+However, note that for the packages listed in the
+<code>data-annotation.txt</code>, we won’t perform any version bump
+i.e. we will only create the new release branch.</p>
+<p>Important exceptions:</p>
 <ul>
 <li><p>The BiocVersion package (software package): This package will
 only need the new branch and a simple y -&gt; y + 1 version
@@ -130,11 +133,11 @@ the new branch but we won’t bump versions.</p></li>
 </ul>
 <p>We’ll use Python script
 <code>bump_version_and_create_branch.py</code> to apply and push these
-changes. This will need to be done on the day prior to the release
-before the BioC 3.17 builds start for software, data-experiment,
-workflow, and book packages.</p>
+changes. This will need to be done on the day prior to the release, and
+BEFORE THE BioC 3.18 BUILDS START FOR SOFTARE, DATA-ANNOTATION,
+DATA-EXPERIMENT, WORKFLOW, AND BOOK PACKAGES.</p>
 <p>Look for the prerun jobs in the crontab for the
-<code>biocbuild</code> user on the central BioC 3.17 builder to get the
+<code>biocbuild</code> user on the central BioC 3.18 builder to get the
 times the software and data-experiment builds get kicked off. Make sure
 to check the crontab again a couple of days before the release as we
 sometimes make small adjustments to the crontabs on the build machines.
@@ -148,8 +151,8 @@ Coast.</p>
 steps in sections <strong>C.</strong> and <strong>D.</strong>.</p>
 <ul>
 <li><p>Update this document to reflect the BioC version to be released
-i.e. replace all occurrences of <code>3.17</code> and
-<code>RELEASE_3_17</code> with appropriate version. This will avoid
+i.e. replace all occurrences of <code>3.18</code> and
+<code>RELEASE_3_18</code> with appropriate version. This will avoid
 potentially disastrous mistakes when copying/pasting/executing commands
 from this document.</p></li>
 <li><p>Choose a Linux machine with enough disk space to clone all the
@@ -167,19 +170,19 @@ tested.</p></li>
 <p>Make sure to use the <code>-A</code> flag to enable forwarding of
 the authentication agent connection when you <code>ssh</code> to the
 machine e.g.:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> <span class="at">-A</span> hpages@malbec1.bioconductor.org</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">ssh</span> <span class="at">-A</span> hpages@malbec1.bioconductor.org</span></code></pre></div>
 </li>
 <li>
 <p>Clone (or update) the <code>BBS</code> git repo:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># clone</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/Bioconductor/BBS</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># update</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/BBS</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> pull</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co"># clone</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/Bioconductor/BBS</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="co"># update</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="bu">cd</span> ~/BBS</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="fu">git</span> pull</span></code></pre></div>
 </li>
 <li>
 <p>Create the <code>git.bioconductor.org</code> folder:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> git.bioconductor.org</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">mkdir</span> git.bioconductor.org</span></code></pre></div>
 </li>
 <li>
 <p>Populate <code>git.bioconductor.org</code> with git clones of the
@@ -189,54 +192,55 @@ than 3h so is worth doing in advance e.g. a couple of days before the
 release. It will save time when performing the steps described in
 sections <strong>C.</strong>, <strong>D.</strong>, and
 <strong>E.</strong> below on the day prior to the release.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">BBS_HOME</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/BBS"</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># clone `manifest` repo</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="va">$BBS_HOME</span><span class="ex">/utils/update_bioc_git_repos.py</span> manifest RELEASE_3_17</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># clone software package repos (takes approx. 2h)</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="bu">time</span> <span class="va">$BBS_HOME</span>/utils/update_bioc_git_repos.py software devel RELEASE_3_17</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co"># clone data-annotation package repos (takes a couple of minutes)</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="bu">time</span> <span class="va">$BBS_HOME</span>/utils/update_bioc_git_repos.py data-annotation devel RELEASE_3_17</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co"># clone data-experiment package repos (takes approx. 2h)</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="bu">time</span> <span class="va">$BBS_HOME</span>/utils/update_bioc_git_repos.py data-experiment devel RELEASE_3_17</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co"># clone workflow package repos (takes approx. 4 min)</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="bu">time</span> <span class="va">$BBS_HOME</span>/utils/update_bioc_git_repos.py workflows devel RELEASE_3_17</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co"># clone book repos (takes &lt; 1 min)</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="bu">time</span> <span class="va">$BBS_HOME</span>/utils/update_bioc_git_repos.py books devel RELEASE_3_17</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="bu">export</span> <span class="va">BBS_HOME</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/BBS"</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="co"># clone `manifest` repo</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="va">$BBS_HOME</span><span class="ex">/utils/update_bioc_git_repos.py</span> manifest RELEASE_3_18</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="co"># clone software package repos (takes approx. 2h)</span></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="bu">time</span> <span class="va">$BBS_HOME</span>/utils/update_bioc_git_repos.py software devel RELEASE_3_18</span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co"># clone data-annotation package repos (takes a couple of minutes)</span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="bu">time</span> <span class="va">$BBS_HOME</span>/utils/update_bioc_git_repos.py data-annotation devel RELEASE_3_18</span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a><span class="co"># clone data-experiment package repos (takes approx. 2h)</span></span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a><span class="bu">time</span> <span class="va">$BBS_HOME</span>/utils/update_bioc_git_repos.py data-experiment devel RELEASE_3_18</span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a><span class="co"># clone workflow package repos (takes approx. 4 min)</span></span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a><span class="bu">time</span> <span class="va">$BBS_HOME</span>/utils/update_bioc_git_repos.py workflows devel RELEASE_3_18</span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a></span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a><span class="co"># clone book repos (takes &lt; 1 min)</span></span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a><span class="bu">time</span> <span class="va">$BBS_HOME</span>/utils/update_bioc_git_repos.py books devel RELEASE_3_18</span></code></pre></div>
 </li>
 <li>
 <p>Make sure you can push changes to the BioC git server (at
 git.bioconductor.org):</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># check config file</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> ~/.gitconfig</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># make any necessary adjustment with</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> user.email <span class="st">"you@example.com"</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> user.name <span class="st">"Your Name"</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># also make sure to set push.default to matching</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> push.default matching</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co"># check config file again</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> ~/.gitconfig</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co"># try to push</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/git.bioconductor.org/software/affy</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push  <span class="co"># should display 'Everything up-to-date'</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># check config file</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="fu">cat</span> ~/.gitconfig</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co"># make any necessary adjustment with</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> user.email <span class="st">"you@example.com"</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> user.name <span class="st">"Your Name"</span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co"># also make sure to set push.default to matching</span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> push.default matching</span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="co"># check config file again</span></span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="fu">cat</span> ~/.gitconfig</span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="co"># try to push</span></span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a><span class="bu">cd</span> ~/git.bioconductor.org/software/affy</span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a><span class="fu">git</span> push  <span class="co"># should display 'Everything up-to-date'</span></span></code></pre></div>
 </li>
 <li>
 <p>Clone (or update) the <code>bioc_git_transition</code> git
 repo:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># clone</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/Bioconductor/bioc_git_transition</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># update</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/bioc_git_transition</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> pull</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co"># clone</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/Bioconductor/bioc_git_transition</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="co"># update</span></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="bu">cd</span> ~/bioc_git_transition</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="fu">git</span> pull</span></code></pre></div>
 </li>
 <li>
 <p>Find packages with duplicate commits</p>
@@ -246,22 +250,22 @@ duplicates. Additionally, we’ve implemented a gitolite hook to prevent
 any new duplicate commits from getting through. For these reasons, this
 check for duplicates is becoming obsolete and can probably be removed at
 the next release in Spring 2019.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Local copy of bioc_git_transition</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">BIOC_GIT_TRANSITION</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/bioc_git_transition"</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># software packages</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">WORKING_DIR</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/git.bioconductor.org/software"</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">MANIFEST_FILE</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/git.bioconductor.org/manifest/software.txt"</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$WORKING_DIR</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="va">pkgs_in_manifest</span><span class="op">=</span><span class="kw">`</span><span class="fu">grep</span> <span class="st">'Package: '</span> <span class="va">$MANIFEST_FILE</span> <span class="kw">|</span> <span class="fu">sed</span> <span class="st">'s/Package: //g'</span><span class="kw">`</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Check last 30 commits in each package (like the duplicate commits hook</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co"># does):</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> pkg <span class="kw">in</span> <span class="va">$pkgs_in_manifest</span><span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">""</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"&gt;&gt;&gt; check </span><span class="va">$pkg</span><span class="st"> package for duplicate commits"</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="ex">python3</span> <span class="va">$BIOC_GIT_TRANSITION</span>/misc/detect_duplicate_commits.py <span class="va">$pkg</span> 30</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span> <span class="op">&gt;</span> duplicatecommits.out <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co"># Local copy of bioc_git_transition</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="bu">export</span> <span class="va">BIOC_GIT_TRANSITION</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/bioc_git_transition"</span></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="co"># software packages</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="bu">export</span> <span class="va">WORKING_DIR</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/git.bioconductor.org/software"</span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a><span class="bu">export</span> <span class="va">MANIFEST_FILE</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/git.bioconductor.org/manifest/software.txt"</span></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$WORKING_DIR</span></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="va">pkgs_in_manifest</span><span class="op">=</span><span class="kw">`</span><span class="fu">grep</span> <span class="st">'Package: '</span> <span class="va">$MANIFEST_FILE</span> <span class="kw">|</span> <span class="fu">sed</span> <span class="st">'s/Package: //g'</span><span class="kw">`</span></span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="co"># Check last 30 commits in each package (like the duplicate commits hook</span></span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a><span class="co"># does):</span></span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a><span class="cf">for</span> pkg <span class="kw">in</span> <span class="va">$pkgs_in_manifest</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">""</span></span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"&gt;&gt;&gt; check </span><span class="va">$pkg</span><span class="st"> package for duplicate commits"</span></span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a>    <span class="ex">python3</span> <span class="va">$BIOC_GIT_TRANSITION</span>/misc/detect_duplicate_commits.py <span class="va">$pkg</span> 30</span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a><span class="cf">done</span> <span class="op">&gt;</span> duplicatecommits.out <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span></span></code></pre></div>
 </li>
 <li><p>Anyone involved in the “bump and branch” procedure should
 temporarily be added to the <code>admin</code> group in
@@ -275,23 +279,25 @@ regardless of inactivated (commented out) lines in
 <h3 id="c--version-bumps-and-branch-creation-for-software-packages">C. Version bumps and branch creation for software packages<a class="anchor" aria-label="anchor" href="#c--version-bumps-and-branch-creation-for-software-packages"></a>
 </h3>
 <p>Perform these steps on the day prior to the release. They must be
-completed before the software builds get kicked off (see <strong>A.
-Introduction</strong>). The full procedure should take about 3 hours.
-Make sure to reserve enough time.</p>
+completed <em>before</em> the software builds get kicked off (see
+<strong>A. Introduction</strong>). The full procedure should take about
+3 hours. Make sure to reserve enough time.</p>
 <div class="section level4">
-<h4 id="c1--comment-out-all-builds-in-crontab-on-central-bioc-3-17-builder">C1. Comment out all builds in crontab on central BioC 3.17
-builder<a class="anchor" aria-label="anchor" href="#c1--comment-out-all-builds-in-crontab-on-central-bioc-3-17-builder"></a>
+<h4 id="c1--comment-out-all-builds-in-crontab-on-central-bioc-3-18-builder">C1. Comment out all builds in crontab on central BioC 3.18
+builder<a class="anchor" aria-label="anchor" href="#c1--comment-out-all-builds-in-crontab-on-central-bioc-3-18-builder"></a>
 </h4>
-<p>No 3.17 build should start until:</p>
+<p><strong>IMPORTANT: No 3.18 build should start until:</strong></p>
 <ul>
 <li><p>the bump and branch process is complete,</p></li>
 <li><p><strong>and</strong> <code>BBS_BIOC_GIT_BRANCH</code> is switched
-from <code>devel</code> to <code>RELEASE_3_17</code> on the central BioC
-3.17 builder (this switch is documented in section F3 below).</p></li>
+from <code>devel</code> to <code>RELEASE_3_18</code> on the central BioC
+3.18 builder (this switch is documented in section F3 below).</p></li>
 </ul>
 <p>Maybe no build is scheduled to start during the next 3 hours, in
 which case everything is fine. Otherwise, comment out all the builds
-that are at the risk of starting before step F3 is completed.</p>
+that are at the risk of starting before step F3 below is completed.
+Commenting out the <code>prerun</code> and <code>run</code> entries for
+each build should be enough.</p>
 </div>
 <div class="section level4">
 <h4 id="c2--ask-people-to-stop-committingpushing-changes-to-the-bioc-git-server">C2. Ask people to stop committing/pushing changes to the BioC git
@@ -304,15 +310,15 @@ BioC git server (git.bioconductor.org) for the next 3 hours.</p>
 <div class="section level4">
 <h4 id="c3--modify-packages-conf-to-block-all-commits">C3. Modify packages.conf to block all commits<a class="anchor" aria-label="anchor" href="#c3--modify-packages-conf-to-block-all-commits"></a>
 </h4>
-<p>The <code>RELEASE_3_16</code> lines in
+<p>The <code>RELEASE_3_17</code> lines in
 <code>gitolite-admin/conf/packages.conf</code> were commented out when
 the release builds were frozen. At this point, only the
 <code>devel</code> lines are still active.</p>
 <p>Deactivate all push access by commenting out the <code>devel</code>
 lines in <code>gitolite-admin/conf/packages.conf</code>.</p>
-<p>NOTE: Do not change the branch from RELEASE_3_16 to RELEASE_3_17, it
+<p>NOTE: Do not change the branch from RELEASE_3_17 to RELEASE_3_18, it
 is not a good solution. Maintainers now will be able to push their own
-RELEASE_3_17 branch before we are able to create it at release time.
+RELEASE_3_18 branch before we are able to create it at release time.
 This issue reflects the issue <a href="https://stat.ethz.ch/pipermail/bioc-devel/2019-May/015048.html" class="external-link uri">https://stat.ethz.ch/pipermail/bioc-devel/2019-May/015048.html</a>.</p>
 <p>Using vim, it is possible with a one liner:</p>
 <pre class="vi"><code>:g/RW devel/s/^/#</code></pre>
@@ -333,31 +339,31 @@ effective.</p>
 <p>Remove the <code>pre-receive.h00-pre-receive-hook-software</code>
 file from the <code>hook/</code> directory in each package, e.g.,
 <code>/home/git/repositories/packages/&lt;PACKAGE&gt;.git/hooks</code></p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-rf</span> ~/repositories/packages/<span class="pp">*</span>.git/hooks/pre-receive.h00-pre-receive-hook-software</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-rf</span> ~/repositories/packages/<span class="pp">*</span>.git/hooks/pre-receive.h00-pre-receive-hook-software</span></code></pre></div>
 </li>
 </ul>
-<p>Or (trying as of release 3.17) try using hooks exclusion file. See
+<p>Or (trying as of release 3.18) try using hooks exclusion file. See
 scripts/sedCommandsForVariousTasks.txt. This changes is made in the
 hook_maintainer repo.</p>
 </div>
 <div class="section level4">
-<h4 id="c5--login-to-the-machine-where-youve-performed-the-preliminary-steps">C5. Login to the machine where you’ve performed the preliminary
-steps<a class="anchor" aria-label="anchor" href="#c5--login-to-the-machine-where-youve-performed-the-preliminary-steps"></a>
+<h4 id="c5--log-on-the-machine-where-youve-performed-the-preliminary-steps">C5. Log on the machine where you’ve performed the preliminary
+steps<a class="anchor" aria-label="anchor" href="#c5--log-on-the-machine-where-youve-performed-the-preliminary-steps"></a>
 </h4>
 <p>Make sure to use the <code>-A</code> flag to enable forwarding of the
 authentication agent connection e.g.:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> <span class="at">-A</span> hpages@malbec1.bioconductor.org</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">ssh</span> <span class="at">-A</span> hpages@malbec1.bioconductor.org</span></code></pre></div>
 <p>See <strong>B. Preliminary steps</strong> above for the details.</p>
 </div>
 <div class="section level4">
-<h4 id="c6--checkoutupdate-the-release_3_17-branch-of-the-manifest-repo">C6. Checkout/update the <code>RELEASE_3_17</code> branch of the
-<code>manifest</code> repo<a class="anchor" aria-label="anchor" href="#c6--checkoutupdate-the-release_3_17-branch-of-the-manifest-repo"></a>
+<h4 id="c6--checkoutupdate-the-release_3_18-branch-of-the-manifest-repo">C6. Checkout/update the <code>RELEASE_3_18</code> branch of the
+<code>manifest</code> repo<a class="anchor" aria-label="anchor" href="#c6--checkoutupdate-the-release_3_18-branch-of-the-manifest-repo"></a>
 </h4>
-<div class="sourceCode" id="cb11"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/git.bioconductor.org/manifest</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> pull <span class="at">--all</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> checkout RELEASE_3_17</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> branch</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="bu">cd</span> ~/git.bioconductor.org/manifest</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="fu">git</span> pull <span class="at">--all</span></span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a><span class="fu">git</span> checkout RELEASE_3_18</span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a><span class="fu">git</span> branch</span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a><span class="fu">git</span> status</span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="c7--set-the-bbs_home-working_dir-and-manifest_file-environment-variables">C7. Set the <code>BBS_HOME</code>, <code>WORKING_DIR</code> and
@@ -366,7 +372,7 @@ authentication agent connection e.g.:</p>
 <ul>
 <li>
 <p><code>BBS_HOME</code>:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">BBS_HOME</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/BBS"</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="bu">export</span> <span class="va">BBS_HOME</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/BBS"</span></span></code></pre></div>
 </li>
 </ul>
 <p>IMPORTANT NOTE: The settings for <code>WORKING_DIR</code> and
@@ -377,16 +383,16 @@ adapt for data-experiment packages, workflows, and books.</p>
 <li>
 <p><code>WORKING_DIR</code>: Point <code>WORKING_DIR</code> to the
 folder containing the software packages:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">WORKING_DIR</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/git.bioconductor.org/software"</span></span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="bu">export</span> <span class="va">WORKING_DIR</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/git.bioconductor.org/software"</span></span></code></pre></div>
 <p>All the remaining steps in section <strong>C.</strong> must be
 performed from <em>within</em> this folder:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$WORKING_DIR</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$WORKING_DIR</span></span></code></pre></div>
 </li>
 <li>
 <p><code>MANIFEST_FILE</code>: Point <code>MANIFEST_FILE</code> to
 the manifest file for software packages. This must be the file from the
-<code>RELEASE_3_17</code> branch of the <code>manifest</code> repo:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">MANIFEST_FILE</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/git.bioconductor.org/manifest/software.txt"</span></span></code></pre></div>
+<code>RELEASE_3_18</code> branch of the <code>manifest</code> repo:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="bu">export</span> <span class="va">MANIFEST_FILE</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/git.bioconductor.org/manifest/software.txt"</span></span></code></pre></div>
 </li>
 </ul>
 </div>
@@ -396,16 +402,16 @@ the manifest file for software packages. This must be the file from the
 <p>We’re going to run the script on all the software packages. It will
 take care of applying and pushing the changes described in <strong>A.
 Introduction</strong>.</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$WORKING_DIR</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="va">pkgs_in_manifest</span><span class="op">=</span><span class="kw">`</span><span class="fu">grep</span> <span class="st">'Package: '</span> <span class="va">$MANIFEST_FILE</span> <span class="kw">|</span> <span class="fu">sed</span> <span class="st">'s/Package: //g'</span><span class="kw">`</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="va">$BBS_HOME</span><span class="ex">/utils/bump_version_and_create_branch.py</span> <span class="at">--push</span> RELEASE_3_17 <span class="va">$pkgs_in_manifest</span> <span class="op">&gt;</span>bump_version_and_create_branch.log <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">&amp;</span></span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$WORKING_DIR</span></span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a><span class="va">pkgs_in_manifest</span><span class="op">=</span><span class="kw">`</span><span class="fu">grep</span> <span class="st">'Package: '</span> <span class="va">$MANIFEST_FILE</span> <span class="kw">|</span> <span class="fu">sed</span> <span class="st">'s/Package: //g'</span><span class="kw">`</span></span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a><span class="va">$BBS_HOME</span><span class="ex">/utils/bump_version_and_create_branch.py</span> <span class="at">--push</span> RELEASE_3_18 <span class="va">$pkgs_in_manifest</span> <span class="op">&gt;</span>bump_version_and_create_branch.log <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">&amp;</span></span></code></pre></div>
 <p>The <code>bump_version_and_create_branch.py</code> run above can be
 replaced with a 2-pass run:</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># First pass (apply all the changes but do NOT push them):</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="va">$BBS_HOME</span><span class="ex">/utils/bump_version_and_create_branch.py</span> RELEASE_3_17 <span class="va">$pkgs_in_manifest</span> <span class="op">&gt;</span>bump_version_and_create_branch.log1 <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">&amp;</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Second pass (push all the changes):</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="va">$BBS_HOME</span><span class="ex">/utils/bump_version_and_create_branch.py</span> <span class="at">--push</span> RELEASE_3_17 <span class="va">$pkgs_in_manifest</span> <span class="op">&gt;</span>bump_version_and_create_branch.log2 <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">&amp;</span></span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="co"># First pass (apply all the changes but do NOT push them):</span></span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a><span class="va">$BBS_HOME</span><span class="ex">/utils/bump_version_and_create_branch.py</span> RELEASE_3_18 <span class="va">$pkgs_in_manifest</span> <span class="op">&gt;</span>bump_version_and_create_branch.log1 <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">&amp;</span></span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a><span class="co"># Second pass (push all the changes):</span></span>
+<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a><span class="va">$BBS_HOME</span><span class="ex">/utils/bump_version_and_create_branch.py</span> <span class="at">--push</span> RELEASE_3_18 <span class="va">$pkgs_in_manifest</span> <span class="op">&gt;</span>bump_version_and_create_branch.log2 <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">&amp;</span></span></code></pre></div>
 <p>The 2-pass run can be useful if one wants to inspect the changes
 before pushing them.</p>
 <p>Notes:</p>
@@ -416,7 +422,7 @@ before pushing them.</p>
 treatment.</p></li>
 <li><p>In the 2-pass run, the second pass checks the packages and
 applies the changes only if needed (i.e. if a package does not already
-have the <code>RELEASE_3_17</code> branch) before pushing the
+have the <code>RELEASE_3_18</code> branch) before pushing the
 changes.</p></li>
 <li><p>If for some reason the
 <code>bump_version_and_create_branch.py</code> script stops prematurly,
@@ -447,24 +453,24 @@ workflows, and books<a class="anchor" aria-label="anchor" href="#d--version-bump
 </h4>
 <p>Repeat steps C6 to C9 above <strong>but for C7 define the environment
 variables as follows</strong>:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">WORKING_DIR</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/git.bioconductor.org/data-experiment"</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">MANIFEST_FILE</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/git.bioconductor.org/manifest/data-experiment.txt"</span></span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="bu">export</span> <span class="va">WORKING_DIR</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/git.bioconductor.org/data-experiment"</span></span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a><span class="bu">export</span> <span class="va">MANIFEST_FILE</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/git.bioconductor.org/manifest/data-experiment.txt"</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="d2--workflows">D2. Workflows<a class="anchor" aria-label="anchor" href="#d2--workflows"></a>
 </h4>
 <p>Repeat steps C6 to C9 above <strong>but for C7 define the environment
 variables as follows</strong>:</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">WORKING_DIR</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/git.bioconductor.org/workflows"</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">MANIFEST_FILE</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/git.bioconductor.org/manifest/workflows.txt"</span></span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="bu">export</span> <span class="va">WORKING_DIR</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/git.bioconductor.org/workflows"</span></span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a><span class="bu">export</span> <span class="va">MANIFEST_FILE</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/git.bioconductor.org/manifest/workflows.txt"</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="d3--books">D3. Books<a class="anchor" aria-label="anchor" href="#d3--books"></a>
 </h4>
 <p>Repeat steps C6 to C9 above <strong>but for C7 define the environment
 variables as follows</strong>:</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">WORKING_DIR</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/git.bioconductor.org/books"</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">MANIFEST_FILE</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/git.bioconductor.org/manifest/books.txt"</span></span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="bu">export</span> <span class="va">WORKING_DIR</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/git.bioconductor.org/books"</span></span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a><span class="bu">export</span> <span class="va">MANIFEST_FILE</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/git.bioconductor.org/manifest/books.txt"</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
@@ -474,29 +480,29 @@ variables as follows</strong>:</p>
 branch WITHOUT BUMPING VERSIONS</strong>.</p>
 <p>Repeat steps C6 to C9 above <strong>but for C7 define the environment
 variables as follows</strong>:</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">WORKING_DIR</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/git.bioconductor.org/data-annotation"</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">MANIFEST_FILE</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/git.bioconductor.org/manifest/data-annotation.txt"</span></span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="bu">export</span> <span class="va">WORKING_DIR</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/git.bioconductor.org/data-annotation"</span></span>
+<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a><span class="bu">export</span> <span class="va">MANIFEST_FILE</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/git.bioconductor.org/manifest/data-annotation.txt"</span></span></code></pre></div>
 <p>Then for C8, <strong>make sure to call the
 <code>bump_version_and_create_branch.py</code> script with the
 <code>--no-bump</code> option</strong>:</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$WORKING_DIR</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="va">pkgs_in_manifest</span><span class="op">=</span><span class="kw">`</span><span class="fu">grep</span> <span class="st">'Package: '</span> <span class="va">$MANIFEST_FILE</span> <span class="kw">|</span> <span class="fu">sed</span> <span class="st">'s/Package: //g'</span><span class="kw">`</span></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="va">$BBS_HOME</span><span class="ex">/utils/bump_version_and_create_branch.py</span> <span class="at">--no-bump</span> <span class="at">--push</span> RELEASE_3_17 <span class="va">$pkgs_in_manifest</span> <span class="op">&gt;</span>bump_version_and_create_branch.log <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">&amp;</span></span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$WORKING_DIR</span></span>
+<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a><span class="va">pkgs_in_manifest</span><span class="op">=</span><span class="kw">`</span><span class="fu">grep</span> <span class="st">'Package: '</span> <span class="va">$MANIFEST_FILE</span> <span class="kw">|</span> <span class="fu">sed</span> <span class="st">'s/Package: //g'</span><span class="kw">`</span></span>
+<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" tabindex="-1"></a><span class="va">$BBS_HOME</span><span class="ex">/utils/bump_version_and_create_branch.py</span> <span class="at">--no-bump</span> <span class="at">--push</span> RELEASE_3_18 <span class="va">$pkgs_in_manifest</span> <span class="op">&gt;</span>bump_version_and_create_branch.log <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">&amp;</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="f--finishing-up">F. Finishing up<a class="anchor" aria-label="anchor" href="#f--finishing-up"></a>
 </h3>
 <div class="section level4">
-<h4 id="f1--enable-push-access-to-new-release_3_17-branch">F1. Enable push access to new <code>RELEASE_3_17</code> branch<a class="anchor" aria-label="anchor" href="#f1--enable-push-access-to-new-release_3_17-branch"></a>
+<h4 id="f1--enable-push-access-to-new-release_3_18-branch">F1. Enable push access to new <code>RELEASE_3_18</code> branch<a class="anchor" aria-label="anchor" href="#f1--enable-push-access-to-new-release_3_18-branch"></a>
 </h4>
 <p>This is done by editing the <code>conf/packages.conf</code> file in
 the <code>gitolite-admin</code> repo
 (<code>git clone git@git.bioconductor.org:gitolite-admin</code>).</p>
 <ul>
 <li><p>If not done already, replace all instances of
-<code>RELEASE_3_16</code> with <code>RELEASE_3_17</code>.</p></li>
-<li><p>Uncomment all <code>RELEASE_3_17</code> and <code>devel</code>
+<code>RELEASE_3_17</code> with <code>RELEASE_3_18</code>.</p></li>
+<li><p>Uncomment all <code>RELEASE_3_18</code> and <code>devel</code>
 lines.</p></li>
 </ul>
 <p>See scripts/sedCommandsForVariousTasks.txt for help on re-enabling
@@ -510,9 +516,9 @@ re-enable the hooks.</p></li>
 <p>Test that a non-super user can push access is enabled on the
 dummy package BiocGenerics_test.</p>
 <p>Check:</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> checkout RELEASE_3_17</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> pull</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a><span class="fu">git</span> push</span>
+<span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a><span class="fu">git</span> checkout RELEASE_3_18</span>
+<span id="cb23-3"><a href="#cb23-3" tabindex="-1"></a><span class="fu">git</span> pull</span></code></pre></div>
 </li>
 </ul>
 </div>
@@ -525,32 +531,32 @@ mailing list that committing/pushing changes to the BioC git server
 (git.bioconductor.org) can resume.</p>
 </div>
 <div class="section level4">
-<h4 id="f3--switch-bbs_bioc_git_branch-from-devel-to-release_3_17-on-central-bioc-3-17-builder">F3. Switch <code>BBS_BIOC_GIT_BRANCH</code> from <code>devel</code>
-to <code>RELEASE_3_17</code> on central BioC 3.17 builder<a class="anchor" aria-label="anchor" href="#f3--switch-bbs_bioc_git_branch-from-devel-to-release_3_17-on-central-bioc-3-17-builder"></a>
+<h4 id="f3--switch-bbs_bioc_git_branch-from-devel-to-release_3_18-on-central-bioc-3-18-builder">F3. Switch <code>BBS_BIOC_GIT_BRANCH</code> from <code>devel</code>
+to <code>RELEASE_3_18</code> on central BioC 3.18 builder<a class="anchor" aria-label="anchor" href="#f3--switch-bbs_bioc_git_branch-from-devel-to-release_3_18-on-central-bioc-3-18-builder"></a>
 </h4>
-<p>DON’T FORGET THIS STEP! Its purpose is to make the BioC 3.17 builds
-grab the <code>RELEASE_3_17</code> branch of all packages instead of
+<p>DON’T FORGET THIS STEP! Its purpose is to make the BioC 3.18 builds
+grab the <code>RELEASE_3_18</code> branch of all packages instead of
 their <code>devel</code> branch.</p>
-<p>Login to the central BioC 3.17 builder as <code>biocbuild</code> and
+<p>Log on the central BioC 3.18 builder as <code>biocbuild</code> and
 replace</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">BBS_BIOC_GIT_BRANCH</span><span class="op">=</span><span class="st">"devel"</span></span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="bu">export</span> <span class="va">BBS_BIOC_GIT_BRANCH</span><span class="op">=</span><span class="st">"devel"</span></span></code></pre></div>
 <p>with</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">BBS_BIOC_GIT_BRANCH</span><span class="op">=</span><span class="st">"RELEASE_3_17"</span></span></code></pre></div>
-<p>in <code>~/BBS/3.17/config.sh</code></p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a><span class="bu">export</span> <span class="va">BBS_BIOC_GIT_BRANCH</span><span class="op">=</span><span class="st">"RELEASE_3_18"</span></span></code></pre></div>
+<p>in <code>~/BBS/3.18/config.sh</code></p>
 <p>Also replace</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> BBS_BIOC_GIT_BRANCH=devel</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a><span class="bu">set</span> BBS_BIOC_GIT_BRANCH=devel</span></code></pre></div>
 <p>with</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> BBS_BIOC_GIT_BRANCH=RELEASE_3_17</span></code></pre></div>
-<p>in <code>~/BBS/3.17/config.bat</code></p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a><span class="bu">set</span> BBS_BIOC_GIT_BRANCH=RELEASE_3_18</span></code></pre></div>
+<p>in <code>~/BBS/3.18/config.bat</code></p>
 <p>Then remove the <code>manifest</code> and <code>MEAT0</code> folders
-from <code>~/bbs-3.17-bioc/</code>,
-<code>~/bbs-3.17-data-annotation/</code>,
-<code>~/bbs-3.17-data-experiment/</code>,
-<code>~/bbs-3.17-workflows/</code>, and <code>~/bbs-3.17-books/</code>.
+from <code>~/bbs-3.18-bioc/</code>,
+<code>~/bbs-3.18-data-annotation/</code>,
+<code>~/bbs-3.18-data-experiment/</code>,
+<code>~/bbs-3.18-workflows/</code>, and <code>~/bbs-3.18-books/</code>.
 They’ll get automatically re-created and re-populated when the builds
 start.</p>
-<p>Once you’re done, don’t forget to uncomment all the builds that were
-temporarily commented out in the crontab (see section C1 above).</p>
+<p>Once you’re done, DON’T FORGET TO UNCOMMENT ALL THE BUILDS THAT WERE
+TEMPORARILY COMMENTED OUT IN THE CRONTAB (see section C1 above).</p>
 </div>
 <div class="section level4">
 <h4 id="f4--sync-all-core-bioconductor-packages-hosted-on-github">F4. Sync all core Bioconductor packages hosted on GitHub<a class="anchor" aria-label="anchor" href="#f4--sync-all-core-bioconductor-packages-hosted-on-github"></a>
@@ -568,19 +574,19 @@ organization) as the resource owner, then ‘All repositories’ and under
 are also modifying default branches, select ‘Read and Write’ under
 ‘Administration’. It is recommended to use
 <code><a href="https://gitcreds.r-lib.org/reference/gitcreds_get.html" class="external-link">gitcreds::gitcreds_set()</a></code> to store the fine-grained PAT.</p>
-<p><strong>Note</strong>. Depending on the organization’s settings, R /
+<p><strong>Note:</strong> Depending on the organization’s settings, R /
 Bioconductor packages hosted on GitHub may also be updated with a
 classic PAT. These commands only work if the user has admin access to
 the organization’s GitHub account.</p>
 <p>To update all packages, run the following command:</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/branch-release-gh.html">add_gh_release_branches</a></span><span class="op">(</span>release <span class="op">=</span> <span class="st">"RELEASE_3_17"</span>, org <span class="op">=</span> <span class="st">"Bioconductor"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/branch-release-gh.html">add_gh_release_branches</a></span><span class="op">(</span>release <span class="op">=</span> <span class="st">"RELEASE_3_18"</span>, org <span class="op">=</span> <span class="st">"Bioconductor"</span><span class="op">)</span></span></code></pre></div>
 <p>Be sure to edit the <code>release</code> argument in the
 function.</p>
 <p>To update an individual package, run the following function:</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/branch-release-gh.html">add_gh_release_branch</a></span><span class="op">(</span></span>
-<span>    package_name <span class="op">=</span> <span class="st">"updateObject"</span>, release <span class="op">=</span> <span class="st">"RELEASE_3_17"</span>, gh_branch <span class="op">=</span> <span class="st">"devel"</span></span>
+<span>    package_name <span class="op">=</span> <span class="st">"updateObject"</span>, release <span class="op">=</span> <span class="st">"RELEASE_3_18"</span>, gh_branch <span class="op">=</span> <span class="st">"devel"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Note that the <code>gh_branch</code> corresponds to the default
 branch on GitHub. On some repositories, the <code>gh_branch</code> can

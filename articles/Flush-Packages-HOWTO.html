@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ReleaseLaunch</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.17</span>
       </span>
     </div>
 
@@ -85,7 +85,7 @@
                         <h4 data-toc-skip class="author">Bioconductor
 Maintainer</h4>
             
-            <h4 data-toc-skip class="date">May 16, 2023</h4>
+            <h4 data-toc-skip class="date">October 26, 2023</h4>
       
       
       <div class="hidden name"><code>Flush-Packages-HOWTO.Rmd</code></div>
@@ -145,8 +145,8 @@ packages.</p>
 <div class="infobox">
 <p>As <code>biocpush</code></p>
 </div>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~biocpush/PACKAGES/3.14/</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> <span class="at">-r</span> bioc bioc.backup</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="bu">cd</span> ~biocpush/PACKAGES/3.14/</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">cp</span> <span class="at">-r</span> bioc bioc.backup</span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="remove-all-packages">Remove All Packages<a class="anchor" aria-label="anchor" href="#remove-all-packages"></a>
@@ -158,15 +158,15 @@ for source, windows, and mac binaries. Everything except for the
 <div class="infobox">
 <p>As <code>biocpush</code></p>
 </div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~biocpush/PACKAGES/3.14/src/contrib</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-r</span> PACKAGES<span class="pp">*</span> <span class="pp">*</span>.gz</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> PACKAGES</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~biocpush/PACKAGES/3.14/macosx/contrib/4.1</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-r</span> PACKAGES<span class="pp">*</span> <span class="pp">*</span>.tgz</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> PACKAGES</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~biocpush/PACKAGES/3.14/windows/contrib/4.1</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-r</span> PACKAGES<span class="pp">*</span> <span class="pp">*</span>.zip</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> PACKAGES</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="bu">cd</span> ~biocpush/PACKAGES/3.14/src/contrib</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-r</span> PACKAGES<span class="pp">*</span> <span class="pp">*</span>.gz</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="fu">touch</span> PACKAGES</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="bu">cd</span> ~biocpush/PACKAGES/3.14/macosx/contrib/4.1</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-r</span> PACKAGES<span class="pp">*</span> <span class="pp">*</span>.tgz</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="fu">touch</span> PACKAGES</span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="bu">cd</span> ~biocpush/PACKAGES/3.14/windows/contrib/4.1</span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-r</span> PACKAGES<span class="pp">*</span> <span class="pp">*</span>.zip</span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="fu">touch</span> PACKAGES</span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="rerun-the-postrun-sh">Rerun the <code>postrun.sh</code><a class="anchor" aria-label="anchor" href="#rerun-the-postrun-sh"></a>

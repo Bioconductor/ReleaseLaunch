@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ReleaseLaunch</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.17</span>
       </span>
     </div>
 
@@ -86,7 +86,7 @@ repository</h1>
                         <h4 data-toc-skip class="author">Bioconductor
 Maintainer</h4>
             
-            <h4 data-toc-skip class="date">May 16, 2023</h4>
+            <h4 data-toc-skip class="date">October 26, 2023</h4>
       
       
       <div class="hidden name"><code>Branch-annotation-repo-HOWTO.Rmd</code></div>
@@ -129,9 +129,9 @@ accounts and the jump account should be set up for access.</p>
 <div class="section level4">
 <h4 id="create-new-annotation-repo-on-devel-master-builder-nebbiolo2">Create new annotation repo on devel master builder (nebbiolo2)<a class="anchor" aria-label="anchor" href="#create-new-annotation-repo-on-devel-master-builder-nebbiolo2"></a>
 </h4>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> to nebbiolo2 as biocpush user</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/PACKAGES/3.14/data</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> annotation</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">ssh</span> to nebbiolo2 as biocpush user</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="bu">cd</span> ~/PACKAGES/3.14/data</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">mkdir</span> annotation</span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="rsync-annotations-from-current-release">rsync annotations from current release<a class="anchor" aria-label="anchor" href="#rsync-annotations-from-current-release"></a>
@@ -148,11 +148,11 @@ firewall.</p>
 </li>
 </ul>
 </div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># From malbec2 to nebbiolo2 (logged into malbec2):</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/PACKAGES/3.13/data/annotation</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rsync</span> <span class="at">--dry-run</span> <span class="at">-ave</span> ssh . biocpush@nebbiolo2:PACKAGES/3.14/data/annotation/</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co"># From malbec2 to nebbiolo2 (logged into malbec2):</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="bu">cd</span> ~/PACKAGES/3.13/data/annotation</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="fu">rsync</span> <span class="at">--dry-run</span> <span class="at">-ave</span> ssh . biocpush@nebbiolo2:PACKAGES/3.14/data/annotation/</span></code></pre></div>
 <p>Live Run if all looks correct</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rsync</span> <span class="at">-ave</span> ssh . biocpush@nebbiolo2:PACKAGES/3.14/data/annotation/</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">rsync</span> <span class="at">-ave</span> ssh . biocpush@nebbiolo2:PACKAGES/3.14/data/annotation/</span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="remove-symlinks-for-old-r-versions-for-windows-and-mac">Remove symlinks for old R versions for windows and mac<a class="anchor" aria-label="anchor" href="#remove-symlinks-for-old-r-versions-for-windows-and-mac"></a>
@@ -161,18 +161,18 @@ firewall.</p>
 only be present when the new version of BioC uses a new version of R
 which happens every other version of BioC. If they are present, they
 will look something like this:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">~/PACKAGES/3.7/data/annotation/bin/windows/contrib/3.5</span> <span class="at">-</span><span class="op">&gt;</span> 3.4</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">~/PACKAGES/3.7/data/annotation/bin/macosx/contrib/3.5</span> <span class="at">-</span><span class="op">&gt;</span> 3.4</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="ex">~/PACKAGES/3.7/data/annotation/bin/windows/contrib/3.5</span> <span class="at">-</span><span class="op">&gt;</span> 3.4</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="ex">~/PACKAGES/3.7/data/annotation/bin/macosx/contrib/3.5</span> <span class="at">-</span><span class="op">&gt;</span> 3.4</span></code></pre></div>
 <p>Remove the symlinks and rename the folder with content to the version
 of R being used by devel e.g.,</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> ~/PACKAGES/3.7/data/annotation/bin/windows/contrib/3.5 <span class="at">-</span><span class="op">&gt;</span> 3.4</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> 3.4 3.5</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">rm</span> ~/PACKAGES/3.7/data/annotation/bin/windows/contrib/3.5 <span class="at">-</span><span class="op">&gt;</span> 3.4</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="fu">mv</span> 3.4 3.5</span></code></pre></div>
 <p>The PACKAGES and PACKAGES.gz files are empty. They are needed for
 install.packages() even though we don’t have binaries for
 annotations.</p>
 <p>A rerun of the <code>rsync</code> command should only show changes in
 the files we just edited:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rsync</span> <span class="at">--dry-run</span> <span class="at">-ave</span> ssh biocadmin@malbec1:PACKAGES/3.6/data/annotation/ .</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">rsync</span> <span class="at">--dry-run</span> <span class="at">-ave</span> ssh biocadmin@malbec1:PACKAGES/3.6/data/annotation/ .</span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
@@ -181,9 +181,9 @@ the files we just edited:</p>
 <div class="section level4">
 <h4 id="log-on-master-as-webadmin">Log on master as webadmin<a class="anchor" aria-label="anchor" href="#log-on-master-as-webadmin"></a>
 </h4>
-<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> ubuntu@master.biocondcutor.org</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> su <span class="at">-</span> webadmin</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /extra/www/bioc/packages/3.14/data/annotation</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">ssh</span> ubuntu@master.biocondcutor.org</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="fu">sudo</span> su <span class="at">-</span> webadmin</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="bu">cd</span> /extra/www/bioc/packages/3.14/data/annotation</span></code></pre></div>
 <p>Products are sent to master from both nebbiolo2 and
 staging.bioconductor.org. Because of this, the rsync from nebbiolo2 to
 master is not from the top level; we want to leave the products
@@ -193,18 +193,18 @@ deposited by staging.bioconductor.org untouched.</p>
 <h4 id="remove-symlink-and-create-empty-annotation-folder">Remove symlink and create empty annotation folder<a class="anchor" aria-label="anchor" href="#remove-symlink-and-create-empty-annotation-folder"></a>
 </h4>
 <p>There will likely be a simlink at</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/extra/www/bioc/packages/3.14/data/annotation</span> <span class="at">-</span><span class="op">&gt;</span> ../../3.13/data/annotation</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="ex">/extra/www/bioc/packages/3.14/data/annotation</span> <span class="at">-</span><span class="op">&gt;</span> ../../3.13/data/annotation</span></code></pre></div>
 <p>pointing to the current release annotation repo. In recent years, the
 symlinks have appeared underneath an already created annotation
 repostiory. The point is to start with a non-linked empty annotation
 folder. Remove annotation and recreate:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> annotation</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">rm</span> annotation</span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
 <h3 id="create-a-new-annotation-folder">Create a new annotation folder<a class="anchor" aria-label="anchor" href="#create-a-new-annotation-folder"></a>
 </h3>
-<div class="sourceCode" id="cb10"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> annotation</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">mkdir</span> annotation</span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="back-to-nebbiolo2-to-run-the-propagation-scripts">Back to nebbiolo2 to run the propagation scripts<a class="anchor" aria-label="anchor" href="#back-to-nebbiolo2-to-run-the-propagation-scripts"></a>
@@ -231,10 +231,10 @@ package that should fail.</li>
 3.14<a class="anchor" aria-label="anchor" href="#update-bioconductor-orgconfig-yaml-to-build-landing-pages-for-3-14"></a>
 </h3>
 <p>Uncomment ‘data/annotation’:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">devel_repos</span><span class="kw">:</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="st">"bioc"</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="st">"data/experiment"</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="st">"data/annotation"</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">devel_repos</span><span class="kw">:</span></span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="st">"bioc"</span></span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="st">"data/experiment"</span></span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="st">"data/annotation"</span></span></code></pre></div>
 </div>
 </div>
   </div>

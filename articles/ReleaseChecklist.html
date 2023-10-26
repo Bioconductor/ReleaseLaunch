@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ReleaseLaunch</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.17</span>
       </span>
     </div>
 
@@ -85,7 +85,7 @@
                         <h4 data-toc-skip class="author">Bioconductor
 Maintainer</h4>
             
-            <h4 data-toc-skip class="date">May 16, 2023</h4>
+            <h4 data-toc-skip class="date">October 26, 2023</h4>
       
       
       <div class="hidden name"><code>ReleaseChecklist.Rmd</code></div>
@@ -321,7 +321,7 @@ one last time so package landing pages won’t say “release version”.</p>
 rsync.</p>
 </li>
 </ul>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sudo</span> systemctl restart rsync</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>    <span class="fu">sudo</span> systemctl restart rsync</span></code></pre></div>
 <p>Test rsync is still working as expected with commands from: <a href="http://www.bioconductor.org/about/mirrors/mirror-how-to/" class="external-link uri">http://www.bioconductor.org/about/mirrors/mirror-how-to/</a>.</p>
 <ul>
 <li>
@@ -333,17 +333,17 @@ when config.yaml is updated.</p>
 files:</p>
 </li>
 </ul>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>    <span class="ex">/etc/apache2/sites-available/000-default.conf</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="ex">/etc/apache2/sites-available/default-ssl.conf</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>    <span class="ex">/etc/apache2/sites-available/000-default.conf</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>    <span class="ex">/etc/apache2/sites-available/default-ssl.conf</span></span></code></pre></div>
 <div class="infobox">
 <p><strong>Note</strong></p>
 <p>It couldn’t hurt to restart the Apache server:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sudo</span> service apache2 restart</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>    <span class="fu">sudo</span> service apache2 restart</span></code></pre></div>
 </div>
 <p>Test the mirrors with commands from: <a href="http://www.bioconductor.org/about/mirrors/mirror-how-to/" class="external-link uri">http://www.bioconductor.org/about/mirrors/mirror-how-to/</a>.
 In a test directory the following should produce correct results</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rsync</span> <span class="at">-zrtlv</span> <span class="at">--delete</span> master.bioconductor.org::devel/bioc . </span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rsync</span> <span class="at">-zrtlv</span> <span class="at">--delete</span> master.bioconductor.org::release/bioc . </span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>    <span class="fu">rsync</span> <span class="at">-zrtlv</span> <span class="at">--delete</span> master.bioconductor.org::devel/bioc . </span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>    <span class="fu">rsync</span> <span class="at">-zrtlv</span> <span class="at">--delete</span> master.bioconductor.org::release/bioc . </span></code></pre></div>
 <ul>
 <li><p>Update checkResults page and symlinks (“release” and “devel”)
 under checkResults/.</p></li>
@@ -366,7 +366,7 @@ just released. (on master)</p>
 BiocManager</p>
 </li>
 <li>
-<p><code><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">BiocManager::install()</a></code> sanity check</p>
+<p><code><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">BiocManager::install()</a></code> sanity check</p>
 <p>Was BiocManager installed / updated properly? With a fresh R devel
 and release</p>
 </li>
@@ -398,7 +398,7 @@ confirm landing pages have updated versions</p></li>
 script is BBS/utils/list.old.packages.R which depends on BiocManager to
 determine if archiving should happen. Example location to look:</li>
 </ul>
-<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>    <span class="ex">biocpush@nebbiolo1:~$</span> ls PACKAGES/3.15/bioc/src/contrib/Archive/</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>    <span class="ex">biocpush@nebbiolo1:~$</span> ls PACKAGES/3.15/bioc/src/contrib/Archive/</span></code></pre></div>
 <ul>
 <li><p>A few days after release, flush the new release package repo.
 This will remove odd numbered y of x.y.z version left over from being

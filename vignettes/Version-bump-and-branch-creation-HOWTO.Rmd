@@ -14,6 +14,8 @@ output:
 
 # Version-bump-and-branch-creation-HOWTO
 
+
+
 ## A. Introduction
 
 On the day prior to the release, we will need to apply and push the
@@ -52,6 +54,7 @@ data-experiment builds get kicked off. Make sure to check the crontab
 again a couple of days before the release as we sometimes make small
 adjustments to the crontabs on the build machines.  Also be sure to
 translate to your local time if you are not on the East Coast.
+
 
 
 ## B. Preliminary steps
@@ -199,6 +202,7 @@ steps in sections **C.** and **D.**.
   in `gitolite-admin/conf/packages.conf`.
 
 
+
 ## C. Version bumps and branch creation for software packages
 
 Perform these steps on the day prior to the release. They must
@@ -271,7 +275,6 @@ Log on to git.bioconductor.org as the `git` user.
 Or (trying as of release 3.18) try using hooks exclusion file. See
 scripts/sedCommandsForVariousTasks.txt. This changes is made in the
 hook_maintainer repo.
-
 
 ### C5. Log on the machine where you've performed the preliminary steps
 
@@ -378,6 +381,7 @@ open `bump_version_and_create_branch.log` and make sure everything
 looks ok.
 
 
+
 ## D. Version bumps and branch creation for data-experiment packages, workflows, and books
 
 ### D1. Data-experiment packages
@@ -411,6 +415,7 @@ export MANIFEST_FILE="$HOME/git.bioconductor.org/manifest/books.txt"
 ```
 
 
+
 ## E. Branch creation for data-annotation packages
 
 Note that for data-annotation packages we **create the new branch WITHOUT
@@ -433,6 +438,7 @@ pkgs_in_manifest=`grep 'Package: ' $MANIFEST_FILE | sed 's/Package: //g'`
 
 $BBS_HOME/utils/bump_version_and_create_branch.py --no-bump --push RELEASE_3_18 $pkgs_in_manifest >bump_version_and_create_branch.log 2>&1 &
 ```
+
 
 
 ## F. Finishing up

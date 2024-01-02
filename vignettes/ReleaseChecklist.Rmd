@@ -386,3 +386,5 @@ It couldn't hurt to restart the Apache server:
 
 - Move legacy release build products off master and into AWS/OSN. Only active release and devel on
   master
+
+- update books/release/index.md

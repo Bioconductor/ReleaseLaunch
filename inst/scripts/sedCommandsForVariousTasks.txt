@@ -4,6 +4,9 @@
 ## Example uses RELEASE_3_15 as current/tobe frozen
 ## with upcoming release 3.16
 
+## NOTE: this works on packages.conf
+##  check gitolite.conf to block core team/admin commits
+
 
 ## block release 
 sed -i '/ RELEASE_3_15 /s/^/#/' packages.conf

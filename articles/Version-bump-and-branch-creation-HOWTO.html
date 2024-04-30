@@ -85,7 +85,7 @@
                         <h4 data-toc-skip class="author">Bioconductor
 Maintainer</h4>
             
-            <h4 data-toc-skip class="date">April 26, 2024</h4>
+            <h4 data-toc-skip class="date">April 30, 2024</h4>
       
       
       <div class="hidden name"><code>Version-bump-and-branch-creation-HOWTO.Rmd</code></div>
@@ -310,13 +310,13 @@ BioC git server (git.bioconductor.org) for the next 3 hours.</p>
 <div class="section level4">
 <h4 id="c3--modify-packages-conf-to-block-all-commits">C3. Modify packages.conf to block all commits<a class="anchor" aria-label="anchor" href="#c3--modify-packages-conf-to-block-all-commits"></a>
 </h4>
-<p>The <code>RELEASE_3_17</code> lines in
+<p>The <code>RELEASE_3_18</code> lines in
 <code>gitolite-admin/conf/packages.conf</code> were commented out when
 the release builds were frozen. At this point, only the
 <code>devel</code> lines are still active.</p>
 <p>Deactivate all push access by commenting out the <code>devel</code>
 lines in <code>gitolite-admin/conf/packages.conf</code>.</p>
-<p>NOTE: Do not change the branch from RELEASE_3_17 to RELEASE_3_19, it
+<p>NOTE: Do not change the branch from RELEASE_3_18 to RELEASE_3_19, it
 is not a good solution. Maintainers now will be able to push their own
 RELEASE_3_19 branch before we are able to create it at release time.
 This issue reflects the issue <a href="https://stat.ethz.ch/pipermail/bioc-devel/2019-May/015048.html" class="external-link uri">https://stat.ethz.ch/pipermail/bioc-devel/2019-May/015048.html</a>.</p>
@@ -501,7 +501,7 @@ the <code>gitolite-admin</code> repo
 (<code>git clone git@git.bioconductor.org:gitolite-admin</code>).</p>
 <ul>
 <li><p>If not done already, replace all instances of
-<code>RELEASE_3_17</code> with <code>RELEASE_3_19</code>.</p></li>
+<code>RELEASE_3_18</code> with <code>RELEASE_3_19</code>.</p></li>
 <li><p>Uncomment all <code>RELEASE_3_19</code> and <code>devel</code>
 lines.</p></li>
 </ul>

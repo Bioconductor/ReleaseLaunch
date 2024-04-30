@@ -116,16 +116,16 @@ steps in sections **C.** and **D.**.
   # clone `manifest` repo
   $BBS_HOME/utils/update_bioc_git_repos.py manifest RELEASE_3_19
   
-  # clone software package repos (takes approx. 2h)
+  # clone software package repos (takes approx. 2.5h)
   time $BBS_HOME/utils/update_bioc_git_repos.py software devel RELEASE_3_19
   
   # clone data-annotation package repos (takes a couple of minutes)
   time $BBS_HOME/utils/update_bioc_git_repos.py data-annotation devel RELEASE_3_19
   
-  # clone data-experiment package repos (takes approx. 2h)
+  # clone data-experiment package repos (takes approx. 2.5h)
   time $BBS_HOME/utils/update_bioc_git_repos.py data-experiment devel RELEASE_3_19
   
-  # clone workflow package repos (takes approx. 4 min)
+  # clone workflow package repos (takes approx. 9 min)
   time $BBS_HOME/utils/update_bioc_git_repos.py workflows devel RELEASE_3_19
   
   # clone book repos (takes < 1 min)
@@ -343,8 +343,8 @@ pkgs_in_manifest=`grep 'Package: ' $MANIFEST_FILE | sed 's/Package: //g'`
 $BBS_HOME/utils/bump_version_and_create_branch.py --push RELEASE_3_19 $pkgs_in_manifest >bump_version_and_create_branch.log 2>&1 &
 ```
 
-The `bump_version_and_create_branch.py` run above can be replaced with
-a 2-pass run:
+Alternatively, the `bump_version_and_create_branch.py` run above can be
+replaced with a 2-pass run:
 
 ```sh
 # First pass (apply all the changes but do NOT push them):

@@ -197,16 +197,16 @@ sections <strong>C.</strong>, <strong>D.</strong>, and
 <span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="co"># clone `manifest` repo</span></span>
 <span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="va">$BBS_HOME</span><span class="ex">/utils/update_bioc_git_repos.py</span> manifest RELEASE_3_19</span>
 <span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="co"># clone software package repos (takes approx. 2h)</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="co"># clone software package repos (takes approx. 2.5h)</span></span>
 <span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="bu">time</span> <span class="va">$BBS_HOME</span>/utils/update_bioc_git_repos.py software devel RELEASE_3_19</span>
 <span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a></span>
 <span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co"># clone data-annotation package repos (takes a couple of minutes)</span></span>
 <span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="bu">time</span> <span class="va">$BBS_HOME</span>/utils/update_bioc_git_repos.py data-annotation devel RELEASE_3_19</span>
 <span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a></span>
-<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a><span class="co"># clone data-experiment package repos (takes approx. 2h)</span></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a><span class="co"># clone data-experiment package repos (takes approx. 2.5h)</span></span>
 <span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a><span class="bu">time</span> <span class="va">$BBS_HOME</span>/utils/update_bioc_git_repos.py data-experiment devel RELEASE_3_19</span>
 <span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a></span>
-<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a><span class="co"># clone workflow package repos (takes approx. 4 min)</span></span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a><span class="co"># clone workflow package repos (takes approx. 9 min)</span></span>
 <span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a><span class="bu">time</span> <span class="va">$BBS_HOME</span>/utils/update_bioc_git_repos.py workflows devel RELEASE_3_19</span>
 <span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a></span>
 <span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a><span class="co"># clone book repos (takes &lt; 1 min)</span></span>
@@ -406,8 +406,8 @@ Introduction</strong>.</p>
 <span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a><span class="va">pkgs_in_manifest</span><span class="op">=</span><span class="kw">`</span><span class="fu">grep</span> <span class="st">'Package: '</span> <span class="va">$MANIFEST_FILE</span> <span class="kw">|</span> <span class="fu">sed</span> <span class="st">'s/Package: //g'</span><span class="kw">`</span></span>
 <span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a></span>
 <span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a><span class="va">$BBS_HOME</span><span class="ex">/utils/bump_version_and_create_branch.py</span> <span class="at">--push</span> RELEASE_3_19 <span class="va">$pkgs_in_manifest</span> <span class="op">&gt;</span>bump_version_and_create_branch.log <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">&amp;</span></span></code></pre></div>
-<p>The <code>bump_version_and_create_branch.py</code> run above can be
-replaced with a 2-pass run:</p>
+<p>Alternatively, the <code>bump_version_and_create_branch.py</code> run
+above can be replaced with a 2-pass run:</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="co"># First pass (apply all the changes but do NOT push them):</span></span>
 <span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a><span class="va">$BBS_HOME</span><span class="ex">/utils/bump_version_and_create_branch.py</span> RELEASE_3_19 <span class="va">$pkgs_in_manifest</span> <span class="op">&gt;</span>bump_version_and_create_branch.log1 <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">&amp;</span></span>
 <span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a><span class="co"># Second pass (push all the changes):</span></span>

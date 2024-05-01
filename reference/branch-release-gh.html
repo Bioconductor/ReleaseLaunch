@@ -18,7 +18,7 @@ organization indicated by org."><!-- mathjax --><script src="https://cdnjs.cloud
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ReleaseLaunch</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.17</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.18</span>
       </span>
     </div>
 
@@ -78,10 +78,12 @@ organization indicated by <code>org</code>.</p>
 <span></span>
 <span><span class="fu">add_gh_release_branches</span><span class="op">(</span></span>
 <span>  packages <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0L</span><span class="op">)</span>,</span>
-<span>  release <span class="op">=</span> <span class="st">"RELEASE_3_17"</span>,</span>
+<span>  release <span class="op">=</span> <span class="st">"RELEASE_3_19"</span>,</span>
 <span>  bioc_branch <span class="op">=</span> <span class="va">.BIOC_DEFAULT_BRANCH</span>,</span>
 <span>  org <span class="op">=</span> <span class="st">"Bioconductor"</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">get_bioc_release_yaml</span><span class="op">(</span>config <span class="op">=</span> <span class="va">.BIOC_CONFIG_FILE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -116,6 +118,12 @@ the repositories on GitHub (default "Bioconductor").</p></dd>
 whose names correspond to Bioconductor package names. See
 <code>packages_without_release_branch</code>.</p></dd>
 
+
+<dt>config</dt>
+<dd><p><code>character(1)</code> The path to the Bioconductor configuration file
+that contains the release version (defaults to website URL from
+<code>.BIOC_CONFIG_FILE</code>)</p></dd>
+
 </dl></div>
     <div id="see-also">
     <h2>See also</h2>
@@ -125,11 +133,18 @@ whose names correspond to Bioconductor package names. See
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="fu">add_gh_release_branch</span> <span class="op">(</span></span></span>
-<span class="r-in"><span>    package_name <span class="op">=</span> <span class="st">"updateObject"</span>, gh_branch <span class="op">=</span> <span class="st">"devel"</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="fu">add_gh_release_branch</span> <span class="op">(</span></span></span>
+<span class="r-in"><span>      package_name <span class="op">=</span> <span class="st">"BiocParallel"</span>,</span></span>
+<span class="r-in"><span>      release <span class="op">=</span> <span class="st">"RELEASE_3_19"</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="fu">add_gh_release_branches</span><span class="op">(</span></span></span>
+<span class="r-in"><span>        release <span class="op">=</span> <span class="fu">get_bioc_release_yaml</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="fu">get_bioc_release_yaml</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "RELEASE_3_19"</span>
 </code></pre></div>
     </div>
   </div>

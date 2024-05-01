@@ -40,9 +40,7 @@ GitHub API, to obtain the repositories hosted on GitHub via the 'username'
 or the organization ('org') names, respectively.
 }
 \examples{
-
 if (interactive()) {
   get_user_github_repos(username = "github-username")
 }
-
 }

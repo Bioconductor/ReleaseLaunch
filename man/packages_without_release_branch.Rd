@@ -37,3 +37,8 @@ These functions obtain all the repositories from the designated organization
 and filters them to only valid R packages and repositories that do not have a
 \code{RELEASE_XX_YY} branch or that do, depending on the function called.
 }
+\examples{
+if (interactive()) {
+    packages_without_release_branch(version = "3.19")
+}
+}

@@ -16,6 +16,7 @@ Description: The package faciliates a Bioconductor release. It currently
   organization.
 License: Artistic-2.0
 Imports:
+  BiocManager,
   gert,
   gh,
   methods,

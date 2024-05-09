@@ -28,10 +28,10 @@ release, **in this order**:
 - **Second version bump**: bump x.y.z version to odd y **in the `devel`
   branch**
 
-For example, for the BioC 3.18 release, we will need to do this for
+For example, for the BioC 3.19 release, we will need to do this for
 all the packages listed in the `software.txt`, `data-annotation.txt`,
 `data-experiment.txt`, `workflows.txt`, and `books.txt` files of
-the `RELEASE_3_18` branch of the `manifest` repo. However, note that
+the `RELEASE_3_19` branch of the `manifest` repo. However, note that
 for the packages listed in the `data-annotation.txt`, we won't perform
 any version bump i.e. we will only create the new release branch.
 
@@ -45,11 +45,11 @@ Important exceptions:
 
 We'll use Python script `bump_version_and_create_branch.py` to apply and
 push these changes. This will need to be done on the day prior to the
-release, and BEFORE THE BioC 3.18 BUILDS START FOR SOFTARE,
+release, and BEFORE THE BioC 3.19 BUILDS START FOR SOFTARE,
 DATA-ANNOTATION, DATA-EXPERIMENT, WORKFLOW, AND BOOK PACKAGES.
 
 Look for the prerun jobs in the crontab for the `biocbuild` user on
-the central BioC 3.18 builder to get the times the software and
+the central BioC 3.19 builder to get the times the software and
 data-experiment builds get kicked off. Make sure to check the crontab
 again a couple of days before the release as we sometimes make small
 adjustments to the crontabs on the build machines.  Also be sure to
@@ -63,7 +63,7 @@ These steps should be performed typically a couple of days before the
 steps in sections **C.** and **D.**.
 
 * Update this document to reflect the BioC version to be released i.e.
-  replace all occurrences of `3.18` and `RELEASE_3_18` with appropriate
+  replace all occurrences of `3.19` and `RELEASE_3_19` with appropriate
   version. This will avoid potentially disastrous mistakes when
   copying/pasting/executing commands from this document.
 
@@ -114,22 +114,22 @@ steps in sections **C.** and **D.**.
   export BBS_HOME="$HOME/BBS"
   
   # clone `manifest` repo
-  $BBS_HOME/utils/update_bioc_git_repos.py manifest RELEASE_3_18
+  $BBS_HOME/utils/update_bioc_git_repos.py manifest RELEASE_3_19
   
-  # clone software package repos (takes approx. 2h)
-  time $BBS_HOME/utils/update_bioc_git_repos.py software devel RELEASE_3_18
+  # clone software package repos (takes approx. 2.5h)
+  time $BBS_HOME/utils/update_bioc_git_repos.py software devel RELEASE_3_19
   
   # clone data-annotation package repos (takes a couple of minutes)
-  time $BBS_HOME/utils/update_bioc_git_repos.py data-annotation devel RELEASE_3_18
+  time $BBS_HOME/utils/update_bioc_git_repos.py data-annotation devel RELEASE_3_19
   
-  # clone data-experiment package repos (takes approx. 2h)
-  time $BBS_HOME/utils/update_bioc_git_repos.py data-experiment devel RELEASE_3_18
+  # clone data-experiment package repos (takes approx. 2.5h)
+  time $BBS_HOME/utils/update_bioc_git_repos.py data-experiment devel RELEASE_3_19
   
-  # clone workflow package repos (takes approx. 4 min)
-  time $BBS_HOME/utils/update_bioc_git_repos.py workflows devel RELEASE_3_18
+  # clone workflow package repos (takes approx. 9 min)
+  time $BBS_HOME/utils/update_bioc_git_repos.py workflows devel RELEASE_3_19
   
   # clone book repos (takes < 1 min)
-  time $BBS_HOME/utils/update_bioc_git_repos.py books devel RELEASE_3_18
+  time $BBS_HOME/utils/update_bioc_git_repos.py books devel RELEASE_3_19
   ```
 
 * Make sure you can push changes to the BioC git server (at
@@ -210,14 +210,14 @@ be completed _before_ the software builds get kicked off
 (see **A. Introduction**). The full procedure should take about
 3 hours. Make sure to reserve enough time.
 
-### C1. Comment out all builds in crontab on central BioC 3.18 builder
+### C1. Comment out all builds in crontab on central BioC 3.19 builder
 
-**IMPORTANT: No 3.18 build should start until:**
+**IMPORTANT: No 3.19 build should start until:**
 
 - the bump and branch process is complete,
 
-- **and** `BBS_BIOC_GIT_BRANCH` is switched from `devel` to `RELEASE_3_18`
-  on the central BioC 3.18 builder (this switch is documented in section
+- **and** `BBS_BIOC_GIT_BRANCH` is switched from `devel` to `RELEASE_3_19`
+  on the central BioC 3.19 builder (this switch is documented in section
   F3 below).
 
 Maybe no build is scheduled to start during the next 3 hours, in which
@@ -234,16 +234,16 @@ server (git.bioconductor.org) for the next 3 hours.
 
 ### C3. Modify packages.conf to block all commits
 
-The `RELEASE_3_17` lines in `gitolite-admin/conf/packages.conf` were
+The `RELEASE_3_18` lines in `gitolite-admin/conf/packages.conf` were
 commented out when the release builds were frozen. At this point, only
 the `devel` lines are still active.
 
 Deactivate all push access by commenting out the `devel` lines in
 `gitolite-admin/conf/packages.conf`.
 
-NOTE: Do not change the branch from RELEASE_3_17 to RELEASE_3_18, it
+NOTE: Do not change the branch from RELEASE_3_18 to RELEASE_3_19, it
 is not a good solution. Maintainers now will be able to push their
-own RELEASE_3_18 branch before we are able to create it at release
+own RELEASE_3_19 branch before we are able to create it at release
 time. This issue reflects the issue
 <https://stat.ethz.ch/pipermail/bioc-devel/2019-May/015048.html>.
 
@@ -272,7 +272,7 @@ Log on to git.bioconductor.org as the `git` user.
   rm -rf ~/repositories/packages/*.git/hooks/pre-receive.h00-pre-receive-hook-software
   ```
 
-Or (trying as of release 3.18) try using hooks exclusion file. See
+Or (trying as of release 3.19) try using hooks exclusion file. See
 scripts/sedCommandsForVariousTasks.txt. This changes is made in the
 hook_maintainer repo.
 
@@ -287,12 +287,12 @@ ssh -A hpages@malbec1.bioconductor.org
 
 See **B. Preliminary steps** above for the details.
 
-### C6. Checkout/update the `RELEASE_3_18` branch of the `manifest` repo
+### C6. Checkout/update the `RELEASE_3_19` branch of the `manifest` repo
 
 ```sh
 cd ~/git.bioconductor.org/manifest
 git pull --all
-git checkout RELEASE_3_18
+git checkout RELEASE_3_19
 git branch
 git status
 ```
@@ -324,7 +324,7 @@ workflows, and books.
   ```
 
 - `MANIFEST_FILE`: Point `MANIFEST_FILE` to the manifest file for software
-  packages. This must be the file from the `RELEASE_3_18` branch of
+  packages. This must be the file from the `RELEASE_3_19` branch of
   the `manifest` repo:
 
   ```sh
@@ -340,17 +340,17 @@ of applying and pushing the changes described in **A. Introduction**.
 cd $WORKING_DIR
 pkgs_in_manifest=`grep 'Package: ' $MANIFEST_FILE | sed 's/Package: //g'`
 
-$BBS_HOME/utils/bump_version_and_create_branch.py --push RELEASE_3_18 $pkgs_in_manifest >bump_version_and_create_branch.log 2>&1 &
+$BBS_HOME/utils/bump_version_and_create_branch.py --push RELEASE_3_19 $pkgs_in_manifest >bump_version_and_create_branch.log 2>&1 &
 ```
 
-The `bump_version_and_create_branch.py` run above can be replaced with
-a 2-pass run:
+Alternatively, the `bump_version_and_create_branch.py` run above can be
+replaced with a 2-pass run:
 
 ```sh
 # First pass (apply all the changes but do NOT push them):
-$BBS_HOME/utils/bump_version_and_create_branch.py RELEASE_3_18 $pkgs_in_manifest >bump_version_and_create_branch.log1 2>&1 &
+$BBS_HOME/utils/bump_version_and_create_branch.py RELEASE_3_19 $pkgs_in_manifest >bump_version_and_create_branch.log1 2>&1 &
 # Second pass (push all the changes):
-$BBS_HOME/utils/bump_version_and_create_branch.py --push RELEASE_3_18 $pkgs_in_manifest >bump_version_and_create_branch.log2 2>&1 &
+$BBS_HOME/utils/bump_version_and_create_branch.py --push RELEASE_3_19 $pkgs_in_manifest >bump_version_and_create_branch.log2 2>&1 &
 ```
 
 The 2-pass run can be useful if one wants to inspect the changes before pushing them.
@@ -363,7 +363,7 @@ Notes:
 
 * In the 2-pass run, the second pass checks the packages and applies the
   changes only if needed (i.e. if a package does not already have the
-  `RELEASE_3_18` branch) before pushing the changes.
+  `RELEASE_3_19` branch) before pushing the changes.
 
 * If for some reason the `bump_version_and_create_branch.py` script stops
   prematurly, it can be safely re-run with the same arguments. This is
@@ -436,23 +436,23 @@ script with the `--no-bump` option**:
 cd $WORKING_DIR
 pkgs_in_manifest=`grep 'Package: ' $MANIFEST_FILE | sed 's/Package: //g'`
 
-$BBS_HOME/utils/bump_version_and_create_branch.py --no-bump --push RELEASE_3_18 $pkgs_in_manifest >bump_version_and_create_branch.log 2>&1 &
+$BBS_HOME/utils/bump_version_and_create_branch.py --no-bump --push RELEASE_3_19 $pkgs_in_manifest >bump_version_and_create_branch.log 2>&1 &
 ```
 
 
 
 ## F. Finishing up
 
-### F1. Enable push access to new `RELEASE_3_18` branch
+### F1. Enable push access to new `RELEASE_3_19` branch
 
 This is done by editing the `conf/packages.conf` file in
 the `gitolite-admin` repo
 (`git clone git@git.bioconductor.org:gitolite-admin`).
 
-- If not done already, replace all instances of `RELEASE_3_17` with
-  `RELEASE_3_18`.
+- If not done already, replace all instances of `RELEASE_3_18` with
+  `RELEASE_3_19`.
 
-- Uncomment all `RELEASE_3_18` and `devel` lines.
+- Uncomment all `RELEASE_3_19` and `devel` lines.
 
 See scripts/sedCommandsForVariousTasks.txt for help on re-enabling access
 
@@ -468,7 +468,7 @@ See scripts/sedCommandsForVariousTasks.txt for help on re-enabling access
 
   ```sh
   git push
-  git checkout RELEASE_3_18
+  git checkout RELEASE_3_19
   git pull
   ```
 
@@ -478,12 +478,12 @@ Announce or ask a core team member to announce on the bioc-devel mailing
 list that committing/pushing changes to the BioC git server
 (git.bioconductor.org) can resume.
 
-### F3. Switch `BBS_BIOC_GIT_BRANCH` from `devel` to `RELEASE_3_18` on central BioC 3.18 builder
+### F3. Switch `BBS_BIOC_GIT_BRANCH` from `devel` to `RELEASE_3_19` on central BioC 3.19 builder
 
-DON'T FORGET THIS STEP! Its purpose is to make the BioC 3.18 builds grab
-the `RELEASE_3_18` branch of all packages instead of their `devel` branch.
+DON'T FORGET THIS STEP! Its purpose is to make the BioC 3.19 builds grab
+the `RELEASE_3_19` branch of all packages instead of their `devel` branch.
 
-Log on the central BioC 3.18 builder as `biocbuild` and replace
+Log on the central BioC 3.19 builder as `biocbuild` and replace
 
 ```sh
 export BBS_BIOC_GIT_BRANCH="devel"
@@ -492,10 +492,10 @@ export BBS_BIOC_GIT_BRANCH="devel"
 with
 
 ```sh
-export BBS_BIOC_GIT_BRANCH="RELEASE_3_18"
+export BBS_BIOC_GIT_BRANCH="RELEASE_3_19"
 ```
 
-in `~/BBS/3.18/config.sh`
+in `~/BBS/3.19/config.sh`
 
 Also replace
 
@@ -506,14 +506,14 @@ set BBS_BIOC_GIT_BRANCH=devel
 with
 
 ```sh
-set BBS_BIOC_GIT_BRANCH=RELEASE_3_18
+set BBS_BIOC_GIT_BRANCH=RELEASE_3_19
 ```
 
-in `~/BBS/3.18/config.bat`
+in `~/BBS/3.19/config.bat`
 
-Then remove the `manifest` and `MEAT0` folders from `~/bbs-3.18-bioc/`,
-`~/bbs-3.18-data-annotation/`, `~/bbs-3.18-data-experiment/`,
-`~/bbs-3.18-workflows/`, and `~/bbs-3.18-books/`. They'll get automatically
+Then remove the `manifest` and `MEAT0` folders from `~/bbs-3.19-bioc/`,
+`~/bbs-3.19-data-annotation/`, `~/bbs-3.19-data-experiment/`,
+`~/bbs-3.19-workflows/`, and `~/bbs-3.19-books/`. They'll get automatically
 re-created and re-populated when the builds start.
 
 Once you're done, DON'T FORGET TO UNCOMMENT ALL THE BUILDS THAT WERE
@@ -545,7 +545,7 @@ organization's GitHub account.
 To update all packages, run the following command:
 
 ```r
-add_gh_release_branches(release = "RELEASE_3_18", org = "Bioconductor")
+add_gh_release_branches(release = "RELEASE_3_19", org = "Bioconductor")
 ```
 
 Be sure to edit the `release` argument in the function.
@@ -554,7 +554,7 @@ To update an individual package, run the following function:
 
 ```r
 add_gh_release_branch(
-    package_name = "updateObject", release = "RELEASE_3_18", gh_branch = "devel"
+    package_name = "updateObject", release = "RELEASE_3_19", gh_branch = "devel"
 )
 ```
 

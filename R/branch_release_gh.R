@@ -1,5 +1,16 @@
 .BIOC_DEFAULT_BRANCH <- "devel"
 .BIOC_GIT_ADDRESS <- "git@git.bioconductor.org"
+.BIOC_CONFIG_FILE <- "https://bioconductor.org/config.yaml"
+
+.tag_to_version <- function(tag) {
+    stopifnot(grepl("RELEASE_", tag, fixed = TRUE))
+    version <- gsub("RELEASE_", "", tag, fixed = TRUE)
+    gsub("_", ".", version, fixed = TRUE)
+}
+
+.version_to_tag <- function(version) {
+    paste0("RELEASE_", gsub(".", "_", version, fixed = TRUE))
+}
 
 #' @importFrom gh gh gh_token
 .get_gh_repos <- function(api, per_page, pages, ...) {
@@ -156,14 +167,18 @@ get_org_packages <- function(version, org, type) {
 #' @return A named scalar string of the default branch whose name corresponds to
 #'   a Bioconductor GitHub repository
 #'
+#' @examples
+#' if (interactive()) {
+#'     packages_without_release_branch(version = "3.19")
+#' }
 #' @export
 packages_without_release_branch <- function(
     version = "3.16", org = "Bioconductor", type = c("BioCsoft", "BioCexp")
 ) {
-    release_slug <- paste0("RELEASE_", gsub("\\.", "_", version))
+    release_tag <- .version_to_tag(version)
     candidates <- get_org_packages(version = version, org = org, type = type)
     .filter_gh_repos_branch(
-        candidates, release_slug, owner = org, without = TRUE
+        candidates, release_tag, owner = org, without = TRUE
     )
 }
 
@@ -173,10 +188,10 @@ packages_without_release_branch <- function(
 packages_with_release_branch <- function(
     version = "3.16", org = "Bioconductor", type = c("BioCsoft", "BioCexp")
 ) {
-    release_slug <- paste0("RELEASE_", gsub("\\.", "_", version))
+    release_tag <- .version_to_tag(version)
     candidates <- get_org_packages(version = version, org = org, type = type)
     .filter_gh_repos_branch(
-        candidates, release_slug, owner = org, without = FALSE
+        candidates, release_tag, owner = org, without = FALSE
     )
 }
 
@@ -207,9 +222,10 @@ packages_with_release_branch <- function(
 #'
 #' @examples
 #' if (interactive()) {
-#'   add_gh_release_branch (
-#'     package_name = "updateObject", gh_branch = "devel"
-#'   )
+#'     add_gh_release_branch (
+#'       package_name = "BiocParallel",
+#'       release = "RELEASE_3_19"
+#'     )
 #' }
 #'
 #' @export
@@ -229,10 +245,10 @@ add_gh_release_branch <- function(
     remotes <- git_remote_list()
     if (!.check_origin_gh(remotes, org_gh_slug))
         stop("'origin' remote is not set to GitHub")
-    git_pull("origin")
     cbranch <- git_branch()
     if (!identical(cbranch, gh_branch))
         git_branch_checkout(gh_branch)
+    git_pull("origin")
     bioc_git_slug <- .get_bioc_slug(package_name)
     ## git remote add upstream git@git.bioconductor.org:packages/<pkg>.git
     if (!.check_remote_exists(remotes, "upstream"))
@@ -250,7 +266,9 @@ add_gh_release_branch <- function(
     git_branch_checkout(cbranch)
 }
 
-.add_gh_release_branches <- function(packages, release, bioc_branch, org) {
+.add_gh_release_branches <-
+    function(packages, release, bioc_branch, org)
+{
     Map(
         add_gh_release_branch,
         package_name = names(packages),
@@ -269,22 +287,53 @@ add_gh_release_branch <- function(
 #'
 #' @seealso packages_without_release_branch
 #'
+#' @examples
+#' if (interactive()) {
+#'     add_gh_release_branches(
+#'         release = get_bioc_release_yaml()
+#'     )
+#' }
 #' @export
 add_gh_release_branches <- function(
     packages = character(0L),
-    release = "RELEASE_3_17",
+    release = "RELEASE_3_19",
     bioc_branch = .BIOC_DEFAULT_BRANCH,
     org = "Bioconductor"
 ) {
-    version <- gsub("RELEASE_", "", release, fixed = TRUE)
-    version <- gsub("_", ".", version, fixed = TRUE)
+    if (!missing(release))
+        version <- .tag_to_version(release)
+    else
+        version <- .get_bioc_version()
+    message("Working on Bioconductor version: ", version)
     if (!length(packages))
         packages <- packages_without_release_branch(
             version = version, org = org
         )
+    message(
+        "Packages without release branch: ",
+        paste(names(packages), collapse = ", ")
+    )
     if (is.null(names(packages)))
         stop("'packages' must have names")
     .add_gh_release_branches(
-        packages, release=release, bioc_branch = bioc_branch, org = org
+        packages,
+        release = release,
+        bioc_branch = bioc_branch,
+        org = org
     )
+}
+
+#' @rdname branch-release-gh
+#'
+#' @param config `character(1)` The path to the Bioconductor configuration file
+#'   that contains the release version (defaults to website URL from
+#'   `.BIOC_CONFIG_FILE`)
+#'
+#' @examples
+#' get_bioc_release_yaml()
+#' @export
+get_bioc_release_yaml <- function(config = .BIOC_CONFIG_FILE) {
+    conf <- yaml::read_yaml(config)
+    relver <- conf[["release_version"]]
+    .version_to_tag(relver)
 }

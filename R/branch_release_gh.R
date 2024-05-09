@@ -30,11 +30,13 @@
     do.call(c, reslist)
 }
 
-#' Get all repositories for a given GitHub organization or username
+#' @name get-github-repos
 #'
-#' `get_user_github_repos` and `get_org_github_repos` use the
-#' GitHub API, to obtain the repositories hosted on GitHub via the 'username'
-#' or the organization ('org') names, respectively.
+#' @title Get all repositories for a given GitHub organization or username
+#'
+#' @description `get_user_github_repos` and `get_org_github_repos` use the
+#' GitHub API, to obtain the repositories hosted on GitHub via the 'username' or
+#' the organization ('org') names, respectively.
 #'
 #' @inheritParams gh::gh
 #'
@@ -48,8 +50,6 @@
 #'
 #' @return A vector of default branches whose names correspond to the
 #'   organization or user GitHub repositories
-#'
-#' @name get-github-repos
 #'
 #' @aliases get_org_github_repos get_user_github_repos
 #'

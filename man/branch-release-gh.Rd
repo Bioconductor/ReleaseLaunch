@@ -53,18 +53,18 @@ This function assumes that you have admin push access to the GitHub
 organization indicated by \code{org}.
 }
 \examples{
+get_bioc_release_yaml()
 if (interactive()) {
-    add_gh_release_branch (
+    add_gh_release_branch(
       package_name = "BiocParallel",
       release = "RELEASE_3_19"
     )
-}
-if (interactive()) {
+
     add_gh_release_branches(
-        release = get_bioc_release_yaml()
+        release = get_bioc_release_yaml(),
+        org = "Bioconductor"
     )
 }
-get_bioc_release_yaml()
 }
 \seealso{
 packages_without_release_branch

@@ -221,13 +221,18 @@ packages_with_release_branch <- function(
 #' @import gert
 #'
 #' @examples
+#' get_bioc_release_yaml()
 #' if (interactive()) {
-#'     add_gh_release_branch (
+#'     add_gh_release_branch(
 #'       package_name = "BiocParallel",
 #'       release = "RELEASE_3_19"
 #'     )
-#' }
 #'
+#'     add_gh_release_branches(
+#'         release = get_bioc_release_yaml(),
+#'         org = "Bioconductor"
+#'     )
+#' }
 #' @export
 add_gh_release_branch <- function(
     package_name, release = "RELEASE_3_17",
@@ -287,12 +292,6 @@ add_gh_release_branch <- function(
 #'
 #' @seealso packages_without_release_branch
 #'
-#' @examples
-#' if (interactive()) {
-#'     add_gh_release_branches(
-#'         release = get_bioc_release_yaml()
-#'     )
-#' }
 #' @export
 add_gh_release_branches <- function(
     packages = character(0L),
@@ -329,8 +328,6 @@ add_gh_release_branches <- function(
 #'   that contains the release version (defaults to website URL from
 #'   `.BIOC_CONFIG_FILE`)
 #'
-#' @examples
-#' get_bioc_release_yaml()
 #' @export
 get_bioc_release_yaml <- function(config = .BIOC_CONFIG_FILE) {
     conf <- yaml::read_yaml(config)

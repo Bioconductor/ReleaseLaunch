@@ -25,8 +25,8 @@ add_gh_release_branches(
 get_bioc_release_yaml(config = .BIOC_CONFIG_FILE)
 }
 \arguments{
-\item{package_name}{\code{character(1)} The name of the organization R package that
-is also available on GitHub.}
+\item{package_name}{\code{character(1)} The name of the organization R package
+that is also available on GitHub.}
 
 \item{release}{\code{character(1)} The Bioconductor version branch tag, e.g.,
 "RELEASE_3_17"}
@@ -49,8 +49,8 @@ that contains the release version (defaults to website URL from
 \code{.BIOC_CONFIG_FILE})}
 }
 \description{
-This function assumes that you have admin push access to the GitHub
-organization indicated by \code{org}.
+This function assumes that you have admin push access to the
+GitHub organization indicated by \code{org}.
 }
 \examples{
 get_bioc_release_yaml()

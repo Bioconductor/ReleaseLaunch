@@ -195,13 +195,15 @@ packages_with_release_branch <- function(
     )
 }
 
-#' Add the release branch to GitHub package repositories
+#' @name branch-release-gh
 #'
-#' This function assumes that you have admin push access to the GitHub
-#' organization indicated by `org`.
+#' @title Add the release branch to GitHub package repositories
 #'
-#' @param package_name `character(1)` The name of the organization R package that
-#'   is also available on GitHub.
+#' @description This function assumes that you have admin push access to the
+#'   GitHub organization indicated by `org`.
+#'
+#' @param package_name `character(1)` The name of the organization R package
+#'   that is also available on GitHub.
 #'
 #' @param release `character(1)` The Bioconductor version branch tag, e.g.,
 #'   "RELEASE_3_17"
@@ -213,8 +215,6 @@ packages_with_release_branch <- function(
 #'   Bioconductor git server (default 'devel')
 #'
 #' @inheritParams get-github-repos
-#'
-#' @name branch-release-gh
 #'
 #' @aliases add_gh_release_branch add_gh_release_branches
 #'

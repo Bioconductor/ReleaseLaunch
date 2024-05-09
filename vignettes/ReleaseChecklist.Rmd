@@ -320,6 +320,8 @@ It couldn't hurt to restart the Apache server:
 
   -- Update <http://bioconductor.org/install/> for BiocManager
 
+- Webstats updates
+
 - `BiocManager::install()` sanity check
 
   Was BiocManager installed / updated properly? With a fresh R devel and

@@ -153,7 +153,7 @@ get_org_packages <- function(version, org, type) {
 #'
 #' These functions obtain all the repositories from the designated organization
 #' and filters them to only valid R packages and repositories that do not have a
-#' `RELEASE_XX_YY` branch or that do, depending on the function called.
+#' `RELEASE_X_Y` branch or that do, depending on the function called.
 #'
 #' @inheritParams get-github-repos
 #'

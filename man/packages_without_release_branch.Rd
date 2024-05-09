@@ -35,7 +35,7 @@ a Bioconductor GitHub repository
 \description{
 These functions obtain all the repositories from the designated organization
 and filters them to only valid R packages and repositories that do not have a
-\code{RELEASE_XX_YY} branch or that do, depending on the function called.
+\code{RELEASE_X_Y} branch or that do, depending on the function called.
 }
 \examples{
 if (interactive()) {

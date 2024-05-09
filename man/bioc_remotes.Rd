@@ -16,9 +16,6 @@ upstream remote should be set}
 
 \item{org}{\code{character(1)} The organization for which to extract the names of
 the repositories on GitHub (default "Bioconductor").}
-
-\item{remote}{\code{character(1)} The name of the remote to be created. This is
-usually named 'upstream' (default)}
 }
 \value{
 \itemize{

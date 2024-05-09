@@ -26,9 +26,6 @@
 #' @param repo `character(1)` The local path to the git repository whose
 #'   upstream remote should be set
 #'
-#' @param remote `character(1)` The name of the remote to be created. This is
-#'   usually named 'upstream' (default)
-#'
 #' @return
 #'   * `add_bioc_remote`: adds an 'upstream' remote with the Bioconductor git
 #'     address for a given package.

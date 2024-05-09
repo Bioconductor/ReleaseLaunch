@@ -9,7 +9,7 @@
 \usage{
 add_gh_release_branch(
   package_name,
-  release = "RELEASE_3_17",
+  release = get_bioc_release_yaml(),
   gh_branch = .BIOC_DEFAULT_BRANCH,
   bioc_branch = .BIOC_DEFAULT_BRANCH,
   org = "Bioconductor"
@@ -17,7 +17,7 @@ add_gh_release_branch(
 
 add_gh_release_branches(
   packages = character(0L),
-  release = "RELEASE_3_19",
+  release = get_bioc_release_yaml(),
   bioc_branch = .BIOC_DEFAULT_BRANCH,
   org = "Bioconductor"
 )

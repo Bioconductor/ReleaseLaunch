@@ -235,7 +235,7 @@ packages_with_release_branch <- function(
 #' }
 #' @export
 add_gh_release_branch <- function(
-    package_name, release = "RELEASE_3_17",
+    package_name, release = get_bioc_release_yaml(),
     gh_branch = .BIOC_DEFAULT_BRANCH, bioc_branch = .BIOC_DEFAULT_BRANCH,
     org = "Bioconductor"
 ) {
@@ -295,14 +295,11 @@ add_gh_release_branch <- function(
 #' @export
 add_gh_release_branches <- function(
     packages = character(0L),
-    release = "RELEASE_3_19",
+    release = get_bioc_release_yaml(),
     bioc_branch = .BIOC_DEFAULT_BRANCH,
     org = "Bioconductor"
 ) {
-    if (!missing(release))
-        version <- .tag_to_version(release)
-    else
-        version <- .get_bioc_version()
+    version <- .tag_to_version(release)
     message("Working on Bioconductor version: ", version)
     if (!length(packages))
         packages <- packages_without_release_branch(

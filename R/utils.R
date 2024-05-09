@@ -66,7 +66,9 @@
 
 .is_bioc_pkgs <- function(pkg_dirs) {
     bioc_pkgs <- rownames(
-        available.packages(repos = BiocManager::repositories()["BioCsoft"])
+        utils::available.packages(
+            repos = BiocManager::repositories()["BioCsoft"]
+        )
     )
     basename(pkg_dirs) %in% bioc_pkgs
 }

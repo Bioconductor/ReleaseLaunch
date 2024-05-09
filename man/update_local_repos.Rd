@@ -24,17 +24,21 @@ update_local_repo(
 \item{repos_dir}{\code{character(1)} The base directory where all packages /
 repositories exist for the user}
 
+\item{release}{\code{character(1)} The Bioconductor release version, as
+"RELASE_X_Y", to use for updating the local repositories. By default, the
+value of \code{get_bioc_release_yaml()}.}
+
 \item{username}{\code{character(1)} (optional) The GitHub username used in the
 query to check default packages}
 
 \item{org}{\code{character(1)} The organization for which to extract the names of
 the repositories on GitHub (default "Bioconductor").}
 
+\item{set_upstream}{\code{character(1)} The remote location that will be tracked
+by the local branch, either "origin/devel" (default) or "upstream/devel"}
+
 \item{repo_dir}{\code{character(1)} The full path to a single package / repository
 whose default branch should be updated}
-
-\item{`character(1)`}{The remote location that will be tracked by the local
-branch, either "origin/devel" (default) or "upstream/devel"}
 }
 \description{
 These functions should be used after a Bioconductor Release. They ensure that

@@ -8,14 +8,18 @@
 #' @param repos_dir `character(1)` The base directory where all packages /
 #'   repositories exist for the user
 #'
+#' @param release `character(1)` The Bioconductor release version, as
+#'   "RELASE_X_Y", to use for updating the local repositories. By default, the
+#'   value of `get_bioc_release_yaml()`.
+#'
 #' @param repo_dir `character(1)` The full path to a single package / repository
 #'   whose default branch should be updated
 #'
 #' @param username `character(1)` (optional) The GitHub username used in the
 #'   query to check default packages
 #'
-#' @param `character(1)` The remote location that will be tracked by the local
-#'   branch, either "origin/devel" (default) or "upstream/devel"
+#' @param set_upstream `character(1)` The remote location that will be tracked
+#'   by the local branch, either "origin/devel" (default) or "upstream/devel"
 #'
 #' @inheritParams get-github-repos
 #'
@@ -43,7 +47,7 @@ update_local_repos <- function(
     is_bioc <- .is_bioc_pkgs(pkg_dirs)
     pkg_dirs <- pkg_dirs[is_bioc]
 
-    if (!length(matching))
+    if (!length(pkg_dirs))
         stop("No local folders in 'repos_dir' to update")
 
     mapply(
@@ -83,7 +87,7 @@ update_local_repo <- function(
     if (!git_branch_exists(branch = release)) {
         git_branch_create(release, ref = paste0("upstream/", release))
         git_push(remote = "origin")
-        git_checkout_branch("devel")
+        git_branch_checkout("devel")
     }
     git_branch_set_upstream(set_upstream)
 }

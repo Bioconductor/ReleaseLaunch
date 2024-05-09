@@ -19,7 +19,8 @@ Imports:
   gert,
   gh,
   methods,
-  utils
+  utils,
+  yaml
 Suggests:
   BiocStyle,
   knitr,

@@ -20,7 +20,7 @@ on the user's system."><!-- mathjax --><script src="https://cdnjs.cloudflare.com
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ReleaseLaunch</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.19</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.20</span>
       </span>
     </div>
 
@@ -74,7 +74,7 @@ on the user's system.</p>
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">update_local_repos</span><span class="op">(</span></span>
 <span>  <span class="va">repos_dir</span>,</span>
-<span>  release <span class="op">=</span> <span class="fu"><a href="branch-release-gh.html">get_bioc_release_yaml</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  release <span class="op">=</span> <span class="fu"><a href="branch-release-gh.html">bioc_release_yaml</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  <span class="va">username</span>,</span>
 <span>  org <span class="op">=</span> <span class="va">username</span>,</span>
 <span>  set_upstream <span class="op">=</span> <span class="st">"origin/devel"</span></span>
@@ -98,7 +98,7 @@ repositories exist for the user</p></dd>
 <dt>release</dt>
 <dd><p><code>character(1)</code> The Bioconductor release version, as
 "RELASE_X_Y", to use for updating the local repositories. By default, the
-value of <code><a href="branch-release-gh.html">get_bioc_release_yaml()</a></code>.</p></dd>
+value of <code><a href="branch-release-gh.html">bioc_release_yaml()</a></code>.</p></dd>
 
 
 <dt>username</dt>
@@ -125,7 +125,7 @@ whose default branch should be updated</p></dd>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>    <span class="fu">update_local_repo</span><span class="op">(</span><span class="st">"~/bioc/AnnotationHub"</span>, is_bioc <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="fu">update_local_repo</span><span class="op">(</span><span class="st">"~/bioc/AnnotationHub"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>

@@ -4,12 +4,12 @@
 \alias{branch-release-gh}
 \alias{add_gh_release_branch}
 \alias{add_gh_release_branches}
-\alias{get_bioc_release_yaml}
+\alias{bioc_release_yaml}
 \title{Add the release branch to GitHub package repositories}
 \usage{
 add_gh_release_branch(
   package_name,
-  release = get_bioc_release_yaml(),
+  release = bioc_release_yaml(),
   gh_branch = .BIOC_DEFAULT_BRANCH,
   bioc_branch = .BIOC_DEFAULT_BRANCH,
   org = "Bioconductor"
@@ -17,12 +17,12 @@ add_gh_release_branch(
 
 add_gh_release_branches(
   packages = character(0L),
-  release = get_bioc_release_yaml(),
+  release = bioc_release_yaml(),
   bioc_branch = .BIOC_DEFAULT_BRANCH,
   org = "Bioconductor"
 )
 
-get_bioc_release_yaml(config = .BIOC_CONFIG_FILE)
+bioc_release_yaml(config = .BIOC_CONFIG_FILE)
 }
 \arguments{
 \item{package_name}{\code{character(1)} The name of the organization R package
@@ -53,7 +53,7 @@ This function assumes that you have admin push access to the
 GitHub organization indicated by \code{org}.
 }
 \examples{
-get_bioc_release_yaml()
+bioc_release_yaml()
 if (interactive()) {
     add_gh_release_branch(
       package_name = "BiocParallel",
@@ -61,7 +61,7 @@ if (interactive()) {
     )
 
     add_gh_release_branches(
-        release = get_bioc_release_yaml(),
+        release = bioc_release_yaml(),
         org = "Bioconductor"
     )
 }

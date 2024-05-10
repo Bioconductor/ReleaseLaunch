@@ -7,7 +7,7 @@
 \usage{
 update_local_repos(
   repos_dir,
-  release = get_bioc_release_yaml(),
+  release = bioc_release_yaml(),
   username,
   org = username,
   set_upstream = "origin/devel"
@@ -26,7 +26,7 @@ repositories exist for the user}
 
 \item{release}{\code{character(1)} The Bioconductor release version, as
 "RELASE_X_Y", to use for updating the local repositories. By default, the
-value of \code{get_bioc_release_yaml()}.}
+value of \code{bioc_release_yaml()}.}
 
 \item{username}{\code{character(1)} (optional) The GitHub username used in the
 query to check default packages}

@@ -221,7 +221,7 @@ packages_with_release_branch <- function(
 #' @import gert
 #'
 #' @examples
-#' get_bioc_release_yaml()
+#' bioc_release_yaml()
 #' if (interactive()) {
 #'     add_gh_release_branch(
 #'       package_name = "BiocParallel",
@@ -229,13 +229,13 @@ packages_with_release_branch <- function(
 #'     )
 #'
 #'     add_gh_release_branches(
-#'         release = get_bioc_release_yaml(),
+#'         release = bioc_release_yaml(),
 #'         org = "Bioconductor"
 #'     )
 #' }
 #' @export
 add_gh_release_branch <- function(
-    package_name, release = get_bioc_release_yaml(),
+    package_name, release = bioc_release_yaml(),
     gh_branch = .BIOC_DEFAULT_BRANCH, bioc_branch = .BIOC_DEFAULT_BRANCH,
     org = "Bioconductor"
 ) {
@@ -295,7 +295,7 @@ add_gh_release_branch <- function(
 #' @export
 add_gh_release_branches <- function(
     packages = character(0L),
-    release = get_bioc_release_yaml(),
+    release = bioc_release_yaml(),
     bioc_branch = .BIOC_DEFAULT_BRANCH,
     org = "Bioconductor"
 ) {
@@ -326,7 +326,7 @@ add_gh_release_branches <- function(
 #'   `.BIOC_CONFIG_FILE`)
 #'
 #' @export
-get_bioc_release_yaml <- function(config = .BIOC_CONFIG_FILE) {
+bioc_release_yaml <- function(config = .BIOC_CONFIG_FILE) {
     conf <- yaml::read_yaml(config)
     relver <- conf[["release_version"]]
     .version_to_tag(relver)

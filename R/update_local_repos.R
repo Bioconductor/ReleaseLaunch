@@ -10,7 +10,7 @@
 #'
 #' @param release `character(1)` The Bioconductor release version, as
 #'   "RELASE_X_Y", to use for updating the local repositories. By default, the
-#'   value of `get_bioc_release_yaml()`.
+#'   value of `bioc_release_yaml()`.
 #'
 #' @param repo_dir `character(1)` The full path to a single package / repository
 #'   whose default branch should be updated
@@ -30,7 +30,7 @@
 #' @export
 update_local_repos <- function(
     repos_dir,
-    release = get_bioc_release_yaml(),
+    release = bioc_release_yaml(),
     username, org = username,
     set_upstream = "origin/devel"
 ) {

@@ -25,7 +25,7 @@
 #'
 #' @examples
 #' if (interactive()) {
-#'     update_local_repo("~/bioc/AnnotationHub", is_bioc = TRUE)
+#'     update_local_repo("~/bioc/AnnotationHub")
 #' }
 #' @export
 update_local_repos <- function(

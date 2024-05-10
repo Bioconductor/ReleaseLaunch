@@ -48,6 +48,6 @@ on the user's system.
 }
 \examples{
 if (interactive()) {
-    update_local_repo("~/bioc/AnnotationHub", is_bioc = TRUE)
+    update_local_repo("~/bioc/AnnotationHub")
 }
 }

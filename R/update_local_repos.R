@@ -83,11 +83,9 @@ update_local_repo <- function(
     }
     git_pull(remote = "origin", refspec = "devel")
     git_pull(remote = "upstream", refspec = "devel")
-    git_push(remote = "origin")
     if (!git_branch_exists(branch = release)) {
         git_fetch(remote = "upstream")
         git_branch_create(release, ref = paste0("upstream/", release))
-        git_push(remote = "origin")
         git_branch_checkout("devel")
     }
     git_branch_set_upstream(set_upstream)

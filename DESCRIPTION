@@ -1,6 +1,6 @@
 Package: ReleaseLaunch
 Title: R utilities related to Bioconductor release tasks
-Version: 0.99.20
+Version: 0.99.21
 Encoding: UTF-8
 Authors@R: c(
     person("Marcel", "Ramos", role = c("aut", "cre"),

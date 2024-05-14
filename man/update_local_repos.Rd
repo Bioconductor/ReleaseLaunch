@@ -7,6 +7,7 @@
 \usage{
 update_local_repos(
   repos_dir,
+  packages,
   release = bioc_release_yaml(),
   username,
   org = username,
@@ -23,6 +24,9 @@ update_local_repo(
 \arguments{
 \item{repos_dir}{\code{character(1)} The base directory where all packages /
 repositories exist for the user}
+
+\item{packages}{\code{character()} An optional vector of package names that
+correspond to folders available locally.}
 
 \item{release}{\code{character(1)} The Bioconductor release version, as
 "RELASE_X_Y", to use for updating the local repositories. By default, the
@@ -48,6 +52,28 @@ on the user's system.
 }
 \examples{
 if (interactive()) {
-    update_local_repo("~/bioc/AnnotationHub")
+    ## update multiple packages at a time
+    update_local_repos(repos_dir = "~/bioc/", org = "Bioconductor")
+    update_local_repos(
+        packages = c("~/bioc/AnnotationHub", "~/bioc/BiocGenerics"),
+        org = "Bioconductor"
+    )
+    update_local_repos(
+        repos_dir = "~/bioc/", packages = c("AnnotationHub", "BiocGenerics"),
+        org = "Bioconductor"
+    )
+
+    ## update a single package
+    update_local_repo(
+        "~/bioc/AnnotationHub",
+        release = get_bioc_release_yaml(),
+        org = "Bioconductor"
+    )
+    setwd("~/bioc/AnnotationHub")
+    update_local_repo(
+        ".",
+        release = get_bioc_release_yaml(),
+        org = "Bioconductor"
+    )
 }
 }

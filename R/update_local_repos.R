@@ -8,6 +8,9 @@
 #' @param repos_dir `character(1)` The base directory where all packages /
 #'   repositories exist for the user
 #'
+#' @param packages `character()` An optional vector of package names that
+#'   correspond to folders available locally.
+#'
 #' @param release `character(1)` The Bioconductor release version, as
 #'   "RELASE_X_Y", to use for updating the local repositories. By default, the
 #'   value of `bioc_release_yaml()`.
@@ -25,7 +28,29 @@
 #'
 #' @examples
 #' if (interactive()) {
-#'     update_local_repo("~/bioc/AnnotationHub")
+#'     ## update multiple packages at a time
+#'     update_local_repos(repos_dir = "~/bioc/", org = "Bioconductor")
+#'     update_local_repos(
+#'         packages = c("~/bioc/AnnotationHub", "~/bioc/BiocGenerics"),
+#'         org = "Bioconductor"
+#'     )
+#'     update_local_repos(
+#'         repos_dir = "~/bioc/", packages = c("AnnotationHub", "BiocGenerics"),
+#'         org = "Bioconductor"
+#'     )
+#'
+#'     ## update a single package
+#'     update_local_repo(
+#'         "~/bioc/AnnotationHub",
+#'         release = get_bioc_release_yaml(),
+#'         org = "Bioconductor"
+#'     )
+#'     setwd("~/bioc/AnnotationHub")
+#'     update_local_repo(
+#'         ".",
+#'         release = get_bioc_release_yaml(),
+#'         org = "Bioconductor"
+#'     )
 #' }
 #' @export
 update_local_repos <- function(
@@ -41,14 +66,24 @@ update_local_repos <- function(
     else
         repos <- get_user_github_repos(username = username)
 
-    folders <- list.dirs(repos_dir, recursive = FALSE)
-    pkg_dirs <- folders[basename(folders) %in% names(repos)]
+    if (!missing(packages) && !missing(repos_dir))
+        stopifnot(
+            all(dir.exists(
+                packages <- file.path(repos_dir, packages)
+            ))
+        )
+    else if (!missing(packages))
+        stopifnot(all(dir.exists(packages)))
+    else
+        packages <- list.dirs(repos_dir, recursive = FALSE)
+
+    pkg_dirs <- packages[basename(packages) %in% names(repos)]
 
     is_bioc <- .is_bioc_pkgs(pkg_dirs)
     pkg_dirs <- pkg_dirs[is_bioc]
 
     if (!length(pkg_dirs))
-        stop("No local folders in 'repos_dir' to update")
+        stop("No local folders in 'packages' or 'repos_dir' to update")
 
     mapply(
         FUN = update_local_repo,

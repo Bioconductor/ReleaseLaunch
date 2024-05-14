@@ -20,7 +20,7 @@ on the user's system."><!-- mathjax --><script src="https://cdnjs.cloudflare.com
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ReleaseLaunch</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.20</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.21</span>
       </span>
     </div>
 
@@ -74,6 +74,7 @@ on the user's system.</p>
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">update_local_repos</span><span class="op">(</span></span>
 <span>  <span class="va">repos_dir</span>,</span>
+<span>  <span class="va">packages</span>,</span>
 <span>  release <span class="op">=</span> <span class="fu"><a href="branch-release-gh.html">bioc_release_yaml</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  <span class="va">username</span>,</span>
 <span>  org <span class="op">=</span> <span class="va">username</span>,</span>
@@ -93,6 +94,11 @@ on the user's system.</p>
     <dl><dt>repos_dir</dt>
 <dd><p><code>character(1)</code> The base directory where all packages /
 repositories exist for the user</p></dd>
+
+
+<dt>packages</dt>
+<dd><p><code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code> An optional vector of package names that
+correspond to folders available locally.</p></dd>
 
 
 <dt>release</dt>
@@ -125,7 +131,29 @@ whose default branch should be updated</p></dd>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>    <span class="fu">update_local_repo</span><span class="op">(</span><span class="st">"~/bioc/AnnotationHub"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="co">## update multiple packages at a time</span></span></span>
+<span class="r-in"><span>    <span class="fu">update_local_repos</span><span class="op">(</span>repos_dir <span class="op">=</span> <span class="st">"~/bioc/"</span>, org <span class="op">=</span> <span class="st">"Bioconductor"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="fu">update_local_repos</span><span class="op">(</span></span></span>
+<span class="r-in"><span>        packages <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"~/bioc/AnnotationHub"</span>, <span class="st">"~/bioc/BiocGenerics"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>        org <span class="op">=</span> <span class="st">"Bioconductor"</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="fu">update_local_repos</span><span class="op">(</span></span></span>
+<span class="r-in"><span>        repos_dir <span class="op">=</span> <span class="st">"~/bioc/"</span>, packages <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AnnotationHub"</span>, <span class="st">"BiocGenerics"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>        org <span class="op">=</span> <span class="st">"Bioconductor"</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>    <span class="co">## update a single package</span></span></span>
+<span class="r-in"><span>    <span class="fu">update_local_repo</span><span class="op">(</span></span></span>
+<span class="r-in"><span>        <span class="st">"~/bioc/AnnotationHub"</span>,</span></span>
+<span class="r-in"><span>        release <span class="op">=</span> <span class="fu">get_bioc_release_yaml</span><span class="op">(</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>        org <span class="op">=</span> <span class="st">"Bioconductor"</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">setwd</a></span><span class="op">(</span><span class="st">"~/bioc/AnnotationHub"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="fu">update_local_repo</span><span class="op">(</span></span></span>
+<span class="r-in"><span>        <span class="st">"."</span>,</span></span>
+<span class="r-in"><span>        release <span class="op">=</span> <span class="fu">get_bioc_release_yaml</span><span class="op">(</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>        org <span class="op">=</span> <span class="st">"Bioconductor"</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>

@@ -221,8 +221,8 @@ packages_with_release_branch <- function(
 #' @import gert
 #'
 #' @examples
-#' bioc_release_yaml()
 #' if (interactive()) {
+#'     bioc_release_yaml()
 #'     add_gh_release_branch(
 #'       package_name = "BiocParallel",
 #'       release = "RELEASE_3_19"

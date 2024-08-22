@@ -4,7 +4,7 @@ Version: 0.99.22
 Encoding: UTF-8
 Authors@R: c(
     person("Marcel", "Ramos", role = c("aut", "cre"),
-           email = "marcel.ramosperez@roswellpark.org",
+           email = "marcel.ramos@sph.cuny.edu",
            comment = c(ORCID="0000-0002-3242-0582")),
     person("Lori", "Shepherd", role = "aut"),
     person("Hervé", "Pagès", role = "aut"),

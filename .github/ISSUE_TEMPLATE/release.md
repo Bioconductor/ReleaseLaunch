@@ -77,14 +77,14 @@ last release
 - [ ] Start setting up new devel builders and repositories.
 
 - [ ] Make sure that the R that runs as biocpush is current, has the
-most current biocViews and that 'knitcitations' is installed.
-
-Note about Simlinks to old devel:
-
-Until the next devel builds are running, we want symlinks pointing to the old
-devel builds so that the BiocManager package will work. This includes the
-software, data/annotation, and data/experiment repositories.  Remove these
-symlinks when the builds start running.
+  most current biocViews and that 'knitcitations' is installed.
+  
+  **Note**: Simlinks to old devel:
+  
+  Until the next devel builds are running, we want symlinks pointing to the old
+  devel builds so that the BiocManager package will work. This includes the
+  software, data/annotation, and data/experiment repositories.  Remove these
+  symlinks when the builds start running.
 
 - [ ] Add links to checkResults page for new devel builds
 
@@ -93,8 +93,8 @@ symlinks when the builds start running.
 - [ ] Think about chaning BiocManager and the /developers/howto/useDevel web
 page. Modify any R/BioC versions if necessary.
 
-- [ ] Update AMI and docker for the release being frozen, e.g., 3.5. Do this
-before we branch so r-release is still pointing at 3.5 instead of 3.6.
+- [ ] Update AMI and docker for the release being frozen. Do this
+before we branch so r-release is still pointing at release instead of devel.
 
 - [ ] Update NEWS files
 
@@ -106,12 +106,11 @@ before we branch so r-release is still pointing at 3.5 instead of 3.6.
 
 - [ ] Manifest file for the release branch
 
-Create the manifest file for the release branch, e.g., "RELEASE_3_6".
-Up to this point and until we branch tomorrow, both 3.6 and the new devel
-should be using the "master" manifest.
+  Create the manifest file for the release branch, e.g., "RELEASE_X_Y".
+  Up to this point and until we branch tomorrow, both 3.6 and the new devel
+  should be using the "master" manifest.
 
-
-## Notes
+**Notes**: 
 
 * Branch creation must be done after all packages have been added to the
 manifest.
@@ -157,7 +156,7 @@ in the release announcement. (biocViews:::getPackageNEWS.R()).
 Verify that there are no <NA>s in output. Collate package descriptions
 with biocViews:::getPackageDescriptions().
 
-# Release day
+## Release day
 
 - [ ] bioconductor.org/config.yaml
 
@@ -166,7 +165,7 @@ change values as indicated in the comments. This will (among other things),
 automatically update the website symlinks ("release" and "devel") under
 /packages.
   
-**NOTE**
+**Note**
 
 If there is no annotation branch, that line under 'devel_repos' must be
 commented out; if any of annotation, experiment data or software are not
@@ -258,9 +257,9 @@ Webstats updates:
       install.packages("BiocManager")
   ```
 
-- [ ]Finalize release announcement
+- [ ] Finalize release announcement
 
-  -- compare number of packages in announcement with manifest file
+  - [ ] Compare number of packages in announcement with manifest file
 
 - [ ] Once the build report posts and products are pushed to master confirm
 landing pages have updated versions
@@ -273,9 +272,9 @@ landing pages have updated versions
 
 - [ ] Go for a beer.
 
-# Post-release
+## Post-release
 
-## Week after the Release (D+):
+### Week after the Release (D+):
 
 - [ ] Confirm Archive/ folder is working for new release.
   The relevant script is BBS/utils/list.old.packages.R

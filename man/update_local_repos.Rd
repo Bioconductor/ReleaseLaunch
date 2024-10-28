@@ -7,7 +7,6 @@
 \usage{
 update_local_repos(
   repos_dir,
-  packages,
   release = bioc_release_yaml(),
   username,
   org = username,
@@ -25,9 +24,6 @@ update_local_repo(
 \item{repos_dir}{\code{character(1)} The base directory where all packages /
 repositories exist for the user}
 
-\item{packages}{\code{character()} An optional vector of package names that
-correspond to folders available locally.}
-
 \item{release}{\code{character(1)} The Bioconductor release version, as
 "RELASE_X_Y", to use for updating the local repositories. By default, the
 value of \code{bioc_release_yaml()}.}
@@ -43,6 +39,9 @@ by the local branch, either "origin/devel" (default) or "upstream/devel"}
 
 \item{repo_dir}{\code{character(1)} The full path to a single package / repository
 whose default branch should be updated}
+
+\item{packages}{\code{character()} An optional vector of package names that
+correspond to folders available locally.}
 }
 \description{
 These functions should be used after a Bioconductor Release. They ensure that

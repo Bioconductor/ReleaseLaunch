@@ -53,8 +53,8 @@ This function assumes that you have admin push access to the
 GitHub organization indicated by \code{org}.
 }
 \examples{
-bioc_release_yaml()
 if (interactive()) {
+    bioc_release_yaml()
     add_gh_release_branch(
       package_name = "BiocParallel",
       release = "RELEASE_3_19"

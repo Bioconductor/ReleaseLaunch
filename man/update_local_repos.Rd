@@ -52,26 +52,22 @@ on the user's system.
 \examples{
 if (interactive()) {
     ## update multiple packages at a time
-    update_local_repos(repos_dir = "~/bioc/", org = "Bioconductor")
     update_local_repos(
-        packages = c("~/bioc/AnnotationHub", "~/bioc/BiocGenerics"),
-        org = "Bioconductor"
-    )
-    update_local_repos(
-        repos_dir = "~/bioc/", packages = c("AnnotationHub", "BiocGenerics"),
-        org = "Bioconductor"
+        repos_dir = "~/bioc/",
+        org = "Bioconductor",
+        release = "RELEASE_3_20"
     )
 
     ## update a single package
     update_local_repo(
         "~/bioc/AnnotationHub",
-        release = get_bioc_release_yaml(),
+        release = bioc_release_yaml(),
         org = "Bioconductor"
     )
     setwd("~/bioc/AnnotationHub")
     update_local_repo(
         ".",
-        release = get_bioc_release_yaml(),
+        release = bioc_release_yaml(),
         org = "Bioconductor"
     )
 }

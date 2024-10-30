@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ReleaseLaunch</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.23</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.24</span>
       </span>
     </div>
 
@@ -85,7 +85,7 @@
                         <h4 data-toc-skip class="author">Bioconductor
 Maintainer</h4>
             
-            <h4 data-toc-skip class="date">October 28, 2024</h4>
+            <h4 data-toc-skip class="date">October 30, 2024</h4>
       
       
       <div class="hidden name"><code>Version-bump-and-branch-creation-HOWTO.Rmd</code></div>
@@ -569,15 +569,22 @@ with the latest version bump from a Bioconductor release, use the
 &gt; Settings &gt; Developer Settings &gt; PATs &gt; Fine-grained
 tokens.</p>
 <p>When generating a new token, select <code>Bioconductor</code> (or
-organization) as the resource owner, then ‘All repositories’ and under
-‘Repository permissions’ select ‘Contents’ &gt; ‘Read and Write’. If you
-are also modifying default branches, select ‘Read and Write’ under
-‘Administration’. It is recommended to use
-<code><a href="https://gitcreds.r-lib.org/reference/gitcreds_get.html" class="external-link">gitcreds::gitcreds_set()</a></code> to store the fine-grained PAT.</p>
-<p><strong>Note:</strong> Depending on the organization’s settings, R /
-Bioconductor packages hosted on GitHub may also be updated with a
-classic PAT. These commands only work if the user has admin access to
-the organization’s GitHub account.</p>
+organization) as the resource owner, then ‘All repositories’ under
+‘Repository access’. Finally, click on the <code>Generate token</code>
+green button. Use <code><a href="https://gitcreds.r-lib.org/reference/gitcreds_get.html" class="external-link">gitcreds::gitcreds_set()</a></code> to store the
+fine-grained PAT.</p>
+<hr>
+<p><strong>NOTES</strong></p>
+<ul>
+<li><p>If you are renaming branches, select ‘Read and Write’ under
+‘Contents’ in the ‘Repository permissions’ section.</p></li>
+<li><p>Depending on the organization’s settings, R / Bioconductor
+packages hosted on GitHub may also be updated with a classic
+PAT.</p></li>
+<li><p>These commands only work if the user has admin access to the
+organization’s GitHub account.</p></li>
+</ul>
+<hr>
 <p>To update all packages, run the following command:</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/branch-release-gh.html">add_gh_release_branches</a></span><span class="op">(</span>release <span class="op">=</span> <span class="st">"RELEASE_3_20"</span>, org <span class="op">=</span> <span class="st">"Bioconductor"</span><span class="op">)</span></span></code></pre></div>

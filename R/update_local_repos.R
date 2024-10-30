@@ -24,8 +24,9 @@
 #' @param set_upstream `character(1)` The remote location that will be tracked
 #'   by the local branch, either "origin/devel" (default) or "upstream/devel"
 #'
-#' @param use_biocparallel `logical(1)` Should the function use BiocParallel to
-#'   update multiple packages at once? Default is `FALSE`
+#' @param BPPARAM `BiocParallelParam` An optional `BiocParallelParam` instance
+#'   defining the parallel back-end to be used during evaluation. Default
+#'   `NULL`.
 #'
 #' @inheritParams get-github-repos
 #'
@@ -59,7 +60,7 @@ update_local_repos <- function(
     release = bioc_release_yaml(),
     username, org = username,
     set_upstream = "origin/devel",
-    use_biocparallel = FALSE
+    BPPARAM = NULL
 ) {
     stopifnot(
         isScalarCharacter(repos_dir) && dir.exists(repos_dir),
@@ -83,7 +84,7 @@ update_local_repos <- function(
     if (!length(pkg_dirs))
         stop("No local folders in 'packages' or 'repos_dir' to update")
 
-    if (requireNamespace("BiocParallel", quietly = TRUE) && use_biocparallel)
+    if (requireNamespace("BiocParallel", quietly = TRUE) && !is.null(BPPARAM))
         BiocParallel::bpmapply(
             FUN = update_local_repo,
             repo_dir = pkg_dirs,

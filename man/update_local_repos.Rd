@@ -11,7 +11,7 @@ update_local_repos(
   username,
   org = username,
   set_upstream = "origin/devel",
-  use_biocparallel = FALSE
+  BPPARAM = NULL
 )
 
 update_local_repo(
@@ -38,8 +38,9 @@ the repositories on GitHub (default "Bioconductor").}
 \item{set_upstream}{\code{character(1)} The remote location that will be tracked
 by the local branch, either "origin/devel" (default) or "upstream/devel"}
 
-\item{use_biocparallel}{\code{logical(1)} Should the function use BiocParallel to
-update multiple packages at once? Default is \code{FALSE}}
+\item{BPPARAM}{\code{BiocParallelParam} An optional \code{BiocParallelParam} instance
+defining the parallel back-end to be used during evaluation. Default
+\code{NULL}.}
 
 \item{repo_dir}{\code{character(1)} The full path to a single package / repository
 whose default branch should be updated}

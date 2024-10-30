@@ -24,6 +24,9 @@
 #' @param set_upstream `character(1)` The remote location that will be tracked
 #'   by the local branch, either "origin/devel" (default) or "upstream/devel"
 #'
+#' @param use_biocparallel `logical(1)` Should the function use BiocParallel to
+#'   update multiple packages at once? Default is `FALSE`
+#'
 #' @inheritParams get-github-repos
 #'
 #' @importFrom BiocBaseUtils isScalarCharacter
@@ -31,7 +34,6 @@
 #' @examples
 #' if (interactive()) {
 #'     ## update multiple packages at a time
-#'     update_local_repos(repos_dir = "~/bioc/", org = "Bioconductor")
 #'     update_local_repos(
 #'         repos_dir = "~/bioc/",
 #'         org = "Bioconductor",
@@ -56,7 +58,8 @@ update_local_repos <- function(
     repos_dir,
     release = bioc_release_yaml(),
     username, org = username,
-    set_upstream = "origin/devel"
+    set_upstream = "origin/devel",
+    use_biocparallel = FALSE
 ) {
     stopifnot(
         isScalarCharacter(repos_dir) && dir.exists(repos_dir),
@@ -80,16 +83,28 @@ update_local_repos <- function(
     if (!length(pkg_dirs))
         stop("No local folders in 'packages' or 'repos_dir' to update")
 
-    mapply(
-        FUN = update_local_repo,
-        repo_dir = pkg_dirs,
-        MoreArgs = list(
-            release = release,
-            set_upstream = set_upstream,
-            org = org
-        ),
-        SIMPLIFY = FALSE
-    )
+    if (requireNamespace("BiocParallel", quietly = TRUE) && use_biocparallel)
+        BiocParallel::bpmapply(
+            FUN = update_local_repo,
+            repo_dir = pkg_dirs,
+            MoreArgs = list(
+                release = release,
+                set_upstream = set_upstream,
+                org = org
+            ),
+            SIMPLIFY = FALSE,
+            BPPARAM = BPPARAM
+        )
+    else
+        mapply(
+            FUN = update_local_repo,
+            repo_dir = pkg_dirs,
+            MoreArgs = list(
+                release = release,
+                set_upstream = set_upstream,
+                org = org
+            )
+        )
 }
 
 #' @rdname update_local_repos

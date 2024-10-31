@@ -4,6 +4,7 @@
 \alias{branch-release-gh}
 \alias{add_gh_release_branch}
 \alias{add_gh_release_branches}
+\alias{bioc_version_yaml}
 \alias{bioc_release_yaml}
 \title{Add the release branch to GitHub package repositories}
 \usage{
@@ -21,6 +22,8 @@ add_gh_release_branches(
   bioc_branch = .BIOC_DEFAULT_BRANCH,
   org = "Bioconductor"
 )
+
+bioc_version_yaml(config = .BIOC_CONFIG_FILE)
 
 bioc_release_yaml(config = .BIOC_CONFIG_FILE)
 }

@@ -6,20 +6,25 @@
 \title{Generate the list of packages to be updated}
 \usage{
 packages_without_release_branch(
-  version = "3.16",
+  version = bioc_version_yaml(),
+  release = bioc_release_yaml(),
   org = "Bioconductor",
   type = c("BioCsoft", "BioCexp")
 )
 
 packages_with_release_branch(
-  version = "3.16",
+  version = bioc_version_yaml(),
+  release = bioc_release_yaml(),
   org = "Bioconductor",
   type = c("BioCsoft", "BioCexp")
 )
 }
 \arguments{
-\item{version}{\code{character(1)} The numeric version of the Bioconductor release,
-e.g., "3.16"}
+\item{version}{\code{character(1)} The numeric version (as character) of the
+Bioconductor release, e.g., "3.16".}
+
+\item{release}{\code{character(1)} The Bioconductor version branch tag, e.g.,
+"RELEASE_3_17"}
 
 \item{org}{\code{character(1)} The organization for which to extract the names of
 the repositories on GitHub (default "Bioconductor").}

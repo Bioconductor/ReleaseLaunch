@@ -156,9 +156,10 @@ get_org_packages <- function(version, org, type) {
 #' `RELEASE_X_Y` branch or that do, depending on the function called.
 #'
 #' @inheritParams get-github-repos
+#' @inheritParams branch-release-gh
 #'
-#' @param version `character(1)` The numeric version of the Bioconductor release,
-#'   e.g., "3.16"
+#' @param version `character(1)` The numeric version (as character) of the
+#'   Bioconductor release, e.g., "3.16".
 #'
 #' @param type `character()` The repository names to look through as returned by
 #'   `BiocManager::repositories()`. Currently, only software and experiment data
@@ -173,12 +174,14 @@ get_org_packages <- function(version, org, type) {
 #' }
 #' @export
 packages_without_release_branch <- function(
-    version = "3.16", org = "Bioconductor", type = c("BioCsoft", "BioCexp")
+    version = bioc_version_yaml(),
+    release = bioc_release_yaml(),
+    org = "Bioconductor",
+    type = c("BioCsoft", "BioCexp")
 ) {
-    release_tag <- .version_to_tag(version)
     candidates <- get_org_packages(version = version, org = org, type = type)
     .filter_gh_repos_branch(
-        candidates, release_tag, owner = org, without = TRUE
+        candidates, release, owner = org, without = TRUE
     )
 }
 
@@ -186,12 +189,14 @@ packages_without_release_branch <- function(
 #'
 #' @export
 packages_with_release_branch <- function(
-    version = "3.16", org = "Bioconductor", type = c("BioCsoft", "BioCexp")
+    version = bioc_version_yaml(),
+    release = bioc_release_yaml(),
+    org = "Bioconductor",
+    type = c("BioCsoft", "BioCexp")
 ) {
-    release_tag <- .version_to_tag(version)
     candidates <- get_org_packages(version = version, org = org, type = type)
     .filter_gh_repos_branch(
-        candidates, release_tag, owner = org, without = FALSE
+        candidates, release, owner = org, without = FALSE
     )
 }
 
@@ -319,6 +324,16 @@ add_gh_release_branches <- function(
     )
 }
 
+.config_yaml <- local({
+    ## a little more responsive -- read the config file once per session
+    yaml <- NULL
+    function(config = .BIOC_CONFIG_FILE) {
+        if (is.null(yaml))
+            yaml <<- yaml::read_yaml(file = config)
+        yaml
+    }
+})
+
 #' @rdname branch-release-gh
 #'
 #' @param config `character(1)` The path to the Bioconductor configuration file
@@ -326,8 +341,15 @@ add_gh_release_branches <- function(
 #'   `.BIOC_CONFIG_FILE`)
 #'
 #' @export
+bioc_version_yaml <- function(config = .BIOC_CONFIG_FILE) {
+    conf <- .config_yaml(config)
+    conf[["release_version"]]
+}
+
+#' @rdname branch-release-gh
+#'
+#' @export
 bioc_release_yaml <- function(config = .BIOC_CONFIG_FILE) {
-    conf <- yaml::read_yaml(config)
-    relver <- conf[["release_version"]]
+    relver <- bioc_version_yaml(config = config)
     .version_to_tag(relver)
 }

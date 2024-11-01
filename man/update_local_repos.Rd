@@ -11,6 +11,7 @@ update_local_repos(
   username,
   org = username,
   set_upstream = "origin/devel",
+  restart_from = character(0L),
   BPPARAM = NULL
 )
 
@@ -38,6 +39,11 @@ the repositories on GitHub (default "Bioconductor").}
 \item{set_upstream}{\code{character(1)} The remote location that will be tracked
 by the local branch, either "origin/devel" (default) or "upstream/devel"}
 
+\item{restart_from}{\code{character(1)} The name of a package found in \code{repos_dir}
+that should be used as the starting point for updating the local repos in
+case that the process was interrupted due to merge conflicts etc. Default
+\code{character(0L)}.}
+
 \item{BPPARAM}{\code{BiocParallelParam} An optional \code{BiocParallelParam} instance
 defining the parallel back-end to be used during evaluation. Default
 \code{NULL}.}
@@ -56,6 +62,8 @@ on the user's system.
 }
 \examples{
 if (interactive()) {
+    ## add PAT credentials
+    gitcreds::gitcreds_set()
     ## update multiple packages at a time
     update_local_repos(
         repos_dir = "~/bioc/",

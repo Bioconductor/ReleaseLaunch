@@ -24,6 +24,11 @@
 #' @param set_upstream `character(1)` The remote location that will be tracked
 #'   by the local branch, either "origin/devel" (default) or "upstream/devel"
 #'
+#' @param restart_from `character(1)` The name of a package found in `repos_dir`
+#'   that should be used as the starting point for updating the local repos in
+#'   case that the process was interrupted due to merge conflicts etc. Default
+#'   `character(0L)`.
+#'
 #' @param BPPARAM `BiocParallelParam` An optional `BiocParallelParam` instance
 #'   defining the parallel back-end to be used during evaluation. Default
 #'   `NULL`.
@@ -34,6 +39,8 @@
 #'
 #' @examples
 #' if (interactive()) {
+#'     ## add PAT credentials
+#'     gitcreds::gitcreds_set()
 #'     ## update multiple packages at a time
 #'     update_local_repos(
 #'         repos_dir = "~/bioc/",
@@ -60,6 +67,7 @@ update_local_repos <- function(
     release = bioc_release_yaml(),
     username, org = username,
     set_upstream = "origin/devel",
+    restart_from = character(0L),
     BPPARAM = NULL
 ) {
     stopifnot(
@@ -75,6 +83,13 @@ update_local_repos <- function(
         repos <- get_user_github_repos(username = username)
 
     packages <- list.dirs(repos_dir, recursive = FALSE)
+
+    if (isScalarCharacter(restart_from)) {
+        indx <- which(basename(packages) == restart_from)
+        if (!length(indx))
+            stop("Package '", restart_from, "' not found in 'repos_dir'")
+        packages <- packages[indx:length(packages)]
+    }
 
     pkg_dirs <- packages[basename(packages) %in% names(repos)]
 

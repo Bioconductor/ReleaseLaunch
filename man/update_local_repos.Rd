@@ -58,7 +58,9 @@ correspond to folders available locally.}
 These functions should be used after a Bioconductor Release. They ensure that
 the local repositories are in sync with Bioconductor. For convenience, the
 singular \code{update_local_repo} function will update a single local repository
-on the user's system.
+on the user's system. The function checks repositories against the
+\code{available.packages()} in the Bioconductor owned
+\code{BiocManager::repositories()}.
 }
 \details{
 The \code{update_local_repos} function will update all local repositories

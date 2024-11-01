@@ -3,7 +3,9 @@
 #' These functions should be used after a Bioconductor Release. They ensure that
 #' the local repositories are in sync with Bioconductor. For convenience, the
 #' singular `update_local_repo` function will update a single local repository
-#' on the user's system.
+#' on the user's system. The function checks repositories against the
+#' `available.packages()` in the Bioconductor owned
+#' `BiocManager::repositories()`.
 #'
 #' @details The `update_local_repos` function will update all local repositories
 #'   in the `repos_dir` directory that are found in either the users or

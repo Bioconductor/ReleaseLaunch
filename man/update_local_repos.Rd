@@ -60,6 +60,16 @@ the local repositories are in sync with Bioconductor. For convenience, the
 singular \code{update_local_repo} function will update a single local repository
 on the user's system.
 }
+\details{
+The \code{update_local_repos} function will update all local repositories
+in the \code{repos_dir} directory that are found in either the users or
+organization's GitHub repository. The function syncs the \code{devel} and
+current release branches from both the \code{origin} (GH) and \code{upstream}
+(Bioconductor) remotes. If a \code{upstream} remote is not set, the function
+will set it to the Bioconductor git server. Finally, the function sets
+\code{origin/devel} as the remote branch to track with the \code{set_upstream}
+argument.
+}
 \examples{
 if (interactive()) {
     ## add PAT credentials

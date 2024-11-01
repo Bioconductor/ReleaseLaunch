@@ -5,6 +5,15 @@
 #' singular `update_local_repo` function will update a single local repository
 #' on the user's system.
 #'
+#' @details The `update_local_repos` function will update all local repositories
+#'   in the `repos_dir` directory that are found in either the users or
+#'   organization's GitHub repository. The function syncs the `devel` and
+#'   current release branches from both the `origin` (GH) and `upstream`
+#'   (Bioconductor) remotes. If a `upstream` remote is not set, the function
+#'   will set it to the Bioconductor git server. Finally, the function sets
+#'   `origin/devel` as the remote branch to track with the `set_upstream`
+#'   argument.
+#'
 #' @param repos_dir `character(1)` The base directory where all packages /
 #'   repositories exist for the user
 #'

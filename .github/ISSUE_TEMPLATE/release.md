@@ -9,50 +9,59 @@ assignees: ''
 Some important operations that need to happen before a BioC release,
 in _this_ order
 
-## Six weeks before
+## 6-8 weeks before
 
-- [ ] Start building annotations (update R on the annotation EC2 instance)
+- [ ] Draft and Announce Release Schedule
 
-- [ ] Update AnnotationForge and GenomeInfoDbData data files in preparation for
-nonstandard orgdb generation
+- [ ] Announce new package submission deadline and last day to pass submission process
 
-- [ ] db0 packages posted to the devel repo
+- [ ] Start building annotations (db0, orgDb, TxDb) and announce when available
+  in devel
 
-- [ ] Draft release schedule.
+- [ ] Update AnnotationForge and inst/exdata/viableIds.rda (needed for hub
+  nonstandard org generation)
 
-- [ ] Divide package ranges
-
-- [ ] Start contacting maintainers about errors including bad NEWS files
-
-- [ ] Create slack channel on dev-team slack
-
-- [ ] Announce new package submission deadline
-
-- [ ] Announce release schedule
-
-- [ ] OrgDb and TxDb packages posted to the devel repo
-
-- [ ] After OrgDb and TxDb are in devel repo, add to annotationhub
-
-## Four weeks before
-
-- [ ] Announce deprecated / defunct packages
-
-- [ ] Announce contributed annotation deadline
+- [ ] Update GenomeInfoDbData data/specData.rda (needed for hub
+  nonstandard org generation)
 
 - [ ] Update GenmeInfoDb mapping table between UCSC and ensembl
 
+- [ ] Identify and warn people with bad NEWS files
+
+- [ ] Warn people of package ERRORs/Deprecation
+
+- [ ] Consider more frequent devel BBS auto notifications
+
+- [ ] Send reminder that contributed annotations are due by api feature freeze
+  date and absolute latest new package submission process deadline
+
+- [ ] After OrgDb and TxDb are in devel repo, add to annotationhub
+
+- [ ] Add NonStandard OrgDbs to AnnotationHub
+
+- [ ] Announce new package submission deadline has been reached
+
+
+## 4-5 weeks before
+
+- [ ] Announce to community a reminder for packages to pass build/check without
+  error, devel feature freeze, and current release freeze 
+
 ## Three weeks before
 
-- [ ] The day before we stop the release builds, update remove-packages.md in
-the current release, e.g., 3.5.
+- [ ] Announce deprecated packages
 
-- [ ] Deadline for new package submissions
+- [ ] Announce feature api freeze and remind about release freeze
 
-## Two weeks before
+## 2 weeks before
 
-- [ ] Disable commits to old release branch. See
-scripts/sedCommandsForVariousTasks.txt
+- [ ] Announce last build of Bioc release and repo is frozen.
+
+- [ ] Update remove-packages.md on website
+
+- [ ] Update packages.conf in gito-lite for removed packages
+
+- [ ] Disable commits to old release branch. See scripts/sedCommandsForVariousTasks.txt
 
 - [ ] After the last build report for old relase is online, stop the old
 release builds.
@@ -60,21 +69,28 @@ release builds.
 - [ ] Update <https://bioconductor.org/checkResults/> by moving the old release
 to the top of the "Archived results for past release" section.
 
-- [ ] Feature freeze for the to-be-release version. No API changes, no new
-  packages added to the roster.
+- [ ] Create the manifest files for new devel and remove the deprecated packages
+BEFORE the first build. (reminder any newly accepted packages need to get added
+to both manifests)
 
-- [ ] All contributed annotation packages added to the to-be-release repo.
+- [ ] Ensure to-be-release machine uses new RELEASE_X_Y manifest
+
+* As part of the bump and branch process, the
+`BBS_BIOC_MANIFEST_GIT_BRANCH` variable on the release builder will be modified
+to point to the correct manifest. This variable is defined in the `config.sh`
+and `config.bat` files located in the `~biocbuild/BBS/3.6/bioc/` and
+`~biocbuild/BBS/3.6/data-experiment/` folders. For now, packages must still be
+built off their devel branch so do **NOT** touch the `BBS_BIOC_GIT_BRANCH`
+variable!
 
 - [ ] Install latest biocViews on biocpush account on to-be-release master
-builder.
+builder. 
 
-- [ ] Create the manifest files for new devel and remove the deprecated packages
-BEFORE the first build.
+- [ ] Flush to-be-release repo
 
-- [ ] Remove packages from package.conf that have been defunct and removed from
-last release
-
-- [ ] Start setting up new devel builders and repositories.
+- [ ] Start setting up new devel builders and repositories. coordinate that
+  manifest has been updated to have deprecated packages removed before devel
+  builders start propagting any products.
 
 - [ ] Make sure that the R that runs as biocpush is current, has the
   most current biocViews and that 'knitcitations' is installed.
@@ -90,39 +106,34 @@ last release
 
 - [ ] Confirm build report for new devel builds is intact
 
-- [ ] Think about chaning BiocManager and the /developers/howto/useDevel web
-page. Modify any R/BioC versions if necessary.
-
-- [ ] Update AMI and docker for the release being frozen. Do this
-before we branch so r-release is still pointing at release instead of devel.
-
 - [ ] Update NEWS files
 
-## One week before
+- [ ] Announce release candidate no large changes to repos
 
-- [ ] Packages and workflows clean of errors and warnings
+## 1 week before
+
+- [ ] Remind community of upcoming deadlines of last day to commit changes and freeze
+  before branching. If NEWS is not updated it will not be included in release
+  announcement
+
+- [ ] Reminder last day for packages to pass build/check
+
+- [ ] Last Day for new packages to be added to the release manifest
+
+- [ ] Identify and fix packages with bad DESCRIPTION
+
+- [ ] Identify and fix packages with easily fixable bad NEWS 
+
+- [ ] Update BBS doc for version bump and branch to reflect new RELEASE_X_Y in
+  the document.
+
+- [ ] Refer to document to find out more preliminary steps (e.g set up account
+  on builders for bump and branch)
+
 
 ## Day before we branch (D-2):
 
-- [ ] Manifest file for the release branch
-
-  Create the manifest file for the release branch, e.g., "RELEASE_X_Y".
-  Up to this point and until we branch tomorrow, both 3.6 and the new devel
-  should be using the "master" manifest.
-
-**Notes**: 
-
-* Branch creation must be done after all packages have been added to the
-manifest.
-
-* As part of the bump and branch process tomorrow, the
-`BBS_BIOC_MANIFEST_GIT_BRANCH` variable on the release builder will be modified
-to point to the correct manifest. This variable is defined in the `config.sh`
-and `config.bat` files located in the `~biocbuild/BBS/3.6/bioc/` and
-`~biocbuild/BBS/3.6/data-experiment/` folders. For now, packages must still be
-built off their devel branch so do **NOT** touch the `BBS_BIOC_GIT_BRANCH`
-variable!
-
+- [ ] Announce last day to commit changes before branching
 
 ## Day we branch (D-1):
 
@@ -130,33 +141,47 @@ variable!
 further notice so we can create the devel branches (software and data
 experiment). The bump and branch took about 2 hours.
 
+- [ ] Add bump and branch executers to admin group on gitolite.conf
+
+- [ ] Block commits using gitolite/admin/conf/gitlite.conf. (see
+  scripts/sedCommandsForVariousTasks.txt)
+ 
+- [ ] Disable hooks to allow bump and branch (see
+  scripts/sedCommandsForVariousTasks.txt)
+  
 - [ ] Bump versions and create BioC release branch
 https://github.com/Bioconductor/ReleaseLaunch/blob/devel/vignettes/Version-bump-and-branch-creation-HOWTO.Rmd
+
+- [ ] Modify BBS_BIOC_GIT_BRANCH to point the 3.21 builds (software, data
+  experiment, workflows, and books) to the RELEASE_3_21 branch in git.
 
 - [ ] Confirm MEAT0 is pointed at the correct manifest for the release and devel
 branches.
 
 - [ ] Update gitolite authorization files to give maintainers R/W
-access to their package in the new branch. see scripts/sedCommandsForVariousTasks.txt
+access to their package in the new branch. see
+scripts/sedCommandsForVariousTasks.txt)
 
 - [ ] Confirm new branch can be checkout from a location other than
   the machine used to create the branch (i.e., your local system).
 
-- [ ] Announce the creation of the 3.6 branch and that commits can
-  resume. Clarify the difference between the new branch and master.
+- [ ] Announce the creation of the new branch and that commits can
+  resume. Clarify the difference between the new branch and devel.
 
-- [ ] Confirm defunct packages have been removed from the 3.7 manifest.
+- [ ] Confirm defunct packages have been removed from manifest.
 
 - [ ] BiocManager: Update R version dependency in devel version of BiocVersion.
 
 - [ ] Run the builds ...
 
-- [ ] Run a script to generate recent NEWS for all packages, to be included
-in the release announcement. (biocViews:::getPackageNEWS.R()).
-Verify that there are no <NA>s in output. Collate package descriptions
-with biocViews:::getPackageDescriptions().
+- [ ] Sync bioc github packages with git.bioconductor.org
+
+- [ ] Send email to mirrors to adjust their rsyncs within 2 weeks when we will
+  move to archive on OSN
 
 ## Release day
+
+- [ ] Start generating release announcement 
 
 - [ ] bioconductor.org/config.yaml
 
@@ -219,6 +244,8 @@ It couldn't hurt to restart the Apache server:
       rsync -zrtlv --delete master.bioconductor.org::release/bioc . 
   ```
 
+- [ ] Enable archiving in Apache config
+
 - [ ] Update checkResults page and symlinks ("release" and "devel") under
   checkResults/.
 
@@ -244,10 +271,6 @@ Website updates:
   where XX is the new devel version (one higher than the version)
   that was just released.  (on master)
 
-- [ ] Update http://bioconductor.org/install/ for BiocManager
-
-Webstats updates:
-
 - [ ] `BiocManager::install()` sanity check
 
   Was BiocManager installed / updated properly? With a fresh R devel and
@@ -257,16 +280,16 @@ Webstats updates:
       install.packages("BiocManager")
   ```
 
+- [ ] Once builds post and products are pushed to master, check new landing
+  pages for updated versions
+
+- [ ] Compare number of packages in announcement with manifest file
+
 - [ ] Finalize release announcement
-
-  - [ ] Compare number of packages in announcement with manifest file
-
-- [ ] Once the build report posts and products are pushed to master confirm
-landing pages have updated versions
 
 - [ ] Announce the release
 
-- [ ] Tweet a link to the release announcement
+- [ ] Social media posts with link to the release announcement
 
 - [ ] Update Wikipedia page for Bioconductor
 
@@ -289,28 +312,15 @@ landing pages have updated versions
   remove odd numbered y of x.y.z version left over from being devel and
   highlight packages that are erroring in release.
 
-- [ ] Build dockers for new release and devel
+- [ ] Branch Annotations and put backup into S3 bucket
+
+- [ ] Build dockers for new release and devel for Bioc and AnVIL
 
 - [ ] Update SPB and clean sqlite file
 
 - [ ] ID packages for deprecation
 
-- [ ] Update static data in Bioconductor packages GenomeInfoDB and UniProt.ws
-  Update GenomeInfoDB/inst/extdata/dataFiles/genomeMappingTbl.csv mapping table
-  for any new ensembl or UCSC entries.
-  * https://genome.ucsc.edu/FAQ/FAQreleases.html
-  * http://useast.ensembl.org/info/website/archives/assembly.html
-  Update UniProt.ws/inst/extdata/  keytypes.txt and speclist.txt
-  Will need to checkout github branch remove_static_files branch for code to
-  generate these files (in  R/ code).
-
-- [ ] Reach out to packages with malformated NEWS files for correction
-
-- [ ] Update Bioconductor GitHub repositories
-
-- [ ] Push packages with "core-package tag from git.bioconductor.org to github.
-  Check if any packages have commits to just github (not sure how to fix?). If
-  all looks ok, sync from git.bioconductor.org to github.
+- [ ] Follow up on Hub submissions to ensure packages submitted/accepted
 
 - [ ] Move legacy release build products off master and into AWS/OSN. Only
 active release and devel on master

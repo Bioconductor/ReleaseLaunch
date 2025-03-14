@@ -52,4 +52,5 @@ clone_repo <- function(
     } else {
         gert::git_clone(bioc_slug)
     }
+    git_branch_set_upstream(set_upstream)
 }

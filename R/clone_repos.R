@@ -41,16 +41,19 @@ clone_repo <- function(
     org,
     set_upstream = "origin/devel"
 ) {
-    dest_dir <- file.path(dest_dir, package)
+    repo_dir <- file.path(normalizePath(dest_dir), package)
+    if (dir.exists(repo_dir))
+        return(repo_dir)
     bioc_slug <- .get_bioc_slug(package)
     gh_slug <- .get_gh_slug(org = org, package_name = package)
     if (.repo_exists(pkg = package, org = org)) {
-        gert::git_clone(gh_slug, path = dest_dir)
-        old <- setwd(dest_dir)
+        gert::git_clone(gh_slug, path = repo_dir)
+        old <- setwd(repo_dir)
         on.exit(setwd(old))
         gert::git_remote_add(bioc_slug, name = "upstream")
     } else {
-        gert::git_clone(bioc_slug)
+        gert::git_clone(bioc_slug, path = repo_dir)
     }
     git_branch_set_upstream(set_upstream)
+    repo_dir
 }

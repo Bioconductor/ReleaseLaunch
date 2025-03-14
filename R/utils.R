@@ -71,3 +71,16 @@
     bioc_pkgs <- rownames(bioc_avail)
     basename(pkg_dirs) %in% bioc_pkgs
 }
+
+.repo_exists <- function(pkg, org) {
+    repo_info <- tryCatch({
+        gh::gh(
+            endpoint = "/repos/{owner}/{repo}",
+            owner = org,
+            repo = pkg
+        )
+    }, error = function(e) {
+        list(name = NULL)
+    })
+    !is.null(repo_info[["name"]])
+}

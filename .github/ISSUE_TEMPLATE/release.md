@@ -24,7 +24,9 @@ in _this_ order
 - [ ] Update GenomeInfoDbData data/specData.rda (needed for hub
   nonstandard org generation)
 
-- [ ] Update GenmeInfoDb mapping table between UCSC and ensembl
+- [ ] Update GenomeInfoDb mapping table between UCSC and ensembl
+      http://useast.ensembl.org/info/website/archives/assembly.html
+      
 
 - [ ] Identify and warn people with bad NEWS files
 

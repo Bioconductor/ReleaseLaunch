@@ -144,13 +144,13 @@ update_local_repo <- function(
     on.exit({ setwd(old_wd) })
 
     package <- basename(normalizePath(repo_dir))
-    gh_slug <- .get_gh_slug(org = org, package_name = package)
+    gh_slug <- .gh_slug(org = org, package_name = package)
     message("Working on: ", repo_dir)
     git_branch_checkout("devel")
     if (!.is_origin_github(gh_slug = gh_slug))
         stop("'origin' remote should be set to GitHub")
     if (!.has_bioc_upstream()) {
-        bioc_slug <- .get_bioc_slug(package)
+        bioc_slug <- .bioc_slug(package)
         git_remote_add(bioc_slug, name = "upstream")
     }
     git_pull(remote = "origin", refspec = "devel")

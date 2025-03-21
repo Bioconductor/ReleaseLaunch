@@ -56,7 +56,7 @@ add_bioc_remote <- function(repo = ".") {
 .remote_add_bioc_up <- function(package, bioc_slug) {
     ## add upstream to Bioc
     if (missing(bioc_slug))
-        bioc_slug <- .get_bioc_slug(package)
+        bioc_slug <- .bioc_slug(package)
 
     git_remote_add(bioc_slug, "upstream")
 }
@@ -71,8 +71,8 @@ set_bioc_remotes <- function(repo = ".", org = "Bioconductor") {
     on.exit({ setwd(old_wd) })
 
     package <- basename(normalizePath(repo))
-    gh_slug <- .get_gh_slug(org, package)
-    bioc_slug <- .get_bioc_slug(package)
+    gh_slug <- .gh_slug(org, package)
+    bioc_slug <- .bioc_slug(package)
     remotes <- git_remote_list()
     if (!.is_origin_github(remotes, gh_slug))
         git_remote_set_url(gh_slug, remote = "origin")

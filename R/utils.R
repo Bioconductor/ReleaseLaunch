@@ -21,11 +21,11 @@
     grepl(gh_slug, git_url, ignore.case = TRUE)
 }
 
-.get_bioc_slug <- function(package_name) {
+.bioc_slug <- function(package_name) {
     paste0(.BIOC_GIT_ADDRESS, ":packages/", package_name)
 }
 
-.get_gh_slug <- function(org = "Bioconductor", package_name) {
+.gh_slug <- function(org = "Bioconductor", package_name) {
     paste0(.GITHUB_SSH_ADDRESS, ":", org, "/", package_name)
 }
 

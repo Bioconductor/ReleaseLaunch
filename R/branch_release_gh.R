@@ -246,7 +246,7 @@ add_gh_release_branch <- function(
 ) {
     message("Working on: ", package_name)
     ## git clone git@github.com:Bioconductor/ShortRead.git
-    org_gh_slug <- .get_gh_slug(org, package_name)
+    org_gh_slug <- .gh_slug(org, package_name)
     if (!dir.exists(package_name))
         git_clone(org_gh_slug)
     ## cd to package dir
@@ -259,7 +259,7 @@ add_gh_release_branch <- function(
     if (!identical(cbranch, gh_branch))
         git_branch_checkout(gh_branch)
     git_pull("origin")
-    bioc_git_slug <- .get_bioc_slug(package_name)
+    bioc_git_slug <- .bioc_slug(package_name)
     ## git remote add upstream git@git.bioconductor.org:packages/<pkg>.git
     if (!.remote_exists(remotes, "upstream"))
         git_remote_add(bioc_git_slug, name = "upstream")

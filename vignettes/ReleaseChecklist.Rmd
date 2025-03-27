@@ -102,7 +102,7 @@ in _this_ order
 
 - Disable commits to old release branch. see scripts/sedCommandsForVariousTasks.txt
 
-- After the last build report for old relase is online, stop the old release builds.
+- After the last build report for old release is online, stop the old release builds.
 
 ::: {.infobox data-latex=""}
 

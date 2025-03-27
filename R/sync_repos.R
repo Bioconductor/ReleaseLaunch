@@ -1,3 +1,8 @@
+#' Synchronize git repositories from Bioconductor
+#'
+#' @description Either clone or update a list of git repositories (`packages`)
+#' by name at the desired destination folder (`dest_dir`).
+#'
 #' @importFrom BiocReporting account_repositories
 #'
 #' @examples

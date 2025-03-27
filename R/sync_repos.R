@@ -1,4 +1,4 @@
-#' Synchronize git repositories from Bioconductor
+#' @title Synchronize git repositories from Bioconductor
 #'
 #' @description Either clone or update a list of git repositories (`packages`)
 #' by name at the desired destination folder (`dest_dir`).
@@ -92,8 +92,8 @@ sync_repo <- function(
 
     ## actually sync
     system2("git", c("fetch", "--all"))
-    gert::git_pull("upstream", refspec = "devel")
-    system2("git", c("branch -u", set_upstream))
+    system2("git", c("pull", "upstream", "devel"))
+    system2("git", c("branch", "-u", set_upstream))
 
     repo_dir
 }
@@ -107,9 +107,9 @@ clone_repo <- function(package, dest_dir, org, gh_exists) {
         .git_remote_rename("origin", "upstream")
     } else {
         gh_slug <- .gh_slug(org = org, package_name = package)
-        gert::git_clone(gh_slug, path = repo_dir)
-        old <- setwd(repo_dir)
-        gert::git_remote_add(bioc_slug, name = "upstream")
+        old <- setwd(dest_dir)
+        system2("git", c("clone", gh_slug))
+        system2("git", c("remote", "add", "upstream", bioc_slug))
     }
     on.exit(setwd(old))
     TRUE

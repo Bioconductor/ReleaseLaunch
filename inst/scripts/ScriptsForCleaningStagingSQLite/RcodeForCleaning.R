@@ -57,7 +57,8 @@ if(pkg %in% pkgTbl$name){
 pkgs=c("spbtest", "spbtest2", "164", "51")
 lapply(pkgs, FUN=delete_fun, con=con)
 
-pkgs = as.character(read.table("sqDel3.txt")[,1])
+#pkgs = as.character(read.table("sqDel3.txt")[,1])
+pkgs = read.table("sqDel.txt")[,1]
 lapply(pkgs, FUN=delete_fun, con=con)
 
 # some other manuals
@@ -72,13 +73,21 @@ dbDisconnect(con)
 
 
 
-pkgs = c("AltStats","basejump","BentoBox","BentoBoxData", "bioAnno",
-    "CTDPathSim", "cytofkit2", "DA","Dapar2","denyranges", "DOSeq",
-    "drawCell", "drugseqr.data","EPIExPRS", "EpiXprSData", "ESCO",
-    "factR", "FEDUP", "GReNA", "HNSCgenomicInstability", "inferrnal",
-    "kataegis", "MetaGSCA", "methylXprs", "miRDriver", "mutSigMapper",
-    "NUMTDetect", "OSCA.basic","OSCA.intro", "OSCA.multisample", "palmtree",
-    "PeCorA", "proactivWorkflow", "PsiNorm", "RIC", "rkal", "RoDiCE", "RPF",
-    "RTDetect", "sars2pack", "scClassifR", "scTypeR", "SegmentedCellExperiment", 
-    "SingleCellClassR","SparseDOSSA2", "WhistleR")
+pkgs = c("acorn", "APAlog", "ATACCoGAPS", "benchmark.data.scRNAseq",
+         "best.friends", "BiocDeveloper ", "biocmask", "BiocUtils",
+         "biodbExpasy", "biodbMirbase", "CAM3", "Cara1.0", "ceRNAR",
+         "chihaya-R", "ChromENVEE", "cleanse", "CytoTalk", "deepCE", "DEPTH",
+         "distSTRING", "DMEA", "DunedinPACE", "edgeCounter", "FEVV", "funomics",
+         "Genefusiondiscover", "GenomicInteractionHub", "ggtranscript",
+         "GRETTA", "HiTIMED", "iDA", "InSituType", "IntOMICS ", "Lheuristic",
+         "LINEAGE", "LipidSigR", "MACARRoN", "Magellan", "MarZIC",
+         "massconverter", "masstools", "mbOmic", "mhAnalysis", "MicroBioMap",
+         "mnmer", "MobilityTransformR", "mulea", "NanoStringExperiment ",
+         "OptiLCMS", "peakCombiner", "Pedigree", "poplin", "proteasy",
+         "protlocassign", "protlocassigndoc", "prozor", "rd4",
+         "RegionPropertiesFeatures", "RGraphSpace", "Rhisat", "SC.MEB",
+         "scDesign3Workflow", "sciCNV", "SCIntRuler", "SignacSlim",
+         "SparseSignaturesPlus", "spbtest3", "ssde", "surf", "SVseek",
+         "TimeSeriesAnalysis", "tinytools", "Totem", "TSSr", "turboGliph",
+         "VSOLassoBag", "Yeskit") 
 lapply(pkgs, FUN=delete_fun, con=con)

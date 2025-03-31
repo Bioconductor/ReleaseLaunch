@@ -9,7 +9,7 @@
 require 'octokit'
 
 Octokit::Repository.new("Bioconductor/Contributions")
-Octokit.branch("Bioconductor/Contributions", "master")
+Octokit.branch("Bioconductor/Contributions", "devel")
 
 Octokit.contents "Bioconductor/Contributions"
 
@@ -48,3 +48,19 @@ closed_issues = Octokit.list_issues(repository="Bioconductor/Contributions",
                                       state: 'closed',
                                       per_page: 100)
 
+
+pkg_list = []
+
+accepted_issues.each{ |x|
+  num = x[:number]
+  comment = Octokit.issue_comments(repository="Bioconductor/Contributions",
+                                 number=num, per_page: 2)
+  description_text = comment[0][:body]
+  pkg = description_text.match("Package:\s*(?<pkg>[a-zA-Z_0-9\.]*)")['pkg']
+  pkg_list.push(pkg)
+}
+
+File.open("pkgs_to_delete.txt", "w+") do |f|
+  f.puts(pkg_list)
+#  pkg_list.each { |element| f.puts(element) }
+end

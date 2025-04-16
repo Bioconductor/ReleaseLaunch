@@ -34,13 +34,13 @@
     <loc>https://github.com/Bioconductor/ReleaseLaunch/reference/extractNEWS.html</loc>
   </url>
   <url>
+    <loc>https://github.com/Bioconductor/ReleaseLaunch/reference/get-bioc-packages.html</loc>
+  </url>
+  <url>
     <loc>https://github.com/Bioconductor/ReleaseLaunch/reference/get-github-repos.html</loc>
   </url>
   <url>
     <loc>https://github.com/Bioconductor/ReleaseLaunch/reference/getPackagesNEWS.html</loc>
-  </url>
-  <url>
-    <loc>https://github.com/Bioconductor/ReleaseLaunch/reference/get_bioc_software_manifest.html</loc>
   </url>
   <url>
     <loc>https://github.com/Bioconductor/ReleaseLaunch/reference/index.html</loc>

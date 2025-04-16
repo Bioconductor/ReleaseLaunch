@@ -19,7 +19,7 @@ RELEASE_X_Y branch or that do, depending on the function called."><!-- mathjax -
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ReleaseLaunch</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.28</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.29</span>
       </span>
     </div>
 
@@ -119,7 +119,9 @@ a Bioconductor GitHub repository</p>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>    <span class="fu">packages_without_release_branch</span><span class="op">(</span>version <span class="op">=</span> <span class="st">"3.19"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="fu">packages_without_release_branch</span><span class="op">(</span></span></span>
+<span class="r-in"><span>        version <span class="op">=</span> <span class="fu"><a href="branch-release-gh.html">bioc_version_yaml</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>

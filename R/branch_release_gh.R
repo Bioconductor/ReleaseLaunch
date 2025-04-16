@@ -344,7 +344,7 @@ add_gh_release_branches <- function(
     if (is.null(names(packages)))
         stop("'packages' must have names")
     .add_gh_release_branches(
-        packages,
+        packages = packages,
         release = release,
         bioc_branch = bioc_branch,
         org = org

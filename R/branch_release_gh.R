@@ -307,10 +307,12 @@ add_gh_release_branch <- function(
     Map(
         add_gh_release_branch,
         package_name = names(packages),
-        release = release,
         gh_branch = packages,
-        bioc_branch = bioc_branch,
-        org = org
+        MoreArgs = list(
+            release = release,
+            bioc_branch = bioc_branch,
+            org = org
+        )
     )
 }
 

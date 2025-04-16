@@ -74,11 +74,9 @@ get_org_github_repos <-
 #' @param username `character(1)` The GitHub username used to query repositories
 #'
 #' @examples
-#'
 #' if (interactive()) {
-#'   get_user_github_repos(username = "github-username")
+#'     get_user_github_repos(username = "github-username")
 #' }
-#'
 #' @export
 get_user_github_repos <-
     function(per_page = 100, pages = 10, username, archived = FALSE)

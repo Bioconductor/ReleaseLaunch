@@ -57,10 +57,12 @@ GitHub organization indicated by \code{org}.
 }
 \examples{
 if (interactive()) {
+    bioc_version_yaml()
     bioc_release_yaml()
+
     add_gh_release_branch(
       package_name = "BiocParallel",
-      release = "RELEASE_3_19"
+      release = bioc_release_yaml()
     )
 
     add_gh_release_branches(

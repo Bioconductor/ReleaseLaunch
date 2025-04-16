@@ -44,6 +44,8 @@ and filters them to only valid R packages and repositories that do not have a
 }
 \examples{
 if (interactive()) {
-    packages_without_release_branch(version = "3.19")
+    packages_without_release_branch(
+        version = bioc_version_yaml()
+    )
 }
 }

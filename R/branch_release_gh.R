@@ -170,7 +170,9 @@ get_org_packages <- function(version, org, type) {
 #'
 #' @examples
 #' if (interactive()) {
-#'     packages_without_release_branch(version = "3.19")
+#'     packages_without_release_branch(
+#'         version = bioc_version_yaml()
+#'     )
 #' }
 #' @export
 packages_without_release_branch <- function(
@@ -227,10 +229,12 @@ packages_with_release_branch <- function(
 #'
 #' @examples
 #' if (interactive()) {
+#'     bioc_version_yaml()
 #'     bioc_release_yaml()
+#'
 #'     add_gh_release_branch(
 #'       package_name = "BiocParallel",
-#'       release = "RELEASE_3_19"
+#'       release = bioc_release_yaml()
 #'     )
 #'
 #'     add_gh_release_branches(

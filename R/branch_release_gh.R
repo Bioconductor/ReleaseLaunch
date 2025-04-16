@@ -115,11 +115,25 @@ get_user_github_repos <-
     if (without) packages[!hasRELEASE] else packages[hasRELEASE]
 }
 
-#' Get the Bioconductor packages in the software manifest
+#' @name get-bioc-packages
 #'
-#' To ensure that a GitHub repository is a software package, its name is
-#' checked against a list of Bioconductor packages. This list is called
-#' the manifest. This function obtains the manifest using `git`.
+#' @title Get the Bioconductor packages in the software manifest
+#'
+#' @description To ensure that a GitHub repository is a software package, its
+#'   name is checked against a list of Bioconductor packages. This list is
+#'   called the `manifest`. The `get_bioc_software_manifest` function obtains
+#'   the manifest using `git`. Alternatively, `get_org_packages` uses
+#'   `available.packages()` with Bioconductor repositories (`repos=...`).
+#'
+#' @inheritParams packages_without_release_branch
+#' @inheritParams get-gh-repos
+#'
+#' @return * `get_bioc_software_manifest`: A character vector of package names
+#' * `get_org_packages`: A named character vector of package names and their
+#'   default branches
+#'
+#' @examples
+#' get_bioc_software_manifest()
 #'
 #' @export
 get_bioc_software_manifest <-
@@ -137,6 +151,15 @@ get_bioc_software_manifest <-
     gsub("Package:\\s+", "", software)
 }
 
+#' @rdname get-bioc-packages
+#'
+#' @examples
+#' get_org_packages(
+#'    version = bioc_version_yaml(),
+#'    org = "Bioconductor",
+#'    type = c("BioCsoft", "BioCexp")
+#' )
+#' @export
 get_org_packages <- function(version, org, type) {
     ## software <- get_bioc_software_manifest()
     repos <- BiocManager:::.repositories_bioc(version)[type]

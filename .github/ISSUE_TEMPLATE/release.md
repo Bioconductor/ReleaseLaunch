@@ -310,6 +310,7 @@ Website updates:
   ```sh
       biocpush@nebbiolo1:~$ ls PACKAGES/3.15/bioc/src/contrib/Archive/
   ```
+- [ ] Check if **devel** repo should be flushed. **devel only** not release 
 
 - [ ] Branch Annotations and put backup into S3 bucket
 

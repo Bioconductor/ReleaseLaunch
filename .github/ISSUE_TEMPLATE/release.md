@@ -55,6 +55,9 @@ in _this_ order
 
 - [ ] Announce feature api freeze and remind about release freeze
 
+- [ ] **Flush to-be-release repo**
+
+
 ## 2 weeks before
 
 - [ ] Announce last build of Bioc release and repo is frozen.
@@ -87,8 +90,6 @@ variable!
 
 - [ ] Install latest biocViews on biocpush account on to-be-release master
 builder. 
-
-- [ ] Flush to-be-release repo
 
 - [ ] Start setting up new devel builders and repositories. coordinate that
   manifest has been updated to have deprecated packages removed before devel
@@ -309,10 +310,6 @@ Website updates:
   ```sh
       biocpush@nebbiolo1:~$ ls PACKAGES/3.15/bioc/src/contrib/Archive/
   ```
-
-- [ ] A few days after release, flush the new release package repo. This will
-  remove odd numbered y of x.y.z version left over from being devel and
-  highlight packages that are erroring in release.
 
 - [ ] Branch Annotations and put backup into S3 bucket
 

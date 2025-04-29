@@ -37,9 +37,12 @@ Before branching, Check and make sure there is enough room on master for the
 annotations. If there isn't enough room follow the guidelines for moving old
 [Bioconductor releases into
 S3](https://github.com/Bioconductor/AWS_management/blob/master/docs/S3_website.md)
-As of release 3.13 Annotations are around 113G.
+As of release 3.21 Annotations are around 89G. See also inst/script/tempS3 for
+commands to migrate packages to S3.  See also playbook for moving release to
+OSN: https://github.com/bioconductor/archive-sync.  The live backup for legacy
+releases is OSN but we continue to backup both as we switch to S3 if OSN goes down.
 
-These instructions use BioC 3.14 as the new devel version and nebbiolo2 as the
+These instructions use BioC 3.22 as the new devel version and nebbiolo2 as the
 devel master builder.
 
 As of 3.14, the linux builders have moved to DFCI in Boston. Personal accounts
@@ -51,15 +54,13 @@ and the jump account should be set up for access.
 
 ```sh
 ssh to nebbiolo2 as biocpush user
-cd ~/PACKAGES/3.14/data
+cd ~/PACKAGES/3.22/data
 mkdir annotation
 ```
 
 ### rsync annotations from current release
 
-Because 3.13 used RPCI mablec2 and 3.14 used DFCI nebbiolo2, we could only rsync
-in one direction because of firewalls. It should work on either machine, in
-either direction in the future if under the same firewall.
+In this case the current release will be on nebbiolo1
 
 ::: {.infobox data-latex=""}
 
@@ -71,18 +72,18 @@ either direction in the future if under the same firewall.
 :::
 
 ```sh
-# From malbec2 to nebbiolo2 (logged into malbec2):
-cd ~/PACKAGES/3.13/data/annotation
-rsync --dry-run -ave ssh . biocpush@nebbiolo2:PACKAGES/3.14/data/annotation/
+# From nebbiolo1 to nebbiolo2 (logged into nebbiolo1):
+cd ~/PACKAGES/3.21/data/annotation
+rsync --dry-run -ave ssh . biocpush@nebbiolo2:PACKAGES/3.22/data/annotation/
 ```
 
 Live Run if all looks correct
 
 ```sh
-rsync -ave ssh . biocpush@nebbiolo2:PACKAGES/3.14/data/annotation/
+rsync -ave ssh . biocpush@nebbiolo2:PACKAGES/3.22/data/annotation/
 ```
 
-### Remove symlinks for old R versions for windows and mac
+### Remove symlinks for old R versions for windows and mac on new devel
 
 There may be symlinks in the windows and macosx folders. These will only be
 present when the new version of BioC uses a new version of R which happens every
@@ -108,17 +109,19 @@ A rerun of the `rsync` command should only show changes in the files we just
 edited:
 
 ```sh
-rsync --dry-run -ave ssh biocadmin@malbec1:PACKAGES/3.6/data/annotation/ .
+rsync --dry-run -ave ssh biocpush@nebbiolo1:PACKAGES/3.21/data/annotation/ .
 ```
 
 ## Set up <master.bioconductor.org>
 
-### Log on master as webadmin
+### Log on master as webadmin 
+
+Navigate to the new devel repo
 
 ```sh
 ssh ubuntu@master.biocondcutor.org
 sudo su - webadmin
-cd /extra/www/bioc/packages/3.14/data/annotation
+cd /extra/www/bioc/packages/3.22/data/annotation
 ```
 
 Products are sent to master from both nebbiolo2 and staging.bioconductor.org.
@@ -130,7 +133,7 @@ we want to leave the products deposited by staging.bioconductor.org untouched.
 There will likely be a simlink at
 
 ```sh
-/extra/www/bioc/packages/3.14/data/annotation -> ../../3.13/data/annotation
+/extra/www/bioc/packages/3.22/data/annotation -> ../../3.21/data/annotation
 ```
 
 pointing to the current release annotation repo. In recent years, the symlinks
@@ -150,8 +153,8 @@ mkdir annotation
 
 ## Back to nebbiolo2 to run the propagation scripts
 
-1.  Remove any deprecated packages from the 3.13 annotation repo that should not
-    be included in the devel 3.14 repo.
+1.  Remove any deprecated packages from the 3.21 annotation repo that should not
+    be included in the devel 3.22 repo.
 
 2.  Update and run cronjob by hand (should be commented out).
 
@@ -162,13 +165,13 @@ Symlink must be gone on master before running this!!
 :::
 
 Run the crontab entry by hand. Monitor
-\~/cron.log/3.14/propagate-data-annotation-\* log file.
+\~/cron.log/3.22/propagate-data-annotation-\* log file.
 
 3.  Test BiocManager::install() to see if it finds the new repo. Try installing
     a package that should be found and try installing a removed package that
     should fail.
 
-## Update bioconductor.org/config.yaml to build landing pages for 3.14
+## Update bioconductor.org/config.yaml to build landing pages for 3.22
 
 Uncomment 'data/annotation':
 

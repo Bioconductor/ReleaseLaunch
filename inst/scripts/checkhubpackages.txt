@@ -1,0 +1,107 @@
+pkgs_avail = BiocManager::available()
+
+library(tidyverse)                                                   
+library(rvest)
+html <- read_html("https://bioconductor.org/about/removed-packages/")
+rm_pkgs <- html |> html_elements("li") |> html_text2()
+
+
+###############################
+##
+##  ExperimentHub
+##
+###############################
+
+library(ExperimentHub)
+eh = ExperimentHub()
+pkgs = unique(mcols(eh)$preparerclass)
+rslts <- pkgs %in% pkgs_avail
+pkgs_sub <- pkgs[!rslts]
+rslts2 <- pkgs_sub %in% rm_pkgs
+as.data.frame(pkgs_sub[!rslts2])
+
+##            Not Current Available -- Investigate
+## 1                  MetaGxOvarian  ERROR since release
+## 2                brainimageRdata  removed in 3.15 (case difference)
+## 3                 MetaGxPancreas  ERROR since release
+## 4                      scSpatial  no record of this? added 2020-08-04/2020-08-05  celsomilne@gmail.com/nicolas.damond@uzh.ch -- nicolas not found
+## 5                        scpdata  ERROR since release
+## 6  FlowSorted.BloodExtended.EPIC  Confirmed with maintainer -- remove and delete files
+## 7                    EpiXprSData  Never submitted new package (closed see:methylXprs)
+## 8                       prolfqua  added 2021 wew@fgcz.ethz.ch -- confirmed removed entries no longer submitting
+## 9        benchmark.data.scRNAseq  Never finished review (inactive)
+## 10      BrainCellularComposition  2021 urwah.nawaz@adelaide.edu.au
+## 11                      CRCmodel  2022 lpk770811@gmail.com 
+## 12               CITEVizTestData  Never finished review (inactive)
+## 13                       HiTIMED  Never finsihed review (inactive)
+## 14                    tigeR.data  2022 yihaochen224@gmail.com
+## 15                 leukemiaAtlas  2023 -- upload was a mess and things were not matching -- just delete everything 
+## 16              cellScaleFactors  2023 maden.sean@gmail.com 
+## 17                  chevreuldata  Never passed review
+## 18                        GIMiCC  2024 steven.c.pike.gr@dartmouth.edu 
+## 19                   sceptredata  2024 tbarry@hsph.harvard.edu -- files hosted on zenodo  -- confirmed removed entries no longer submitting
+## 20             CENTREprecomputed  2024 lopez_s@molgen.mpg.de -- files hosted privately at http://owww.molgen.mpg.de/~CENTRE_data/
+## 21                      msigdbeh  Currently in review
+## 22              AWAggregatorData  Currently in review
+
+as.data.frame(pkgs_sub[rslts2])
+
+##     Deprecated Packages  -- Remove from Experiment Hub because package deprecated/removed)    
+## 1           alpineData
+## 2        restfulSEData
+## 3             allenpvc
+## 4    tcgaWGBSData.hg19
+## 5 benchmarkfdrData2019
+## 6         pwrEWAS.data
+## 7            SCATEData
+## 8                RLHub
+
+
+
+###############################
+##
+##  AnnotationHub
+##
+###############################
+
+library(AnnotationHub)
+ah = AnnotationHub()
+pkgs = unique(mcols(ah)$preparerclass)
+rslts <- pkgs %in% pkgs_avail
+pkgs_sub <- pkgs[!rslts]
+rslts2 <- pkgs_sub %in% rm_pkgs
+as.data.frame(pkgs_sub[!rslts2])
+
+> as.data.frame(pkgs_sub[!rslts2])
+
+##  Not Current Available -- Investigate
+## 1          UCSCFullTrackImportPreparer
+## 2             EnsemblGtfImportPreparer
+## 3                 RefNetImportPreparer
+## 4            Inparanoid8ImportPreparer
+## 5                     UCSC2BitPreparer
+## 6                    UCSCChainPreparer
+## 7                 Grasp2ImportPreparer
+## 8                   ChEAImportPreparer
+## 9                  PazarImportPreparer
+## 10                BioPaxImportPreparer
+## 11                EncodeImportPreparer
+## 12              HaemCodeImportPreparer
+## 13            EpigenomeRoadMapPreparer
+## 14 PXD000001FastaToAAStringSetPreparer
+## 15      PXD000001MzTabToMSnSetPreparer
+## 16     PXD000001MzidToMzRidentPreparer
+## 17            GencodeGffImportPreparer
+## 18               EnsemblTwoBitPreparer
+## 19                                None
+## 20          TxDbFromPkgsImportPreparer
+## 21                    dbSNPVCFPreparer
+## 22           alternativeSplicingEvents
+## 23              cotargeting.annotation
+## 24                             Cara1.0
+## 25                    CENTREannotation
+## 26         OrgDbFromPkgsImportPreparer
+## 27                  NCBIImportPreparer
+
+as.data.frame(pkgs_sub[rslts2])
+

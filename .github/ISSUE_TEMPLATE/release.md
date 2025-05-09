@@ -286,6 +286,9 @@ Website updates:
 - [ ] Once builds post and products are pushed to master, check new landing
   pages for updated versions
 
+- [ ] Update cloudfront invalidation path. by going to AWS, cloudfront, click on
+  account, go to behaviors and update accordingly
+
 - [ ] Compare number of packages in announcement with manifest file
 
 - [ ] Finalize release announcement

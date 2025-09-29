@@ -26,7 +26,7 @@ in _this_ order
 
 - [ ] Update GenomeInfoDb mapping table between UCSC and ensembl
       http://useast.ensembl.org/info/website/archives/assembly.html
-      
+      https://genome.ucsc.edu/FAQ/FAQreleases.html      
 
 - [ ] Identify and warn people with bad NEWS files
 

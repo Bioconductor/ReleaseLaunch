@@ -5,9 +5,9 @@ library(biocViews)
 ## to manually add)
 
 
-softNEWS = getPackageNEWS("3.18", "devel", repo="bioc", srcdir="/home/lorikern/BioconductorPackages/SoftwarePkg")
-dataNEWS = getPackageNEWS("3.18", "devel", repo="data/experiment")
-WFNEWS = getPackageNEWS("3.18", "devel",repo="workflows",srcdir="/home/lorikern/BioconductorPackages/WorkflowPkg")
+softNEWS = getPackageNEWS("3.21", "devel", repo="bioc", srcdir="/home/lorikern/BioconductorPackages/SoftwarePkg")
+dataNEWS = getPackageNEWS("3.21", "devel", repo="data/experiment")
+WFNEWS = getPackageNEWS("3.21", "devel",repo="workflows",srcdir="/home/lorikern/BioconductorPackages/WorkflowPkg")
 
 printNEWS(softNEWS, "softwareNews.md", relativeLink=TRUE, overwrite=TRUE)
 printNEWS(dataNEWS, "dataNews.md", relativeLink=TRUE, overwrite=TRUE)
@@ -18,25 +18,25 @@ rmarkdown::render("dataNews.md")
 rmarkdown::render("workflowNEWS.md")
 
 
-newSoft = biocViews:::getPackageTitles(prevBranch = "RELEASE_3_18", currBranch = "RELEASE_3_19")
-rmSoft = biocViews:::getPackageTitles(prevBranch = "RELEASE_3_18",currBranch="RELEASE_3_19", status="removed")
-deprecatedSoft = setdiff(biocViews:::getPackageTitles(prevBranch = "RELEASE_3_18", currBranch = "devel",status="removed"),rmSoft)
+newSoft = biocViews:::getPackageTitles(prevBranch = "RELEASE_3_21", currBranch = "RELEASE_3_22")
+rmSoft = biocViews:::getPackageTitles(prevBranch = "RELEASE_3_21",currBranch="RELEASE_3_22", status="removed")
+deprecatedSoft = setdiff(biocViews:::getPackageTitles(prevBranch = "RELEASE_3_21", currBranch = "devel",status="removed"),rmSoft)
 
-newData = biocViews:::getPackageTitles(prevBranch = "RELEASE_3_18", currBranch = "RELEASE_3_19", manifest="data-experiment.txt")
-rmData = biocViews:::getPackageTitles(prevBranch="RELEASE_3_18", currBranch="RELEASE_3_19", manifest="data-experiment.txt", status="removed")
-deprecatedData = setdiff(biocViews:::getPackageTitles(prevBranch = "RELEASE_3_18", currBranch ="devel",manifest="data-experiment.txt", status="removed"), rmData)
+newData = biocViews:::getPackageTitles(prevBranch = "RELEASE_3_21", currBranch = "RELEASE_3_22", manifest="data-experiment.txt")
+rmData = biocViews:::getPackageTitles(prevBranch="RELEASE_3_21", currBranch="RELEASE_3_22", manifest="data-experiment.txt", status="removed")
+deprecatedData = setdiff(biocViews:::getPackageTitles(prevBranch = "RELEASE_3_21", currBranch ="devel",manifest="data-experiment.txt", status="removed"), rmData)
 
-newWork = biocViews:::getPackageTitles(prevBranch = "RELEASE_3_18", currBranch = "RELEASE_3_19", manifest="workflows.txt")
-rmWork = biocViews:::getPackageTitles(prevBranch="RELEASE_3_18", currBranch="RELEASE_3_19", manifest="workflows.txt", status="removed")
-deprecatedWork = setdiff(biocViews:::getPackageTitles(prevBranch ="RELEASE_3_18", currBranch = "devel",manifest="workflows.txt",status="removed"), rmWork)
+newWork = biocViews:::getPackageTitles(prevBranch = "RELEASE_3_21", currBranch = "RELEASE_3_22", manifest="workflows.txt")
+rmWork = biocViews:::getPackageTitles(prevBranch="RELEASE_3_21", currBranch="RELEASE_3_22", manifest="workflows.txt", status="removed")
+deprecatedWork = setdiff(biocViews:::getPackageTitles(prevBranch ="RELEASE_3_21", currBranch = "devel",manifest="workflows.txt",status="removed"), rmWork)
 
-newBook = biocViews:::getPackageTitles(prevBranch = "RELEASE_3_18", currBranch = "RELEASE_3_19", manifest="books.txt")
-rmBook = biocViews:::getPackageTitles(prevBranch="RELEASE_3_18", currBranch="RELEASE_3_19", manifest="books.txt", status="removed")
-deprecatedBook = setdiff(biocViews:::getPackageTitles(prevBranch ="RELEASE_3_18", currBranch = "devel",manifest="books.txt",status="removed"), rmBook)
+newBook = biocViews:::getPackageTitles(prevBranch = "RELEASE_3_21", currBranch = "RELEASE_3_22", manifest="books.txt")
+rmBook = biocViews:::getPackageTitles(prevBranch="RELEASE_3_21", currBranch="RELEASE_3_22", manifest="books.txt", status="removed")
+deprecatedBook = setdiff(biocViews:::getPackageTitles(prevBranch ="RELEASE_3_21", currBranch = "devel",manifest="books.txt",status="removed"), rmBook)
 
-newAnn = biocViews:::getPackageTitles(prevBranch = "RELEASE_3_18", currBranch = "RELEASE_3_19", manifest="data-annotation.txt")
-rmAnn = biocViews:::getPackageTitles(prevBranch="RELEASE_3_18", currBranch="RELEASE_3_19", manifest="data-annotation.txt", status="removed")
-deprecatedAnn = setdiff(biocViews:::getPackageTitles(prevBranch ="RELEASE_3_18", currBranch = "devel",manifest="data-annotation.txt",status="removed"), rmAnn)
+newAnn = biocViews:::getPackageTitles(prevBranch = "RELEASE_3_21", currBranch = "RELEASE_3_22", manifest="data-annotation.txt")
+rmAnn = biocViews:::getPackageTitles(prevBranch="RELEASE_3_21", currBranch="RELEASE_3_22", manifest="data-annotation.txt", status="removed")
+deprecatedAnn = setdiff(biocViews:::getPackageTitles(prevBranch ="RELEASE_3_21", currBranch = "devel",manifest="data-annotation.txt",status="removed"), rmAnn)
 
 
 sink("PackageOverview.txt")
@@ -67,6 +67,13 @@ biocViews:::getPackageDescriptions(newData, "newData.md", relativeLink=TRUE)
 biocViews:::getPackageDescriptions(newWork, "newWork.md", relativeLink=TRUE)
 biocViews:::getPackageDescriptions(newAnn, "newAnn.md", relativeLink=TRUE)
 biocViews:::getPackageDescriptions(newBook, "newBook.md", relativeLink=TRUE)
+
+
+rmarkdown::render("newSoft.md")
+rmarkdown::render("newData.md")
+rmarkdown::render("newWork.md")
+rmarkdown::render("newAnn.md")
+rmarkdown::render("newBook.md")
 
 
 

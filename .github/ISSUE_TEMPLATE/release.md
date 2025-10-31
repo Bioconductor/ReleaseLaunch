@@ -287,7 +287,8 @@ Website updates:
   pages for updated versions
 
 - [ ] Update cloudfront invalidation path. by going to AWS, cloudfront, click on
-  account, go to behaviors and update accordingly
+  account, go to behaviors and update accordingly by doing full invlidation and
+  updating behavior for new release number
 
 - [ ] Compare number of packages in announcement with manifest file
 

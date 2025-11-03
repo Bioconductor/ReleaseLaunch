@@ -363,7 +363,21 @@ It couldn't hurt to restart the Apache server:
   numbered y of x.y.z version left over from being devel and highlight packages
   that are erroring in release.  
 
-- Build dockers for new release and devel
+- Build dockers for new release
+
+- Build container binaries for new release
+
+- Build dockers for new devel
+
+- Build container binaries for new devel
+
+- Build bioc2u binaries for new release
+
+- Build bioc2u binaries for new devel
+
+- Build webr binaries for new release
+
+- Build webr binaries for new devel
 
 - Update SPB and clean sqlite file
 

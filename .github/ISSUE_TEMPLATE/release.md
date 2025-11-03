@@ -318,7 +318,21 @@ Website updates:
 
 - [ ] Branch Annotations and put backup into S3 bucket
 
-- [ ] Build dockers for new release and devel for Bioc and AnVIL
+- [ ]  Build dockers for new release
+
+- [ ] Build container binaries for new release
+
+- [ ] Build dockers for new devel
+
+- [ ] Build container binaries for new devel
+
+- [ ] Build bioc2u binaries for new release
+
+- [ ] Build bioc2u binaries for new devel
+
+- [ ] Build webr binaries for new release
+
+- [ ] Build webr binaries for new devel
 
 - [ ] Update SPB and clean sqlite file
 

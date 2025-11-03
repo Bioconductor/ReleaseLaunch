@@ -318,7 +318,7 @@ Website updates:
 
 - [ ] Branch Annotations and put backup into S3 bucket
 
-- [ ]  Build dockers for new release
+- [ ] Build dockers for new release
 
 - [ ] Build container binaries for new release
 

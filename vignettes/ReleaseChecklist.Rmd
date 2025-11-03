@@ -363,13 +363,21 @@ It couldn't hurt to restart the Apache server:
   numbered y of x.y.z version left over from being devel and highlight packages
   that are erroring in release.  
 
-- Build dockers for new release
+- Build dockers for new release (bioconductor_docker)
 
-- Build container binaries for new release
+- Build container binaries for new release (bioconductor_docker)
 
-- Build dockers for new devel
+- Build dockers for new devel (bioconductor_docker)
 
-- Build container binaries for new devel
+- Build container binaries for new devel (bioconductor_docker)
+
+- Build dockers for new release (AnVIL)
+
+- Build container binaries for new release (AnVIL)
+
+- Build dockers for new devel (AnVIL)
+
+- Build container binaries for new devel (AnVIL)
 
 - Build bioc2u binaries for new release
 

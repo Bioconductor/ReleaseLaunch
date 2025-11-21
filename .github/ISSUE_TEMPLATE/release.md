@@ -336,11 +336,11 @@ Website updates:
 
 - [ ] Build bioc2u binaries for new release
 
-- [ ] Build bioc2u binaries for new devel
+- [ ] Build bioc2u binaries for new devel (only for Spring release when R release is used for Bioc devel)
 
 - [ ] Build webr binaries for new release
 
-- [ ] Build webr binaries for new devel
+- [ ] Build webr binaries for new devel (only for Spring release when R release is used for Bioc devel)
 
 - [ ] Update SPB and clean sqlite file
 

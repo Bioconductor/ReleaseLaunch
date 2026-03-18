@@ -318,7 +318,29 @@ Website updates:
 
 - [ ] Branch Annotations and put backup into S3 bucket
 
-- [ ] Build dockers for new release and devel for Bioc and AnVIL
+- [ ] Build dockers for new release (bioconductor_docker)
+
+- [ ] Build container binaries for new release (bioconductor_docker)
+
+- [ ] Build dockers for new devel (bioconductor_docker)
+
+- [ ] Build container binaries for new devel (bioconductor_docker)
+
+- [ ] Build dockers for new release (AnVIL)
+
+- [ ] Build container binaries for new release (AnVIL)
+
+- [ ] Build dockers for new devel (AnVIL)
+
+- [ ] Build container binaries for new devel (AnVIL)
+
+- [ ] Build bioc2u binaries for new release
+
+- [ ] Build bioc2u binaries for new devel (only for Spring release when R release is used for Bioc devel)
+
+- [ ] Build webr binaries for new release
+
+- [ ] Build webr binaries for new devel (only for Spring release when R release is used for Bioc devel)
 
 - [ ] Update SPB and clean sqlite file
 

@@ -1,15 +1,15 @@
 ## Blocking commits using package.conf
 ## Need to block RELEASE_X_Y 2-3 weeks before release
 ## Need to block master on day of release
-## Example uses RELEASE_3_21 as current/tobe frozen
-## with upcoming release 3.22
+## Example uses RELEASE_3_22 as current/tobe frozen
+## with upcoming release 3.23
 
 ## NOTE: this works on packages.conf
 ##  check gitolite.conf to block core team/admin commits
 
 
 ## block release 
-sed -i '/RELEASE_3_21/s/^/#/' packages.conf
+sed -i '/RELEASE_3_22/s/^/#/' packages.conf
 ## block master
 sed -i '/master/s/^/#/' packages.conf 
 ## block devel
@@ -19,12 +19,12 @@ sed -i '/hook.pre-receive/s/^/#/' packages.conf
 
 
 ## To reinstate and change to new release
-sed -i '/RELEASE_3_21/s/^#//' packages.conf
+sed -i '/RELEASE_3_22/s/^#//' packages.conf
 #sed -i '/master/s/^#//' packages.conf 
 sed -i '/devel/s/^#//' packages.conf 
-sed -i 's/RELEASE_3_12/RELEASE_3_22/' packages.conf
-sed -i 's/RELEASE_3_21/RELEASE_3_22/' packages.conf
-sed -i '/RELEASE_3_22/s/^#//' packages.conf
+sed -i 's/RELEASE_3_12/RELEASE_3_23/' packages.conf
+sed -i 's/RELEASE_3_22/RELEASE_3_23/' packages.conf
+sed -i '/RELEASE_3_23/s/^#//' packages.conf
 sed -i '/hook.pre-receive/s/^#//' packages.conf
 
 

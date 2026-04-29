@@ -60,6 +60,9 @@ if (interactive()) {
     bioc_version_yaml()
     bioc_release_yaml()
 
+    gitcreds::gitcreds_set()
+    ## gitcreds::gitcreds_get()
+
     add_gh_release_branch(
       package_name = "BiocParallel",
       release = bioc_release_yaml()

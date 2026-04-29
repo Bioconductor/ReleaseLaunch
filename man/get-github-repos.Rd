@@ -8,19 +8,19 @@
 \usage{
 get_org_github_repos(
   per_page = 100,
-  pages = 10,
+  pages = Inf,
   org = "Bioconductor",
   archived = FALSE
 )
 
-get_user_github_repos(per_page = 100, pages = 10, username, archived = FALSE)
+get_user_github_repos(per_page = 100, pages = Inf, username, archived = FALSE)
 }
 \arguments{
 \item{per_page}{Number of items to return per page. If omitted,
 will be substituted by \code{max(.limit, 100)} if \code{.limit} is set,
 otherwise determined by the API (never greater than 100).}
 
-\item{pages}{\code{numeric(1)} The number of pages to 'flip' through (default 10)}
+\item{pages}{\code{numeric(1)} The number of pages to 'flip' through (default Inf)}
 
 \item{org}{\code{character(1)} The organization for which to extract the names of
 the repositories on GitHub (default "Bioconductor").}

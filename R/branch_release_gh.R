@@ -13,19 +13,22 @@
 }
 
 #' @importFrom gh gh gh_token
-.get_gh_repos <- function(api, per_page, pages, ...) {
-    reslist <- vector("list", length = pages)
-    for (i in seq_len(pages)) {
-        reslist[[i]] <- gh::gh(
+.get_gh_repos <- function(api, per_page = 100, pages = Inf, ...) {
+    reslist <- list()
+    i <- 1
+    while (i <= pages) {
+        res <- gh::gh(
             endpoint = api,
             ...,
             page = i,
             per_page = per_page,
             .token = gh::gh_token()
         )
-        if (length(reslist[[i]]) < per_page) {
+        reslist[[i]] <- res
+        if (length(res) < per_page) {
             break
         }
+        i <- i + 1
     }
     do.call(c, reslist)
 }
@@ -40,7 +43,7 @@
 #'
 #' @inheritParams gh::gh
 #'
-#' @param pages `numeric(1)` The number of pages to 'flip' through (default 10)
+#' @param pages `numeric(1)` The number of pages to 'flip' through (default Inf)
 #'
 #' @param org `character(1)` The organization for which to extract the names of
 #'   the repositories on GitHub (default "Bioconductor").
@@ -55,7 +58,7 @@
 #'
 #' @export
 get_org_github_repos <-
-    function(per_page = 100, pages = 10, org = "Bioconductor", archived = FALSE)
+    function(per_page = 100, pages = Inf, org = "Bioconductor", archived = FALSE)
 {
     results <- .get_gh_repos(
         api = "/orgs/{org}/repos", per_page = per_page, pages = pages, org = org
@@ -79,15 +82,14 @@ get_org_github_repos <-
 #' }
 #' @export
 get_user_github_repos <-
-    function(per_page = 100, pages = 10, username, archived = FALSE)
+    function(per_page = 100, pages = Inf, username, archived = FALSE)
 {
     results <- .get_gh_repos(
-        api = "/users/{username}/repos", per_page = 100,
-        pages = 10, username = username
+        api = "/users/{username}/repos", per_page = per_page,
+        pages = pages, username = username
     )
     if (!archived)
         results <- Filter(function(x) { !x[["archived"]] }, results)
-    archived <- vapply(results, `[[`, logical(1L), "archived")
     defaults <- vapply(results, `[[`, character(1L), "default_branch")
     repos <- vapply(results, `[[`, character(1L), "name")
     names(defaults) <- repos
@@ -95,22 +97,34 @@ get_user_github_repos <-
 }
 
 .filter_gh_repos_branch <-
-    function(packages, release, per_page = 100, pages = 10, owner, without)
+    function(packages, release, owner, without)
 {
     pkgs <- names(packages)
     hasRELEASE <- structure(
         vector("logical", length = length(packages)), .Names = pkgs
     )
-    for (pkg in pkgs) {
-        result <- .get_gh_repos(
-            api = "/repos/{owner}/{repo}/branches",
-            owner = owner,
-            repo = pkg,
-            per_page = per_page,
-            pages = pages
-        )
-        branches <- vapply(result, `[[`, character(1L), "name")
-        hasRELEASE[pkg] <- release %in% branches
+    message(
+        "Checking for existing branch '", release, "' in ", length(pkgs), " repos..."
+    )
+    for (i in seq_along(pkgs)) {
+        pkg <- pkgs[i]
+        if (i %% 10 == 0)
+            message("  checked ", i, " repos...")
+
+        ## Optimized: check for the specific branch directly instead of listing all
+        exists <- tryCatch({
+            gh::gh(
+                endpoint = "/repos/{owner}/{repo}/branches/{branch}",
+                owner = owner,
+                repo = pkg,
+                branch = release,
+                .token = gh::gh_token()
+            )
+            TRUE
+        }, error = function(e) {
+            FALSE
+        })
+        hasRELEASE[pkg] <- exists
     }
     if (without) packages[!hasRELEASE] else packages[hasRELEASE]
 }
@@ -253,6 +267,9 @@ packages_with_release_branch <- function(
 #'     bioc_version_yaml()
 #'     bioc_release_yaml()
 #'
+#'     gitcreds::gitcreds_set()
+#'     ## gitcreds::gitcreds_get()
+#'
 #'     add_gh_release_branch(
 #'       package_name = "BiocParallel",
 #'       release = bioc_release_yaml()
@@ -272,32 +289,58 @@ add_gh_release_branch <- function(
     message("Working on: ", package_name)
     ## git clone git@github.com:Bioconductor/ShortRead.git
     org_gh_slug <- .get_gh_slug(org, package_name)
-    if (!dir.exists(package_name))
+    if (!dir.exists(package_name)) {
+        message("  Cloning ", org_gh_slug, "...")
         git_clone(org_gh_slug)
+    }
     ## cd to package dir
     old_wd <- setwd(package_name)
     on.exit({ setwd(old_wd) })
+
+    message("  Checking remotes...")
     remotes <- git_remote_list()
     if (!.is_origin_github(remotes, org_gh_slug))
         stop("'origin' remote is not set to GitHub")
+
     cbranch <- git_branch()
-    if (!identical(cbranch, gh_branch))
+    if (!identical(cbranch, gh_branch)) {
+        message("  Checking out branch: ", gh_branch)
         git_branch_checkout(gh_branch)
+    }
+
+    message("  Pulling from origin...")
     git_pull("origin")
+
     bioc_git_slug <- .get_bioc_slug(package_name)
     ## git remote add upstream git@git.bioconductor.org:packages/<pkg>.git
-    if (!.remote_exists(remotes, "upstream"))
+    if (!.remote_exists(remotes, "upstream")) {
+        message("  Adding upstream remote: ", bioc_git_slug)
         git_remote_add(bioc_git_slug, name = "upstream")
-    git_fetch("upstream")
-    up_remote <- paste0("upstream/", bioc_branch)
-    git_merge(up_remote)
-    ## git push origin devel
-    git_push("origin")
-    ##
-    if (!git_branch_exists(branch = release))
-        git_branch_create(release, ref = paste0("upstream/", release))
+    }
 
+    message("  Fetching from upstream (specific branches)...")
+    ## Optimized: fetch only necessary branches
+    git_fetch("upstream", refspec = bioc_branch)
+    git_fetch("upstream", refspec = release)
+
+    up_remote <- paste0("upstream/", bioc_branch)
+    message("  Merging ", up_remote, "...")
+    git_merge(up_remote)
+
+    ## git push origin devel
+    message("  Pushing to origin ", gh_branch, "...")
+    git_push("origin")
+
+    ##
+    if (!git_branch_exists(branch = release)) {
+        message("  Creating local release branch: ", release)
+        git_branch_create(release, ref = paste0("upstream/", release))
+    }
+
+    message("  Pushing release branch to origin...")
     git_push("origin", set_upstream = TRUE)
+
+    message("  Restoring branch: ", cbranch)
     git_branch_checkout(cbranch)
 }
 

@@ -19,9 +19,6 @@
 #' @param repos_dir `character(1)` The base directory where all packages /
 #'   repositories exist for the user
 #'
-#' @param packages `character()` An optional vector of package names that
-#'   correspond to folders available locally.
-#'
 #' @param release `character(1)` The Bioconductor release version, as
 #'   "RELASE_X_Y", to use for updating the local repositories. By default, the
 #'   value of `bioc_release_yaml()`. In `update_local_repo`, the release

@@ -51,9 +51,6 @@ defining the parallel back-end to be used during evaluation. Default
 
 \item{repo_dir}{\code{character(1)} The full path to a single package / repository
 whose default branch should be updated}
-
-\item{packages}{\code{character()} An optional vector of package names that
-correspond to folders available locally.}
 }
 \description{
 These functions should be used after a Bioconductor Release. They ensure that

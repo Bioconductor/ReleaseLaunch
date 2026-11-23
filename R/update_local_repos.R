@@ -24,7 +24,8 @@
 #'
 #' @param release `character(1)` The Bioconductor release version, as
 #'   "RELASE_X_Y", to use for updating the local repositories. By default, the
-#'   value of `bioc_release_yaml()`.
+#'   value of `bioc_release_yaml()`. In `update_local_repo`, the release
+#'   branch is only created locally when `release` is provided.
 #'
 #' @param repo_dir `character(1)` The full path to a single package / repository
 #'   whose default branch should be updated
@@ -155,7 +156,7 @@ update_local_repo <- function(
     }
     git_pull(remote = "origin", refspec = "devel")
     git_pull(remote = "upstream", refspec = "devel")
-    if (!git_branch_exists(branch = release)) {
+    if (!missing(release) && !git_branch_exists(branch = release)) {
         git_fetch(remote = "upstream")
         git_branch_create(release, ref = paste0("upstream/", release))
         git_branch_checkout("devel")

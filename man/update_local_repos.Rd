@@ -28,7 +28,8 @@ repositories exist for the user}
 
 \item{release}{\code{character(1)} The Bioconductor release version, as
 "RELASE_X_Y", to use for updating the local repositories. By default, the
-value of \code{bioc_release_yaml()}.}
+value of \code{bioc_release_yaml()}. In \code{update_local_repo}, the release
+branch is only created locally when \code{release} is provided.}
 
 \item{username}{\code{character(1)} (optional) The GitHub username used in the
 query to check default packages}

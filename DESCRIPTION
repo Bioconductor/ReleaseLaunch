@@ -15,6 +15,9 @@ Description: The package faciliates a Bioconductor release. It currently
   The script creates the RELEASE_XX_YY branch and pushes it to the Bioconductor
   organization.
 License: Artistic-2.0
+URL: https://github.com/Bioconductor/ReleaseLaunch,
+    https://bioconductor.github.io/ReleaseLaunch
+BugReports: https://github.com/Bioconductor/ReleaseLaunch/issues
 Imports:
   BiocBaseUtils,
   BiocManager,

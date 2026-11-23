@@ -1,58 +1,77 @@
+# Build and deploy the pkgdown site to GitHub Pages.
+# Adapted from the pkgdown steps in bioconductor/workflows
+# (.github/workflows/bioccheck.yml), which only deploy from RELEASE_*
+# branches; this package has no release branches, so it deploys from devel.
+# Requires Settings > Pages > Source: "GitHub Actions".
 name: Build and deploy site
 
-on: push
+on:
+  push:
+    branches: [ devel ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
 
 jobs:
-  buildDeploy:
-    runs-on: ubuntu-22.04
-    container: bioconductor/bioconductor_docker:RELEASE_3_17
-
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: bioconductor/bioconductor_docker:devel
     env:
-      R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
-      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      CRAN: https://packagemanager.rstudio.com/cran/__linux__/jammy/latest
-      version-name: RELEASE_3_17
-
+      R_REMOTES_NO_ERRORS_FROM_WARNINGS: 'true'
+      GITHUB_PAT: ${{ github.token }}
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
 
-      - name: Query dependencies
-        run: |
-          BiocManager::install("remotes")
-          saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds")
+      - name: Query R Dependencies
         shell: Rscript {0}
+        run: |
+          options(repos = c(CRAN = "https://packagemanager.posit.co/cran/__linux__/noble/latest", BiocManager::repositories()))
+          if (!requireNamespace("remotes", quietly = TRUE)) install.packages("remotes")
+          deps <- remotes::dev_package_deps(".", dependencies = TRUE)
+          saveRDS(deps, ".github/depends.Rds")
+          writeLines(sprintf("R-%s.%i", R.version$major, floor(as.numeric(R.version$minor))), ".github/R-version")
 
-      - name: Cache R packages
-        if: runner.os != 'Windows'
-        uses: actions/cache@v3
+      - name: Cache R Packages
+        uses: actions/cache@v6
         with:
           path: /usr/local/lib/R/site-library
-          key: ${{ runner.os }}-r-${{ env.version-name }}-${{ hashFiles('.github/depends.Rds') }}
-          restore-keys: ${{ runner.os }}-r-${{ env.version-name }}-
+          key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-pkgdown-1-${{ hashFiles('.github/depends.Rds') }}
+          restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-pkgdown-1-
 
-      - name: Install Dependencies
-        run: |
-          remotes::install_deps(dependencies = TRUE, repos = BiocManager::repositories())
-          BiocManager::install("pkgdown", ask = FALSE, update = TRUE)
+      - name: Install Package and pkgdown
         shell: Rscript {0}
-
-      - name: System dependencies
         run: |
-          pip install ghp-import
+          options(repos = c(CRAN = "https://packagemanager.posit.co/cran/__linux__/noble/latest", BiocManager::repositories()))
+          remotes::install_local(".", dependencies = TRUE, Ncpus = parallel::detectCores())
+          BiocManager::install("pkgdown", Ncpus = parallel::detectCores())
 
-      - name: Build pkgdown
+      - name: Build pkgdown Site
+        shell: Rscript {0}
         run: |
-           PATH=$PATH:$HOME/bin/ Rscript -e 'pkgdown::build_site()'
+          pkgdown::build_site(new_process = FALSE, install = FALSE)
 
-      - name: Install deploy dependencies
-        run: |
-          apt-get update
-          apt-get -y install rsync
-
-      - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@v4
+      - name: Upload pkgdown artifact
+        uses: actions/upload-pages-artifact@v5
         with:
-          TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: gh-pages # The branch the action should deploy to.
-          FOLDER: docs # The folder the action should deploy.
+          path: docs
+
+  deploy:
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

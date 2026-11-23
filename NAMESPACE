@@ -21,9 +21,13 @@ export(update_local_repo)
 export(update_local_repos)
 import(gert)
 importFrom(BiocBaseUtils,isScalarCharacter)
-importFrom(gh,gh)
-importFrom(gh,gh_token)
+importFrom(gh,
+  gh,
+  gh_token
+)
 importFrom(methods,is)
-importFrom(utils,capture.output)
-importFrom(utils,head)
-importFrom(utils,untar)
+importFrom(utils,
+  capture.output,
+  head,
+  untar
+)

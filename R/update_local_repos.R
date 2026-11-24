@@ -106,7 +106,7 @@ update_local_repos <- function(
     pkg_dirs <- pkg_dirs[is_bioc]
 
     if (!length(pkg_dirs))
-        stop("No local folders in 'packages' or 'repos_dir' to update")
+        stop("No local folders in 'repos_dir' to update")
 
     if (requireNamespace("BiocParallel", quietly = TRUE) && !is.null(BPPARAM))
         BiocParallel::bpmapply(

@@ -1,4 +1,4 @@
-# [ReleaseLaunch](https://bioconductor.github.io/ReleaseLaunch/) <a href='https://bioconductor.github.io/ReleaseLaunch/'><img src='https://raw.githubusercontent.com/Bioconductor/BiocStickers/devel/ReleaseLaunch/ReleaseLaunch.png' alt='ReleaseLaunch sticker' align="right" height="204" /></a>
+# [ReleaseLaunch](https://bioconductor.github.io/ReleaseLaunch/) <a href='https://bioconductor.github.io/ReleaseLaunch/'><img src='https://raw.githubusercontent.com/Bioconductor/BiocStickers/devel/ReleaseLaunch/ReleaseLaunch.png' alt='ReleaseLaunch sticker' align="right" height="139" /></a>
 
 <!-- badges: start -->
 [![pkgdown](https://img.shields.io/badge/pkgdown-site-blue.svg)](https://bioconductor.github.io/ReleaseLaunch/)

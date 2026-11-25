@@ -406,6 +406,13 @@ add_gh_release_branches <- function(
         packages <- packages_without_release_branch(
             version = version, org = org, release = release
         )
+    if (!length(packages)) {
+        message(
+            "All packages already have the '", release, "' branch; ",
+            "nothing to update."
+        )
+        return(invisible(list()))
+    }
     message(
         "Packages without release branch: ",
         paste(names(packages), collapse = ", ")

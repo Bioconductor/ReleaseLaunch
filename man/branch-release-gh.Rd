@@ -20,7 +20,8 @@ add_gh_release_branches(
   packages = character(0L),
   release = bioc_release_yaml(),
   bioc_branch = .BIOC_DEFAULT_BRANCH,
-  org = "Bioconductor"
+  org = "Bioconductor",
+  pause = 2
 )
 
 bioc_version_yaml(config = .BIOC_CONFIG_FILE)
@@ -46,6 +47,10 @@ the repositories on GitHub (default "Bioconductor").}
 \item{packages}{\verb{named character()} A character vector of default branches
 whose names correspond to Bioconductor package names. See
 \code{packages_without_release_branch}.}
+
+\item{pause}{\code{numeric(1)} The number of seconds to wait between packages
+(default 2). Spacing out the SSH connections avoids GitHub throttling
+them.}
 
 \item{config}{\code{character(1)} The path to the Bioconductor configuration file
 that contains the release version (defaults to website URL from

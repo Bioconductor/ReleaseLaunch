@@ -346,18 +346,23 @@ add_gh_release_branch <- function(
 }
 
 .add_gh_release_branches <-
-    function(packages, release, bioc_branch, org)
+    function(packages, release, bioc_branch, org, pause)
 {
-    Map(
-        add_gh_release_branch,
-        package_name = names(packages),
-        gh_branch = packages,
-        MoreArgs = list(
+    pkgs <- names(packages)
+    res <- vector("list", length(pkgs))
+    names(res) <- pkgs
+    for (i in seq_along(pkgs)) {
+        if (i > 1L && pause > 0)
+            Sys.sleep(pause)
+        res[[i]] <- add_gh_release_branch(
+            package_name = pkgs[i],
+            gh_branch = packages[[i]],
             release = release,
             bioc_branch = bioc_branch,
             org = org
         )
-    )
+    }
+    res
 }
 
 #' @rdname branch-release-gh
@@ -365,6 +370,10 @@ add_gh_release_branch <- function(
 #' @param packages `named character()` A character vector of default branches
 #'   whose names correspond to Bioconductor package names. See
 #'   `packages_without_release_branch`.
+#'
+#' @param pause `numeric(1)` The number of seconds to wait between packages
+#'   (default 2). Spacing out the SSH connections avoids GitHub throttling
+#'   them.
 #'
 #' @details Clone, pull, fetch, and push use the command-line `git` client
 #'   with SSH connection and keep-alive timeouts, so a stalled connection
@@ -388,7 +397,8 @@ add_gh_release_branches <- function(
     packages = character(0L),
     release = bioc_release_yaml(),
     bioc_branch = .BIOC_DEFAULT_BRANCH,
-    org = "Bioconductor"
+    org = "Bioconductor",
+    pause = 2
 ) {
     version <- .tag_to_version(release)
     message("Working on Bioconductor version: ", version)
@@ -406,7 +416,8 @@ add_gh_release_branches <- function(
         packages = packages,
         release = release,
         bioc_branch = bioc_branch,
-        org = org
+        org = org,
+        pause = pause
     )
 }
 

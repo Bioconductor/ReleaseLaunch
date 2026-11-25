@@ -7,6 +7,65 @@
     strwrap(sprintf(fmt, ...), width=width, exdent=4)
 }
 
+## Retry a network operation (clone, pull, fetch, push) that may fail
+## transiently, e.g., when GitHub throttles rapid SSH connections. Waits
+## `pause` seconds between attempts, doubling the wait each time.
+.with_retry <- function(FUN, ..., attempts = 3L, pause = 5) {
+    for (i in seq_len(attempts)) {
+        res <- tryCatch(FUN(...), error = identity)
+        if (!inherits(res, "error"))
+            return(invisible(res))
+        if (i == attempts)
+            stop(res)
+        message(
+            "  Attempt ", i, "/", attempts, " failed: ",
+            conditionMessage(res), "\n  Retrying in ", pause, "s..."
+        )
+        Sys.sleep(pause)
+        pause <- pause * 2
+    }
+}
+
+## OpenSSH options so that a stalled connection fails instead of hanging:
+## ConnectTimeout covers the TCP connect and the SSH banner exchange;
+## ServerAlive* drops a connection that stops responding mid-transfer;
+## BatchMode prevents passphrase prompts (keys come from the ssh-agent).
+.GIT_SSH_COMMAND <- paste(
+    "ssh -o ConnectTimeout=30 -o ServerAliveInterval=15",
+    "-o ServerAliveCountMax=4 -o BatchMode=yes"
+)
+
+## Run a network git command (clone, pull, fetch, push) with the command-line
+## client rather than gert, whose libssh2 transport has no timeout and can
+## hang indefinitely. `timeout` (seconds) is a hard limit as a backstop.
+.git_net <- function(args, timeout = 600) {
+    old <- Sys.getenv(c("GIT_SSH_COMMAND", "GIT_TERMINAL_PROMPT"), unset = NA)
+    on.exit({
+        for (var in names(old)) {
+            if (is.na(old[[var]]))
+                Sys.unsetenv(var)
+            else
+                do.call(Sys.setenv, as.list(old[var]))
+        }
+    })
+    Sys.setenv(GIT_SSH_COMMAND = .GIT_SSH_COMMAND, GIT_TERMINAL_PROMPT = "0")
+    cmd <- paste("git", paste(args, collapse = " "))
+    out <- suppressWarnings(
+        system2("git", args, stdout = TRUE, stderr = TRUE, timeout = timeout)
+    )
+    status <- attr(out, "status")
+    if (!is.null(status) && status != 0L) {
+        if (identical(status, 124L))
+            stop("'", cmd, "' timed out after ", timeout, "s", call. = FALSE)
+        stop(
+            "'", cmd, "' failed (status ", status, "):\n",
+            paste(out, collapse = "\n"),
+            call. = FALSE
+        )
+    }
+    invisible(out)
+}
+
 .remote_exists <- function(remotes, remote) {
     remote %in% remotes[["name"]]
 }

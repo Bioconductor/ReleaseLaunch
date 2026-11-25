@@ -55,6 +55,12 @@ that contains the release version (defaults to website URL from
 This function assumes that you have admin push access to the
 GitHub organization indicated by \code{org}.
 }
+\details{
+Clone, pull, fetch, and push use the command-line \code{git} client
+with SSH connection and keep-alive timeouts, so a stalled connection
+fails instead of hanging. Failed operations are retried up to 3 times,
+with an increasing wait between attempts.
+}
 \examples{
 if (interactive()) {
     bioc_version_yaml()

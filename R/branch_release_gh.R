@@ -291,7 +291,7 @@ add_gh_release_branch <- function(
     org_gh_slug <- .get_gh_slug(org, package_name)
     if (!dir.exists(package_name)) {
         message("  Cloning ", org_gh_slug, "...")
-        git_clone(org_gh_slug)
+        .with_retry(.git_net, c("clone", org_gh_slug, package_name))
     }
     ## cd to package dir
     old_wd <- setwd(package_name)
@@ -309,7 +309,9 @@ add_gh_release_branch <- function(
     }
 
     message("  Pulling from origin...")
-    git_pull("origin")
+    .with_retry(
+        .git_net, c("pull", "--no-rebase", "--no-edit", "origin", gh_branch)
+    )
 
     bioc_git_slug <- .get_bioc_slug(package_name)
     ## git remote add upstream git@git.bioconductor.org:packages/<pkg>.git
@@ -320,8 +322,7 @@ add_gh_release_branch <- function(
 
     message("  Fetching from upstream (specific branches)...")
     ## Optimized: fetch only necessary branches
-    git_fetch("upstream", refspec = bioc_branch)
-    git_fetch("upstream", refspec = release)
+    .with_retry(.git_net, c("fetch", "upstream", bioc_branch, release))
 
     up_remote <- paste0("upstream/", bioc_branch)
     message("  Merging ", up_remote, "...")
@@ -329,7 +330,7 @@ add_gh_release_branch <- function(
 
     ## git push origin devel
     message("  Pushing to origin ", gh_branch, "...")
-    git_push("origin")
+    .with_retry(.git_net, c("push", "origin", gh_branch))
 
     ##
     if (!git_branch_exists(branch = release)) {
@@ -338,7 +339,7 @@ add_gh_release_branch <- function(
     }
 
     message("  Pushing release branch to origin...")
-    git_push("origin", set_upstream = TRUE)
+    .with_retry(.git_net, c("push", "--set-upstream", "origin", release))
 
     message("  Restoring branch: ", cbranch)
     git_branch_checkout(cbranch)
@@ -364,6 +365,11 @@ add_gh_release_branch <- function(
 #' @param packages `named character()` A character vector of default branches
 #'   whose names correspond to Bioconductor package names. See
 #'   `packages_without_release_branch`.
+#'
+#' @details Clone, pull, fetch, and push use the command-line `git` client
+#'   with SSH connection and keep-alive timeouts, so a stalled connection
+#'   fails instead of hanging. Failed operations are retried up to 3 times,
+#'   with an increasing wait between attempts.
 #'
 #' @seealso packages_without_release_branch
 #'

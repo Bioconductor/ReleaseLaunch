@@ -12,14 +12,16 @@ update_local_repos(
   org = username,
   set_upstream = "origin/devel",
   restart_from = character(0L),
-  BPPARAM = NULL
+  BPPARAM = NULL,
+  strategy = c("rebase", "merge")
 )
 
 update_local_repo(
   repo_dir,
   release,
   set_upstream = "origin/devel",
-  org = "Bioconductor"
+  org = "Bioconductor",
+  strategy = c("rebase", "merge")
 )
 }
 \arguments{
@@ -49,6 +51,13 @@ case that the process was interrupted due to merge conflicts etc. Default
 defining the parallel back-end to be used during evaluation. Default
 \code{NULL}.}
 
+\item{strategy}{\code{character(1)} How to update \code{devel} when it has diverged
+from \code{origin/devel} or \code{upstream/devel}, either "rebase" (default, linear
+history; a rebased \code{devel} must be pushed to GitHub with
+\verb{git push --force-with-lease origin devel}) or "merge" (merge commit).
+A rebase with conflicts is aborted and stops, leaving the branch
+unchanged.}
+
 \item{repo_dir}{\code{character(1)} The full path to a single package / repository
 whose default branch should be updated}
 }
@@ -69,8 +78,9 @@ current release branches from both the \code{origin} (GH) and \code{upstream}
 will set it to the Bioconductor git server. Finally, the function sets
 \code{origin/devel} as the remote branch to track with the \code{set_upstream}
 argument. Fetches use the command-line \code{git} client with SSH connection
-and keep-alive timeouts, and are retried up to 3 times; merges are local
-and stop on conflicts.
+and keep-alive timeouts, and are retried up to 3 times; updates are local,
+fast-forward when possible, otherwise follow \code{strategy}, and stop on
+conflicts.
 }
 \examples{
 if (interactive()) {

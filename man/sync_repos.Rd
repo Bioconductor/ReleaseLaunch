@@ -12,7 +12,8 @@ sync_repos(
   org = username,
   set_upstream = "upstream/devel",
   restart_from = character(0L),
-  BPPARAM = NULL
+  BPPARAM = NULL,
+  strategy = c("rebase", "merge")
 )
 
 sync_repo(
@@ -20,7 +21,8 @@ sync_repo(
   dest_dir,
   org = "Bioconductor",
   gh_exists = .repo_exists(pkg = package, org = org),
-  set_upstream = "upstream/devel"
+  set_upstream = "upstream/devel",
+  strategy = c("rebase", "merge")
 )
 }
 \arguments{
@@ -48,6 +50,14 @@ Default \code{character(0L)}.}
 defining the parallel back-end to be used during evaluation. Default
 \code{NULL}.}
 
+\item{strategy}{\code{character(1)} How to update \code{devel} when it has diverged
+from \code{upstream/devel}. With "rebase" (default), the local-only (e.g.,
+GitHub-only) commits are replayed on top of \code{upstream/devel}, keeping
+the history linear; the rebased \code{devel} must then be pushed to GitHub
+with \verb{git push --force-with-lease origin devel}. A rebase with conflicts
+is aborted and stops, leaving the branch unchanged. With "merge", a
+merge commit is created.}
+
 \item{package}{\code{character(1)} A single Bioconductor package name.}
 
 \item{gh_exists}{\code{logical(1)} Whether the repository exists on GitHub under
@@ -63,14 +73,16 @@ ones already present. When a package's repository exists on GitHub under
 \code{org} (or \code{username}), it is cloned from there as the \code{origin} remote and the
 Bioconductor git server is added as the \code{upstream} remote. Otherwise, the
 package is cloned from the Bioconductor git server and that remote is named
-\code{upstream}. The local \code{devel} branch is then updated from \code{upstream/devel}
-and set to track \code{set_upstream}.
+\code{upstream}. The local \code{devel} branch is then updated from \code{origin/devel}
+(when on GitHub) and \code{upstream/devel}, and set to track \code{set_upstream}.
 }
 \details{
 Existing local repositories have their remotes corrected: \code{origin}
 is pointed at GitHub when the GitHub repository exists, and the
-Bioconductor \code{upstream} remote is added when missing. Merge conflicts
-stop the process; resolve them and resume with \code{restart_from}. Clones
+Bioconductor \code{upstream} remote is added when missing. Updates are
+fast-forwards when possible; when \code{devel} has diverged from
+\code{upstream/devel}, see \code{strategy}. Conflicts stop the process; resolve
+them and resume with \code{restart_from}. Clones
 and fetches use the command-line \code{git} client with SSH connection and
 keep-alive timeouts, and are retried up to 3 times.
 }

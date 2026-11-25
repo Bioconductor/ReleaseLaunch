@@ -5,13 +5,15 @@
 #' `org` (or `username`), it is cloned from there as the `origin` remote and the
 #' Bioconductor git server is added as the `upstream` remote. Otherwise, the
 #' package is cloned from the Bioconductor git server and that remote is named
-#' `upstream`. The local `devel` branch is then updated from `upstream/devel`
-#' and set to track `set_upstream`.
+#' `upstream`. The local `devel` branch is then updated from `origin/devel`
+#' (when on GitHub) and `upstream/devel`, and set to track `set_upstream`.
 #'
 #' @details Existing local repositories have their remotes corrected: `origin`
 #'   is pointed at GitHub when the GitHub repository exists, and the
-#'   Bioconductor `upstream` remote is added when missing. Merge conflicts
-#'   stop the process; resolve them and resume with `restart_from`. Clones
+#'   Bioconductor `upstream` remote is added when missing. Updates are
+#'   fast-forwards when possible; when `devel` has diverged from
+#'   `upstream/devel`, see `strategy`. Conflicts stop the process; resolve
+#'   them and resume with `restart_from`. Clones
 #'   and fetches use the command-line `git` client with SSH connection and
 #'   keep-alive timeouts, and are retried up to 3 times.
 #'
@@ -29,6 +31,14 @@
 #' @param set_upstream `character(1)` The remote branch that the local `devel`
 #'   branch will track, either "upstream/devel" (default) or "origin/devel".
 #'   Packages without a GitHub repository always track "upstream/devel".
+#'
+#' @param strategy `character(1)` How to update `devel` when it has diverged
+#'   from `upstream/devel`. With "rebase" (default), the local-only (e.g.,
+#'   GitHub-only) commits are replayed on top of `upstream/devel`, keeping
+#'   the history linear; the rebased `devel` must then be pushed to GitHub
+#'   with `git push --force-with-lease origin devel`. A rebase with conflicts
+#'   is aborted and stops, leaving the branch unchanged. With "merge", a
+#'   merge commit is created.
 #'
 #' @param restart_from `character(1)` The name of a package in `packages` from
 #'   which to resume, e.g., after an interruption due to merge conflicts.
@@ -63,8 +73,10 @@ sync_repos <- function(
     org = username,
     set_upstream = "upstream/devel",
     restart_from = character(0L),
-    BPPARAM = NULL
+    BPPARAM = NULL,
+    strategy = c("rebase", "merge")
 ) {
+    strategy <- match.arg(strategy)
     stopifnot(
         is.character(packages) && length(packages) && !anyNA(packages),
         isScalarCharacter(dest_dir) && dir.exists(dest_dir),
@@ -95,7 +107,8 @@ sync_repos <- function(
             MoreArgs = list(
                 dest_dir = dest_dir,
                 org = org,
-                set_upstream = set_upstream
+                set_upstream = set_upstream,
+                strategy = strategy
             ),
             SIMPLIFY = TRUE,
             BPPARAM = BPPARAM
@@ -108,7 +121,8 @@ sync_repos <- function(
             MoreArgs = list(
                 dest_dir = dest_dir,
                 org = org,
-                set_upstream = set_upstream
+                set_upstream = set_upstream,
+                strategy = strategy
             )
         )
     invisible(res)
@@ -122,8 +136,10 @@ sync_repo <- function(
     dest_dir,
     org = "Bioconductor",
     gh_exists = .repo_exists(pkg = package, org = org),
-    set_upstream = "upstream/devel"
+    set_upstream = "upstream/devel",
+    strategy = c("rebase", "merge")
 ) {
+    strategy <- match.arg(strategy)
     stopifnot(
         isScalarCharacter(package),
         isScalarCharacter(dest_dir) && dir.exists(dest_dir),
@@ -150,8 +166,20 @@ sync_repo <- function(
         git_branch_create(
             "devel", ref = "upstream/devel", checkout = TRUE, repo = repo_dir
         )
-    ## upstream was fetched above; merge only (stops on conflicts)
-    .git_merge_or_stop("upstream/devel", repo = repo_dir)
+    ## catch up with GitHub first, so that a rebase onto upstream does not
+    ## drop commits pushed to GitHub since the last sync
+    if (gh_exists &&
+        git_branch_exists("origin/devel", local = FALSE, repo = repo_dir))
+        .git_update_branch("origin/devel", repo = repo_dir, strategy = strategy)
+    ## remotes were fetched above; update locally (stops on conflicts)
+    how <- .git_update_branch(
+        "upstream/devel", repo = repo_dir, strategy = strategy
+    )
+    if (identical(how, "rebased") && gh_exists)
+        message(
+            "  'devel' was rebased onto upstream/devel; push it with:\n",
+            "    git push --force-with-lease origin devel"
+        )
 
     if (!gh_exists)
         set_upstream <- "upstream/devel"

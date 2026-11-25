@@ -256,6 +256,16 @@ packages_with_release_branch <- function(
 #' @param bioc_branch `character(1)` The name of the default branch on the
 #'   Bioconductor git server (default 'devel')
 #'
+#' @param strategy `character(1)` How to update the GitHub branch when it has
+#'   diverged from the Bioconductor branch, e.g., GitHub-only commits and the
+#'   Bioconductor version bumps made at release time. With "rebase" (default),
+#'   the GitHub-only commits are replayed on top of the Bioconductor commits
+#'   and the branch is force-pushed to GitHub (with `--force-with-lease`); a
+#'   rebase with conflicts is aborted and stops, leaving the repository
+#'   unchanged. With "merge", a merge commit is created. When the branches
+#'   have not diverged, the update is a fast-forward and no merge commit is
+#'   made with either strategy.
+#'
 #' @inheritParams get-github-repos
 #'
 #' @aliases add_gh_release_branch add_gh_release_branches
@@ -284,8 +294,9 @@ packages_with_release_branch <- function(
 add_gh_release_branch <- function(
     package_name, release = bioc_release_yaml(),
     gh_branch = .BIOC_DEFAULT_BRANCH, bioc_branch = .BIOC_DEFAULT_BRANCH,
-    org = "Bioconductor"
+    org = "Bioconductor", strategy = c("rebase", "merge")
 ) {
+    strategy <- match.arg(strategy)
     message("Working on: ", package_name)
     ## git clone git@github.com:Bioconductor/ShortRead.git
     org_gh_slug <- .get_gh_slug(org, package_name)
@@ -309,7 +320,8 @@ add_gh_release_branch <- function(
     }
 
     message("  Pulling from origin...")
-    .git_fetch_merge("origin", gh_branch)
+    .git_fetch_merge("origin", gh_branch, strategy = strategy)
+    origin_sha <- git_commit_id(paste0("origin/", gh_branch))
 
     bioc_git_slug <- .get_bioc_slug(package_name)
     ## git remote add upstream git@git.bioconductor.org:packages/<pkg>.git
@@ -323,12 +335,18 @@ add_gh_release_branch <- function(
     .with_retry(.git_net, c("fetch", "upstream", bioc_branch, release))
 
     up_remote <- paste0("upstream/", bioc_branch)
-    message("  Merging ", up_remote, "...")
-    git_merge(up_remote)
+    message("  Updating ", gh_branch, " with ", up_remote, "...")
+    how <- .git_update_branch(up_remote, strategy = strategy)
+    rebased <- identical(how, "rebased")
 
-    ## git push origin devel
-    message("  Pushing to origin ", gh_branch, "...")
-    .with_retry(.git_net, c("push", "origin", gh_branch))
+    ## git push origin devel (--force-with-lease after a rebase)
+    message(
+        "  Pushing to origin ", gh_branch,
+        if (rebased) " (force, rebased onto upstream)", "..."
+    )
+    .git_push_branch(
+        "origin", gh_branch, rebased = rebased, expected = origin_sha
+    )
 
     ##
     if (!git_branch_exists(branch = release)) {
@@ -344,7 +362,7 @@ add_gh_release_branch <- function(
 }
 
 .add_gh_release_branches <-
-    function(packages, release, bioc_branch, org, pause)
+    function(packages, release, bioc_branch, org, pause, strategy)
 {
     pkgs <- names(packages)
     res <- vector("list", length(pkgs))
@@ -357,7 +375,8 @@ add_gh_release_branch <- function(
             gh_branch = packages[[i]],
             release = release,
             bioc_branch = bioc_branch,
-            org = org
+            org = org,
+            strategy = strategy
         )
     }
     res
@@ -396,8 +415,10 @@ add_gh_release_branches <- function(
     release = bioc_release_yaml(),
     bioc_branch = .BIOC_DEFAULT_BRANCH,
     org = "Bioconductor",
-    pause = 2
+    pause = 2,
+    strategy = c("rebase", "merge")
 ) {
+    strategy <- match.arg(strategy)
     version <- .tag_to_version(release)
     message("Working on Bioconductor version: ", version)
     if (!length(packages))
@@ -422,7 +443,8 @@ add_gh_release_branches <- function(
         release = release,
         bioc_branch = bioc_branch,
         org = org,
-        pause = pause
+        pause = pause,
+        strategy = strategy
     )
 }
 

@@ -151,7 +151,7 @@ sync_repo <- function(
             "devel", ref = "upstream/devel", checkout = TRUE, repo = repo_dir
         )
     ## upstream was fetched above; merge only (stops on conflicts)
-    git_merge("upstream/devel", repo = repo_dir)
+    .git_merge_or_stop("upstream/devel", repo = repo_dir)
 
     if (!gh_exists)
         set_upstream <- "upstream/devel"

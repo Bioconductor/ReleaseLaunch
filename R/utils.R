@@ -73,7 +73,23 @@
 ## gert. The merge is not retried, so a conflict stops immediately.
 .git_fetch_merge <- function(remote, branch, repo = ".") {
     .with_retry(.git_net, c("fetch", remote, branch), repo = repo)
-    git_merge(paste0(remote, "/", branch), repo = repo)
+    .git_merge_or_stop(paste0(remote, "/", branch), repo = repo)
+}
+
+## `gert::git_merge()` only prints a message on conflicts and leaves the
+## repository mid-merge; stop instead so the conflict can be resolved.
+.git_merge_or_stop <- function(ref, repo = ".") {
+    git_merge(ref, repo = repo)
+    conflicts <- git_conflicts(repo = repo)
+    if (nrow(conflicts))
+        stop(
+            "Merge conflicts merging '", ref, "' in '",
+            normalizePath(repo), "':\n  ",
+            paste(unique(conflicts[["our"]]), collapse = "\n  "),
+            "\nResolve and commit (or 'git merge --abort'), then resume.",
+            call. = FALSE
+        )
+    invisible(TRUE)
 }
 
 .remote_exists <- function(remotes, remote) {

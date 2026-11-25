@@ -73,6 +73,15 @@ if (interactive()) {
         org = "Bioconductor"
     )
 }
+
+if (interactive()) {
+    gitcreds::gitcreds_set()
+    add_gh_release_branches(
+       release = "RELEASE_3_24"
+    )
+}
+
+
 }
 \seealso{
 packages_without_release_branch

@@ -367,6 +367,16 @@ add_gh_release_branch <- function(
 #'
 #' @seealso packages_without_release_branch
 #'
+#' @examples
+#'
+#' if (interactive()) {
+#'     gitcreds::gitcreds_set()
+#'     add_gh_release_branches(
+#'        release = "RELEASE_3_24"
+#'     )
+#' }
+#'
+#'
 #' @export
 add_gh_release_branches <- function(
     packages = character(0L),
@@ -378,7 +388,7 @@ add_gh_release_branches <- function(
     message("Working on Bioconductor version: ", version)
     if (!length(packages))
         packages <- packages_without_release_branch(
-            version = version, org = org
+            version = version, org = org, release = release
         )
     message(
         "Packages without release branch: ",

@@ -69,11 +69,95 @@
 }
 
 ## Replacement for `gert::git_pull(remote)`: fetch `remote/branch` with the
-## command-line client (timeouts and retries), then merge it locally with
-## gert. The merge is not retried, so a conflict stops immediately.
-.git_fetch_merge <- function(remote, branch, repo = ".") {
+## command-line client (timeouts and retries), then bring the current branch
+## up to date with it locally (see `.git_update_branch`). The local step is
+## not retried, so a conflict stops immediately.
+.git_fetch_merge <- function(remote, branch, repo = ".", strategy = "rebase") {
     .with_retry(.git_net, c("fetch", remote, branch), repo = repo)
-    .git_merge_or_stop(paste0(remote, "/", branch), repo = repo)
+    .git_update_branch(
+        paste0(remote, "/", branch), repo = repo, strategy = strategy
+    )
+}
+
+.UPDATE_STRATEGIES <- c("rebase", "merge")
+
+## Run a local (non-network) git command with the command-line client;
+## returns the exit status and the combined stdout / stderr lines.
+.git_local <- function(args, repo = ".") {
+    out <- suppressWarnings(system2(
+        "git", c("-C", shQuote(repo), args), stdout = TRUE, stderr = TRUE
+    ))
+    status <- attr(out, "status")
+    list(status = if (is.null(status)) 0L else status, out = out)
+}
+
+## TRUE when commit `a` is an ancestor of (or the same as) commit `b`
+.is_ancestor <- function(a, b, repo = ".") {
+    res <- .git_local(c("merge-base", "--is-ancestor", a, b), repo = repo)
+    if (!res$status %in% c(0L, 1L))
+        stop(
+            "'git merge-base --is-ancestor ", a, " ", b, "' failed:\n",
+            paste(res$out, collapse = "\n"), call. = FALSE
+        )
+    identical(res$status, 0L)
+}
+
+## Bring the checked out branch up to date with `ref` without merge commits
+## whenever possible:
+##   * `ref` already contained in HEAD: nothing to do
+##   * HEAD behind `ref`: fast-forward
+##   * diverged (e.g., GitHub-only commits and Bioconductor version bumps):
+##     `strategy = "rebase"` replays the local-only commits on top of `ref`
+##     (linear history; the branch must then be force-pushed to GitHub);
+##     `strategy = "merge"` creates a merge commit.
+## A failed rebase is aborted, leaving the branch as it was, then stops.
+## Returns, invisibly, one of "up-to-date", "fast-forward", "rebased" or
+## "merged".
+.git_update_branch <- function(ref, repo = ".", strategy = "rebase") {
+    strategy <- match.arg(strategy, .UPDATE_STRATEGIES)
+    if (.is_ancestor(ref, "HEAD", repo = repo))
+        return(invisible("up-to-date"))
+    if (.is_ancestor("HEAD", ref, repo = repo)) {
+        res <- .git_local(c("merge", "--ff-only", ref), repo = repo)
+        if (res$status)
+            stop(
+                "Fast-forward to '", ref, "' failed in '",
+                normalizePath(repo), "':\n", paste(res$out, collapse = "\n"),
+                call. = FALSE
+            )
+        return(invisible("fast-forward"))
+    }
+    if (identical(strategy, "merge")) {
+        .git_merge_or_stop(ref, repo = repo)
+        return(invisible("merged"))
+    }
+    message("  Rebasing local-only commits onto ", ref, "...")
+    res <- .git_local(c("rebase", ref), repo = repo)
+    if (res$status) {
+        .git_local(c("rebase", "--abort"), repo = repo)
+        stop(
+            "Rebasing onto '", ref, "' failed in '", normalizePath(repo),
+            "'; the rebase was aborted and the branch is unchanged:\n  ",
+            paste(utils::tail(res$out, 10L), collapse = "\n  "),
+            "\nRebase manually ('git rebase ", ref, "'), or use ",
+            "strategy = \"merge\", then resume.",
+            call. = FALSE
+        )
+    }
+    invisible("rebased")
+}
+
+## Push `branch` to `remote`; after a rebase, force-push, but only if the
+## remote branch still points at `expected` (the commit seen when fetching)
+.git_push_branch <- function(remote, branch, rebased, expected, repo = ".") {
+    args <- c("push", remote, branch)
+    if (rebased)
+        args <- c(
+            "push",
+            paste0("--force-with-lease=", branch, ":", expected),
+            remote, branch
+        )
+    .with_retry(.git_net, args, repo = repo)
 }
 
 ## `gert::git_merge()` only prints a message on conflicts and leaves the

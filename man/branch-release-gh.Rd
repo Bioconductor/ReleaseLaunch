@@ -13,7 +13,8 @@ add_gh_release_branch(
   release = bioc_release_yaml(),
   gh_branch = .BIOC_DEFAULT_BRANCH,
   bioc_branch = .BIOC_DEFAULT_BRANCH,
-  org = "Bioconductor"
+  org = "Bioconductor",
+  strategy = c("rebase", "merge")
 )
 
 add_gh_release_branches(
@@ -21,7 +22,8 @@ add_gh_release_branches(
   release = bioc_release_yaml(),
   bioc_branch = .BIOC_DEFAULT_BRANCH,
   org = "Bioconductor",
-  pause = 2
+  pause = 2,
+  strategy = c("rebase", "merge")
 )
 
 bioc_version_yaml(config = .BIOC_CONFIG_FILE)
@@ -43,6 +45,16 @@ Bioconductor git server (default 'devel')}
 
 \item{org}{\code{character(1)} The organization for which to extract the names of
 the repositories on GitHub (default "Bioconductor").}
+
+\item{strategy}{\code{character(1)} How to update the GitHub branch when it has
+diverged from the Bioconductor branch, e.g., GitHub-only commits and the
+Bioconductor version bumps made at release time. With "rebase" (default),
+the GitHub-only commits are replayed on top of the Bioconductor commits
+and the branch is force-pushed to GitHub (with \code{--force-with-lease}); a
+rebase with conflicts is aborted and stops, leaving the repository
+unchanged. With "merge", a merge commit is created. When the branches
+have not diverged, the update is a fast-forward and no merge commit is
+made with either strategy.}
 
 \item{packages}{\verb{named character()} A character vector of default branches
 whose names correspond to Bioconductor package names. See

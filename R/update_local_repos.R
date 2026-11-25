@@ -15,8 +15,9 @@
 #'   will set it to the Bioconductor git server. Finally, the function sets
 #'   `origin/devel` as the remote branch to track with the `set_upstream`
 #'   argument. Fetches use the command-line `git` client with SSH connection
-#'   and keep-alive timeouts, and are retried up to 3 times; merges are local
-#'   and stop on conflicts.
+#'   and keep-alive timeouts, and are retried up to 3 times; updates are local,
+#'   fast-forward when possible, otherwise follow `strategy`, and stop on
+#'   conflicts.
 #'
 #' @param repos_dir `character(1)` The base directory where all packages /
 #'   repositories exist for the user
@@ -34,6 +35,13 @@
 #'
 #' @param set_upstream `character(1)` The remote location that will be tracked
 #'   by the local branch, either "origin/devel" (default) or "upstream/devel"
+#'
+#' @param strategy `character(1)` How to update `devel` when it has diverged
+#'   from `origin/devel` or `upstream/devel`, either "rebase" (default, linear
+#'   history; a rebased `devel` must be pushed to GitHub with
+#'   `git push --force-with-lease origin devel`) or "merge" (merge commit).
+#'   A rebase with conflicts is aborted and stops, leaving the branch
+#'   unchanged.
 #'
 #' @param restart_from `character(1)` The name of a package found in `repos_dir`
 #'   that should be used as the starting point for updating the local repos in
@@ -79,8 +87,10 @@ update_local_repos <- function(
     username, org = username,
     set_upstream = "origin/devel",
     restart_from = character(0L),
-    BPPARAM = NULL
+    BPPARAM = NULL,
+    strategy = c("rebase", "merge")
 ) {
+    strategy <- match.arg(strategy)
     stopifnot(
         isScalarCharacter(repos_dir) && dir.exists(repos_dir),
         isScalarCharacter(release),
@@ -117,7 +127,8 @@ update_local_repos <- function(
             MoreArgs = list(
                 release = release,
                 set_upstream = set_upstream,
-                org = org
+                org = org,
+                strategy = strategy
             ),
             SIMPLIFY = FALSE,
             BPPARAM = BPPARAM
@@ -129,7 +140,8 @@ update_local_repos <- function(
             MoreArgs = list(
                 release = release,
                 set_upstream = set_upstream,
-                org = org
+                org = org,
+                strategy = strategy
             )
         )
 }
@@ -138,8 +150,10 @@ update_local_repos <- function(
 #'
 #' @export
 update_local_repo <- function(
-    repo_dir, release, set_upstream = "origin/devel", org = "Bioconductor"
+    repo_dir, release, set_upstream = "origin/devel", org = "Bioconductor",
+    strategy = c("rebase", "merge")
 ) {
+    strategy <- match.arg(strategy)
     old_wd <- setwd(repo_dir)
     on.exit({ setwd(old_wd) })
 
@@ -164,8 +178,13 @@ update_local_repo <- function(
         }
         git_remote_add(bioc_slug, name = "upstream")
     }
-    .git_fetch_merge("origin", "devel")
-    .git_fetch_merge("upstream", "devel")
+    .git_fetch_merge("origin", "devel", strategy = strategy)
+    how <- .git_fetch_merge("upstream", "devel", strategy = strategy)
+    if (identical(how, "rebased"))
+        message(
+            "  'devel' was rebased onto upstream/devel; push it with:\n",
+            "    git push --force-with-lease origin devel"
+        )
     if (!missing(release) && !git_branch_exists(branch = release)) {
         .with_retry(.git_net, c("fetch", "upstream", release))
         git_branch_create(release, ref = paste0("upstream/", release))

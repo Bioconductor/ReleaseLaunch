@@ -1,6 +1,6 @@
 Package: ReleaseLaunch
 Title: R utilities related to Bioconductor release tasks
-Version: 0.99.30
+Version: 0.99.31
 Encoding: UTF-8
 Authors@R: c(
     person("Marcel", "Ramos", role = c("aut", "cre"),
@@ -34,5 +34,5 @@ Suggests:
   rmarkdown
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
-Date: 2026-04-29
+Date: 2026-11-25
 Config/roxygen2/version: 8.1.1

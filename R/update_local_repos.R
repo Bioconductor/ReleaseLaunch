@@ -147,8 +147,19 @@ update_local_repo <- function(
     git_branch_checkout("devel")
     if (!.is_origin_github(gh_slug = gh_slug))
         stop("'origin' remote should be set to GitHub")
-    if (!.has_bioc_upstream()) {
+    remotes <- git_remote_list()
+    if (!.has_bioc_upstream(remotes)) {
         bioc_slug <- .get_bioc_slug(package)
+        if (.remote_exists(remotes, "upstream")) {
+            up_url <- remotes[["url"]][remotes[["name"]] == "upstream"]
+            stop(
+                "'upstream' remote in '", package, "' is not the ",
+                "Bioconductor git server:\n  ", up_url, "\n",
+                "Point it to Bioconductor with:\n",
+                "  git remote set-url upstream ", bioc_slug,
+                call. = FALSE
+            )
+        }
         git_remote_add(bioc_slug, name = "upstream")
     }
     git_pull(remote = "origin", refspec = "devel")

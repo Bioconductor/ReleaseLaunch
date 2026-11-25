@@ -309,9 +309,7 @@ add_gh_release_branch <- function(
     }
 
     message("  Pulling from origin...")
-    .with_retry(
-        .git_net, c("pull", "--no-rebase", "--no-edit", "origin", gh_branch)
-    )
+    .git_fetch_merge("origin", gh_branch)
 
     bioc_git_slug <- .get_bioc_slug(package_name)
     ## git remote add upstream git@git.bioconductor.org:packages/<pkg>.git

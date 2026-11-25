@@ -68,7 +68,9 @@ current release branches from both the \code{origin} (GH) and \code{upstream}
 (Bioconductor) remotes. If a \code{upstream} remote is not set, the function
 will set it to the Bioconductor git server. Finally, the function sets
 \code{origin/devel} as the remote branch to track with the \code{set_upstream}
-argument.
+argument. Fetches use the command-line \code{git} client with SSH connection
+and keep-alive timeouts, and are retried up to 3 times; merges are local
+and stop on conflicts.
 }
 \examples{
 if (interactive()) {

@@ -70,7 +70,9 @@ and set to track \code{set_upstream}.
 Existing local repositories have their remotes corrected: \code{origin}
 is pointed at GitHub when the GitHub repository exists, and the
 Bioconductor \code{upstream} remote is added when missing. Merge conflicts
-stop the process; resolve them and resume with \code{restart_from}.
+stop the process; resolve them and resume with \code{restart_from}. Clones
+and fetches use the command-line \code{git} client with SSH connection and
+keep-alive timeouts, and are retried up to 3 times.
 }
 \examples{
 if (interactive()) {

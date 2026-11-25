@@ -38,7 +38,8 @@
 ## Run a network git command (clone, pull, fetch, push) with the command-line
 ## client rather than gert, whose libssh2 transport has no timeout and can
 ## hang indefinitely. `timeout` (seconds) is a hard limit as a backstop.
-.git_net <- function(args, timeout = 600) {
+## `repo` is the repository directory the command runs in (`git -C`).
+.git_net <- function(args, repo = ".", timeout = 600) {
     old <- Sys.getenv(c("GIT_SSH_COMMAND", "GIT_TERMINAL_PROMPT"), unset = NA)
     on.exit({
         for (var in names(old)) {
@@ -50,9 +51,10 @@
     })
     Sys.setenv(GIT_SSH_COMMAND = .GIT_SSH_COMMAND, GIT_TERMINAL_PROMPT = "0")
     cmd <- paste("git", paste(args, collapse = " "))
-    out <- suppressWarnings(
-        system2("git", args, stdout = TRUE, stderr = TRUE, timeout = timeout)
-    )
+    out <- suppressWarnings(system2(
+        "git", c("-C", shQuote(repo), args),
+        stdout = TRUE, stderr = TRUE, timeout = timeout
+    ))
     status <- attr(out, "status")
     if (!is.null(status) && status != 0L) {
         if (identical(status, 124L))
@@ -64,6 +66,14 @@
         )
     }
     invisible(out)
+}
+
+## Replacement for `gert::git_pull(remote)`: fetch `remote/branch` with the
+## command-line client (timeouts and retries), then merge it locally with
+## gert. The merge is not retried, so a conflict stops immediately.
+.git_fetch_merge <- function(remote, branch, repo = ".") {
+    .with_retry(.git_net, c("fetch", remote, branch), repo = repo)
+    git_merge(paste0(remote, "/", branch), repo = repo)
 }
 
 .remote_exists <- function(remotes, remote) {

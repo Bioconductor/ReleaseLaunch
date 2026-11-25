@@ -11,7 +11,9 @@
 #' @details Existing local repositories have their remotes corrected: `origin`
 #'   is pointed at GitHub when the GitHub repository exists, and the
 #'   Bioconductor `upstream` remote is added when missing. Merge conflicts
-#'   stop the process; resolve them and resume with `restart_from`.
+#'   stop the process; resolve them and resume with `restart_from`. Clones
+#'   and fetches use the command-line `git` client with SSH connection and
+#'   keep-alive timeouts, and are retried up to 3 times.
 #'
 #' @param packages `character()` A vector of Bioconductor package names to
 #'   clone or update.
@@ -138,9 +140,9 @@ sync_repo <- function(
     else
         .fix_remotes(repo_dir, bioc_slug, gh_slug, gh_exists)
 
-    git_fetch(remote = "upstream", repo = repo_dir)
+    .with_retry(.git_net, c("fetch", "upstream"), repo = repo_dir)
     if (gh_exists)
-        git_fetch(remote = "origin", repo = repo_dir)
+        .with_retry(.git_net, c("fetch", "origin"), repo = repo_dir)
 
     if (git_branch_exists("devel", repo = repo_dir))
         git_branch_checkout("devel", repo = repo_dir)
@@ -148,7 +150,8 @@ sync_repo <- function(
         git_branch_create(
             "devel", ref = "upstream/devel", checkout = TRUE, repo = repo_dir
         )
-    git_pull(remote = "upstream", repo = repo_dir)
+    ## upstream was fetched above; merge only (stops on conflicts)
+    git_merge("upstream/devel", repo = repo_dir)
 
     if (!gh_exists)
         set_upstream <- "upstream/devel"
@@ -159,10 +162,10 @@ sync_repo <- function(
 
 .clone_repo <- function(repo_dir, bioc_slug, gh_slug, gh_exists) {
     if (gh_exists) {
-        git_clone(gh_slug, path = repo_dir)
+        .with_retry(.git_net, c("clone", gh_slug, shQuote(repo_dir)))
         git_remote_add(bioc_slug, name = "upstream", repo = repo_dir)
     } else {
-        git_clone(bioc_slug, path = repo_dir)
+        .with_retry(.git_net, c("clone", bioc_slug, shQuote(repo_dir)))
         .rename_remote("origin", "upstream", repo = repo_dir)
     }
     invisible(repo_dir)

@@ -14,7 +14,9 @@
 #'   (Bioconductor) remotes. If a `upstream` remote is not set, the function
 #'   will set it to the Bioconductor git server. Finally, the function sets
 #'   `origin/devel` as the remote branch to track with the `set_upstream`
-#'   argument.
+#'   argument. Fetches use the command-line `git` client with SSH connection
+#'   and keep-alive timeouts, and are retried up to 3 times; merges are local
+#'   and stop on conflicts.
 #'
 #' @param repos_dir `character(1)` The base directory where all packages /
 #'   repositories exist for the user
@@ -162,10 +164,10 @@ update_local_repo <- function(
         }
         git_remote_add(bioc_slug, name = "upstream")
     }
-    git_pull(remote = "origin", refspec = "devel")
-    git_pull(remote = "upstream", refspec = "devel")
+    .git_fetch_merge("origin", "devel")
+    .git_fetch_merge("upstream", "devel")
     if (!missing(release) && !git_branch_exists(branch = release)) {
-        git_fetch(remote = "upstream")
+        .with_retry(.git_net, c("fetch", "upstream", release))
         git_branch_create(release, ref = paste0("upstream/", release))
         git_branch_checkout("devel")
     }
